@@ -1,3 +1,7 @@
-new PDO('mysql:host=rg-nas.ddns.net;port=3307;dbname=web4shop', lestechos, wA3[.RY)hx);
+connexion
+$pdo = new PDO('mysql:host=rg-nas.ddns.net;port=3307;dbname=web4shop', lestechos, wA3[.RY)hx);
+$pdo->exec("SET CHARACTER SET utf8");
+déconnexion
+$pdo = null;
 
 adresse https://rg-nas.ddns.net/phpMyAdmin

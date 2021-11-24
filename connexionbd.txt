@@ -1,0 +1,3 @@
+new PDO('mysql:host=rg-nas.ddns.net;port=3307;dbname=web4shop', lestechos, wA3[.RY)hx);
+
+adresse https://rg-nas.ddns.net/phpMyAdmin

@@ -1,4 +1,8 @@
 
+<?php
+session_start();
+echo session_id();
+?>
 <!doctype html>
 <html lang="en" class="h-100">
   <head>

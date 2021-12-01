@@ -11,4 +11,5 @@
 
     }
 
+    $user = new User('test','bite');
 ?>

@@ -3,17 +3,18 @@ define('END', "end"); // REtourner par une fonction lors d'un résultat alternat
 define('ALL', "%"); // WildCard retourne tout les résultat en ignorant le paramètre associé
 define('NO_CHANGE', "NO_CHANGE"); // Caractère de non défintion
 
-function constructConditionsFilter(...$VALUES){
+function constructConditionsFilter(...$VALUES)
+{
     $condition = "";
     $flipflop = false;
 
 
-    foreach($VALUES as list($arg, $value)){
+    foreach ($VALUES as list($arg, $value)) {
 
-        if(!$flipflop){
+        if (!$flipflop) {
             $condition = " WHERE ";
             !$flipflop = true;
-        }else $condition .= " AND ";
+        } else $condition .= " AND ";
 
         $condition .= $arg . " LIKE '" . $value . "'";
     }
@@ -26,26 +27,37 @@ function constructConditionsFilter(...$VALUES){
  */
 function getLinkToDb()
 {
-    $pdo = new PDO('mysql:host=rg-nas.ddns.net;port=3307;dbname=web4shop', 'lestechos', 'wA3[.RY)hx');
-    $pdo->exec("SET CHARACTER SET utf8");
-
+    $pdo = null;
+    try {
+        $pdo = new PDO('mysql:host=rg-nas.ddns.net;port=3307;dbname=web4shop', 'lestechos', 'wA3[.RY)hx');
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $pdo->exec('SET CHARACTER SET utf8');
+    } catch (PDOException $e) {
+        throw "Erreur !: " . $e->getMessage() . "<br/>";
+        die();
+    }
     return $pdo;
 }
 
 /** Retourne le résultat de la requête
-*   @param $conn : Connexion à la DB
-*   @param $table : Table voulant être atteinte
-*   @param ...$VALUES : Tableau de dimensions n*2 des champs de la donnée 
-*   @return $Resultat de la requête de type interne à mysqli
-*
-*/
-function getDatasLike($conn, $table,  ...$VALUES){
-
-    $query = "SELECT * FROM " . $table . constructConditionsFilter(...$VALUES);
-    //echo $query . "<br>";
-    $result = $conn->query($query);
-    print_r($result);
-    return $result;
+ *   @param $conn : Connexion à la DB
+ *   @param $table : Table voulant être atteinte
+ *   @param ...$VALUES : Tableau de dimensions n*2 des champs de la donnée 
+ *   @return $Resultat de la requête de type interne à mysqli
+ *
+ */
+function getDatasLike($conn, $table,  ...$VALUES)
+{
+    try {
+        $query = "SELECT * FROM " . $table . constructConditionsFilter(...$VALUES);
+        $result = $conn->query($query);
+        $res  = $result->fetchAll();
+        return $res;
+    } catch (PDOException $e) {
+        throw "Erreur !: " . $e->getMessage() . "<br/>";
+        die();
+    }
+    
 }
 
 /**
@@ -54,23 +66,24 @@ function getDatasLike($conn, $table,  ...$VALUES){
  *   @param $table : Table voulant être atteinte
  *   @param ...$VALUES : Tableau de dimensions n*2 des champs de la donnée
  */
-function addData($conn, $table,  ...$VALUES){
+function addData($conn, $table,  ...$VALUES)
+{
     $query = "INSERT INTO " . $table . " ";
     $args = "(";
     $vals = "(";
     $flipflop = false;
 
-    foreach($VALUES as list($arg, $value)){
+    foreach ($VALUES as list($arg, $value)) {
 
-        if(!$flipflop){
+        if (!$flipflop) {
             $flipflop = true;
-        }else{
+        } else {
             $args .= ", ";
             $vals .= ", ";
         }
 
         $args .=  $arg;
-        $vals .= "'" . $value . "'"; 
+        $vals .= "'" . $value . "'";
     }
 
     $args .= ")";
@@ -78,7 +91,7 @@ function addData($conn, $table,  ...$VALUES){
 
     $query .= $args . " VALUES " . $vals;
 
-    return $conn->query($query);  
+    return $conn->query($query);
 }
 
 /**
@@ -87,22 +100,23 @@ function addData($conn, $table,  ...$VALUES){
  * @param $table : Table voulant être atteinte
  * @param ...$VALUES : Tableau de dimensions n*2 des champs de la donnée
  */
-function deleteDatas($conn, $table,  ...$VALUES){
+function deleteDatas($conn, $table,  ...$VALUES)
+{
     $query = "DELETE FROM " . $table . " ";
     $flipflop = false;
 
-    foreach($VALUES as list($arg, $value)){
+    foreach ($VALUES as list($arg, $value)) {
 
-        if(!$flipflop){
+        if (!$flipflop) {
             $query .= " WHERE ";
             $flipflop = true;
-        }else{
+        } else {
             $query .= " AND ";
         }
         $query .= " " . $arg . " LIKE '" . $value . "' ";
     }
 
-    return $conn->query($query);  
+    return $conn->query($query);
 }
 
 /**
@@ -111,33 +125,34 @@ function deleteDatas($conn, $table,  ...$VALUES){
  * @param $table : Table voulant être atteinte
  * @param ...$VALUES : Tableau de dimensions n*3 des champs de la donnée [nomChamp, oldValue, newVal]
  */
-function updateDatas($conn, $table,  ...$VALUES){
+function updateDatas($conn, $table,  ...$VALUES)
+{
     $query = "UPDATE " . $table . " ";
     $condition = " WHERE ";
 
     $flipflopAND = false;
     $flipflopSET = false;
 
-    foreach($VALUES as list($arg, $oldValue, $newValue)){
+    foreach ($VALUES as list($arg, $oldValue, $newValue)) {
 
-        if($newValue != NO_CHANGE) {
-            if(!$flipflopSET){
+        if ($newValue != NO_CHANGE) {
+            if (!$flipflopSET) {
                 $flipflopSET = true;
                 $query .= " SET ";
-            }else $query .= ", ";
+            } else $query .= ", ";
 
             $query .= " $arg = '" . $newValue . "'";
         }
 
-        if(!$flipflopAND){
+        if (!$flipflopAND) {
             !$flipflopAND = true;
-        }else $condition .= " AND ";
+        } else $condition .= " AND ";
 
         $condition .= $arg . " LIKE '" . $oldValue . "'";
     }
 
     $query .= $condition;
-    
+
     echo $query;
     return $conn->query($query);
 }
@@ -148,14 +163,15 @@ function updateDatas($conn, $table,  ...$VALUES){
  * @param $table : Table voulant être atteinte
  * @param ...$VALUES : Tableau de dimensions n*1 des champs de la donnée
  */
-function dumpAllEntries($conn, $table, ...$Column){
+function dumpAllEntries($conn, $table, ...$Column)
+{
     $res = getDatasLike($conn, $table);
     $buff = getNextRowFrom($res);
     $nbRow = 0;
-    while($buff != END){
-        echo $nbRow. " - ";
-        foreach($Column as $col){
-            echo $buff[$col] . " | "; 
+    while ($buff != END) {
+        echo $nbRow . " - ";
+        foreach ($Column as $col) {
+            echo $buff[$col] . " | ";
         }
         $nbRow++;
         echo "<br>";
@@ -171,23 +187,23 @@ function dumpAllEntries($conn, $table, ...$Column){
  * @param $id : Id à vérifer
  */
 
-function isIdIn($conn, $table, $Column, $id, ...$VALUES){
+function isIdIn($conn, $table, $Column, $id, ...$VALUES)
+{
     $buff = getNextRowFrom(getDatasLike($conn, $table, [$Column, $id], ...$VALUES));
-    if(empty($buff[$Column])) return false;
+    if (empty($buff[$Column])) return false;
     else return true;
 }
 
-function countRowIn($conn, $table, ...$VALUES){
-    $query = "SELECT COUNT(*) FROM " . $table . " "; 
+function countRowIn($conn, $table, ...$VALUES)
+{
+    $query = "SELECT COUNT(*) FROM " . $table . " ";
 
     $query .= constructConditionsFilter(...$VALUES);
 
     $count = 0;
 
-    foreach($conn->query($query) as $row){
+    foreach ($conn->query($query) as $row) {
         $count = $row["COUNT(*)"];
     }
     return $count;
 }
-
-?>

@@ -10,9 +10,13 @@
 </head>
 
 <body>
-<?php
-include_once('../view/Sign-in.php');
-?>
+    Coucou
+    <?php
+        include_once("../models/bd.php");
+        $conn = getLinkToDb();
+        $request= getDatasLike($conn,"products", ["id", "5"]);
+        echo $request["name"];
+    ?>
 </body>
 
 </html>

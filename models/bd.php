@@ -46,11 +46,11 @@ function getLinkToDb()
  *   @return $Resultat de la requête de type interne à mysqli
  *
  */
-function getDatasLike($conn, $table,  ...$VALUES)
+function getDatasLike($table,  ...$VALUES)
 {
     try {
         $query = "SELECT * FROM " . $table . constructConditionsFilter(...$VALUES);
-        $result = $conn->query($query);
+        $result = $GLOBALS['conn']->query($query);
         $res  = $result->fetchAll();
         return $res;
     } catch (PDOException $e) {
@@ -66,7 +66,7 @@ function getDatasLike($conn, $table,  ...$VALUES)
  *   @param $table : Table voulant être atteinte
  *   @param ...$VALUES : Tableau de dimensions n*2 des champs de la donnée
  */
-function addData($conn, $table,  ...$VALUES)
+function addData($table,  ...$VALUES)
 {
     $query = "INSERT INTO " . $table . " ";
     $args = "(";
@@ -91,7 +91,7 @@ function addData($conn, $table,  ...$VALUES)
 
     $query .= $args . " VALUES " . $vals;
 
-    return $conn->query($query);
+    return $GLOBALS['conn']->query($query);
 }
 
 /**
@@ -100,7 +100,7 @@ function addData($conn, $table,  ...$VALUES)
  * @param $table : Table voulant être atteinte
  * @param ...$VALUES : Tableau de dimensions n*2 des champs de la donnée
  */
-function deleteDatas($conn, $table,  ...$VALUES)
+function deleteDatas($table,  ...$VALUES)
 {
     $query = "DELETE FROM " . $table . " ";
     $flipflop = false;
@@ -116,7 +116,7 @@ function deleteDatas($conn, $table,  ...$VALUES)
         $query .= " " . $arg . " LIKE '" . $value . "' ";
     }
 
-    return $conn->query($query);
+    return $GLOBALS['conn']->query($query);
 }
 
 /**
@@ -125,7 +125,7 @@ function deleteDatas($conn, $table,  ...$VALUES)
  * @param $table : Table voulant être atteinte
  * @param ...$VALUES : Tableau de dimensions n*3 des champs de la donnée [nomChamp, oldValue, newVal]
  */
-function updateDatas($conn, $table,  ...$VALUES)
+function updateDatas($table,  ...$VALUES)
 {
     $query = "UPDATE " . $table . " ";
     $condition = " WHERE ";
@@ -154,7 +154,7 @@ function updateDatas($conn, $table,  ...$VALUES)
     $query .= $condition;
 
     echo $query;
-    return $conn->query($query);
+    return $GLOBALS['conn']->query($query);
 }
 
 /**
@@ -163,9 +163,9 @@ function updateDatas($conn, $table,  ...$VALUES)
  * @param $table : Table voulant être atteinte
  * @param ...$VALUES : Tableau de dimensions n*1 des champs de la donnée
  */
-function dumpAllEntries($conn, $table, ...$Column)
+function dumpAllEntries($table, ...$Column)
 {
-    $res = getDatasLike($conn, $table);
+    $res = getDatasLike($table);
     $buff = getNextRowFrom($res);
     $nbRow = 0;
     while ($buff != END) {
@@ -187,14 +187,14 @@ function dumpAllEntries($conn, $table, ...$Column)
  * @param $id : Id à vérifer
  */
 
-function isIdIn($conn, $table, $Column, $id, ...$VALUES)
+function isIdIn($table, $Column, $id, ...$VALUES)
 {
-    $buff = getNextRowFrom(getDatasLike($conn, $table, [$Column, $id], ...$VALUES));
+    $buff = getNextRowFrom(getDatasLike($table, [$Column, $id], ...$VALUES));
     if (empty($buff[$Column])) return false;
     else return true;
 }
 
-function countRowIn($conn, $table, ...$VALUES)
+function countRowIn($table, ...$VALUES)
 {
     $query = "SELECT COUNT(*) FROM " . $table . " ";
 
@@ -202,8 +202,11 @@ function countRowIn($conn, $table, ...$VALUES)
 
     $count = 0;
 
-    foreach ($conn->query($query) as $row) {
+    foreach ($GLOBALS['conn']->query($query) as $row) {
         $count = $row["COUNT(*)"];
     }
     return $count;
 }
+
+$GLOBALS['conn'] = getLinkToDb();
+?>

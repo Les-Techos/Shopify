@@ -13,8 +13,9 @@
     Coucou
     <?php
         include_once("../models/Customer.php");
-        $c = new Customer(1);
-        print_r(get_object_vars($c));
+        $c = new Customer(2);
+        print_r(get_object_vars($c->datas));
+        $c->set_data();
     ?>
 </body>
 

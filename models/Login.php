@@ -1,7 +1,7 @@
 <?php
     include_once('Customer.php');
 
-    class Login extends DB_data{
+    class Login extends DB_Object{
         public $username = '';
         public $password = '';
 

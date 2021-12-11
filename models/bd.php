@@ -46,13 +46,14 @@ function getLinkToDb()
  *   @return $Resultat de la requête de type interne à mysqli
  *
  */
-function getDatasLike($table,  ...$VALUES)
+function getDatasLike($table, &$res,  ...$VALUES)
 {
     try {
         $query = "SELECT * FROM " . $table . constructConditionsFilter(...$VALUES);
         $result = $GLOBALS['conn']->query($query);
         $res  = $result->fetchAll();
-        return $res;
+        if($res == null) return false;
+        else return true;
     } catch (PDOException $e) {
         throw "Erreur !: " . $e->getMessage() . "<br/>";
         die();
@@ -165,7 +166,7 @@ function updateDatas($table,  ...$VALUES)
  */
 function dumpAllEntries($table, ...$Column)
 {
-    $res = getDatasLike($table);
+    getDatasLike($table, $res);
     $buff = getNextRowFrom($res);
     $nbRow = 0;
     while ($buff != END) {
@@ -189,7 +190,7 @@ function dumpAllEntries($table, ...$Column)
 
 function isIdIn($table, $Column, $id, ...$VALUES)
 {
-    $buff = getNextRowFrom(getDatasLike($table, [$Column, $id], ...$VALUES));
+    getDatasLike($table,$buff, [$Column, $id], ...$VALUES);
     if (empty($buff[$Column])) return false;
     else return true;
 }

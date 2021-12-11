@@ -1,8 +1,8 @@
 <?php
     include_once('bd.php');
-    include_once('DB_data.php');
+    include_once('DB_Object.php');
 
-    abstract class User extends DB_data{
+    abstract class User extends DB_Object{
         protected $logged = FALSE;
         protected $username = '';
         protected $password_hsh = '';

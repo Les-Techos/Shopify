@@ -12,11 +12,11 @@
 <body>
     Coucou
     <?php
-        include_once("../models/bd.php");
+        include_once("../controller/include_file.php");
         $conn = getLinkToDb();
         $request= getDatasLike($conn,"products", ["id", "5"]);
         
-        echo $request[0]['description'];
+        echo $request[0]['name'];
     ?>
 </body>
 

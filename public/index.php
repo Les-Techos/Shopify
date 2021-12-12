@@ -15,11 +15,12 @@
         include_once("../models/Customer.php");
         include_once("../models/Seller.php");
         $c = new Customer(2);
+        $c->datas->add1 = "Rue de la Joconde";
+        $c->set_data();
+
         $a = new Seller(1);
-        //$c->datas->add2 = "Montréal";
-        //$c->set_data();
-        print_r(strval($c));
-        print_r(strval($a));
+        $a->datas->username = "John";
+        $a->set_data();
     ?>
 </body>
 

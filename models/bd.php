@@ -3,11 +3,16 @@ define('END', "end"); // REtourner par une fonction lors d'un résultat alternat
 define('ALL', "%"); // WildCard retourne tout les résultat en ignorant le paramètre associé
 define('NO_CHANGE', "NO_CHANGE"); // Caractère de non défintion
 
+/**
+ * Build da conditionnal filter used in queries
+ *
+ * @param [type] ...$VALUES
+ * @return void
+ */
 function constructConditionsFilter(...$VALUES)
 {
     $condition = "";
     $flipflop = false;
-
 
     foreach ($VALUES as list($arg, $value)) {
 
@@ -21,6 +26,12 @@ function constructConditionsFilter(...$VALUES)
     return $condition;
 }
 
+/**
+ * Get the Columns name of $tableName
+ *
+ * @param [type] $tableName
+ * @return void
+ */
 function getColumnName($tableName){
     $query = 'SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = "' . $tableName .'"';
     $res = $GLOBALS['conn']->query($query);
@@ -163,28 +174,6 @@ function updateDatas($table,  ...$VALUES)
 
     echo $query;
     return $GLOBALS['conn']->query($query);
-}
-
-/**
- * @brief affiche toute une table (Debug)
- * @param $conn : Connexion à la DB
- * @param $table : Table voulant être atteinte
- * @param ...$VALUES : Tableau de dimensions n*1 des champs de la donnée
- */
-function dumpAllEntries($table, ...$Column)
-{
-    getDatasLike($table, $res);
-    $buff = getNextRowFrom($res);
-    $nbRow = 0;
-    while ($buff != END) {
-        echo $nbRow . " - ";
-        foreach ($Column as $col) {
-            echo $buff[$col] . " | ";
-        }
-        $nbRow++;
-        echo "<br>";
-        $buff = getNextRowFrom($res);
-    }
 }
 
 /**

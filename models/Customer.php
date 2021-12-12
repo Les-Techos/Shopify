@@ -3,7 +3,7 @@
 
     class Customer extends User{
         public function __construct($id_p){
-            parent::__construct($id_p,'customers', 'id');
+            parent::__construct($id_p,'customers');
         }
     }
 ?>

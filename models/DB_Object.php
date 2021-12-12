@@ -14,13 +14,21 @@ abstract class DB_Object
     $this->id = $id_p;
     $this->data_table = $data_table_p;
     $this->id_name = $id_name_p;
+
+    $attributes = getColumnName($this->data_table, 3);
+    $this->datas = (new class extends DB_datas{});
+    foreach($attributes as $name => $val){
+      $this->datas->{$val} = "";
+    }
+
+    $this->get_data();
   }
 
   public function set_data()
   {
     foreach(get_object_vars($this->datas) as $property => $val){
       $oldProperty = &$this->oldDatas->{$property};
-      $newProperty = $val;
+      $newProperty = &$val;
       if($newProperty != $oldProperty) updateDatas($this->data_table, [$this->id_name, $this->id, $this->id] ,[$property, $oldProperty, $newProperty]);
     }
   }
@@ -38,6 +46,15 @@ abstract class DB_Object
       }
     }
     $this->oldDatas = clone $this->datas;
+  }
+
+  public function __toString()
+  {
+    $res = "";
+
+    $res = print_r($this->datas, true);
+
+    return $res;
   }
 }
 

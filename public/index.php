@@ -13,9 +13,13 @@
     Coucou
     <?php
         include_once("../models/Customer.php");
+        include_once("../models/Seller.php");
         $c = new Customer(2);
-        print_r(get_object_vars($c->datas));
-        $c->set_data();
+        $a = new Seller(1);
+        //$c->datas->add2 = "Montréal";
+        //$c->set_data();
+        print_r(strval($c));
+        print_r(strval($a));
     ?>
 </body>
 

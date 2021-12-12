@@ -21,6 +21,13 @@ function constructConditionsFilter(...$VALUES)
     return $condition;
 }
 
+function getColumnName($tableName){
+    $query = 'SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = "' . $tableName .'"';
+    $res = $GLOBALS['conn']->query($query);
+    $res = $res->fetchAll(PDO::FETCH_COLUMN,3);
+    return $res;
+}
+
 /**
  * @brief Retourne un lien vers la DB
  * @return : Lien vers la base de données

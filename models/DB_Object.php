@@ -90,7 +90,7 @@ abstract class DB_Object
 
   public function metastasis(...$VALUES)
   {
-    $attributes = getColumnName($this::$data_table, 3); //Get the table columns name
+    $attributes = getColumnName($this::$data_table); //Get the table columns name
     $this->datas = new DB_datas; //Create a fresh new implementation of DB_data receiving the DB 
     foreach ($attributes as $name => $val) { //Insert each column as an attribute in datas
       $this->datas->{$val} = "";

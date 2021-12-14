@@ -27,7 +27,7 @@ abstract class DB_Object
     $this->id_name = $id_name_p;
 
     $attributes = getColumnName($this->data_table, 3); //Get the table columns name
-    $this->datas = new DB_datas; //Create a fresh new implementation of DB_data receiving the DB 
+    $this->datas = new DB_datas; //Create a fresh new implementation of DB_data receiving the DB
     foreach($attributes as $name => $val){ //Insert each column as an attribute in datas
       $this->datas->{$val} = "";
     }

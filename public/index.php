@@ -14,12 +14,24 @@
     <?php
         include_once("../models/Customer.php");
         include_once("../models/Seller.php");
+        include_once("../models/Order.php");
         $c = new Customer();
-        $c->id = 1; $c->get_data();
-        print(strval($c) . "<br>");
+        $c->id = 2; $c->get_data();
+       // print(strval($c) . "<br>");
 
         $a = new Seller(1);
-        print(strval($a) . "\n");
+        //print(strval($a) . "\n");
+
+        $o = new Order(63);
+        //print(strval($o) . "\n");
+
+        $res = array();
+        Order::get_data_array($res, "customer_id", "2");
+        foreach($res as $tuple){
+            print_r(strval($tuple));
+            print("<br><br><br><br><br>");
+        }
+        
     ?>
 </body>
 

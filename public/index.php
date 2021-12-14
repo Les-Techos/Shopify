@@ -14,13 +14,12 @@
     <?php
         include_once("../models/Customer.php");
         include_once("../models/Seller.php");
-        $c = new Customer(2);
-        $c->datas->add1 = "Rue de la Joconde";
-        $c->set_data();
+        $c = new Customer();
+        $c->id = 1; $c->get_data();
+        print(strval($c) . "<br>");
 
         $a = new Seller(1);
-        $a->datas->username = "John";
-        $a->set_data();
+        print(strval($a) . "\n");
     ?>
 </body>
 

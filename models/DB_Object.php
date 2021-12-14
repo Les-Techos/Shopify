@@ -20,20 +20,22 @@ abstract class DB_Object
    * @param string $data_table_p
    * @param string $id_name_p
    */
-  public function __construct(int $id_p, string $data_table_p, $id_name_p = 'id')
+  public function __construct(int $id_p = -1, string $data_table_p = "", $id_name_p = 'id')
   {
     $this->id = $id_p;
     $this->data_table = $data_table_p;
     $this->id_name = $id_name_p;
 
     $attributes = getColumnName($this->data_table, 3); //Get the table columns name
-    $this->datas = (new class extends DB_datas{}); //Create a fresh new implementation of DB_data receiving the DB 
+    $this->datas = new DB_datas; //Create a fresh new implementation of DB_data receiving the DB 
     foreach($attributes as $name => $val){ //Insert each column as an attribute in datas
       $this->datas->{$val} = "";
     }
 
-    $this->get_data(); //Once datas set up, retrieve DB's datas
+    if($id_p != -1)
+      $this->get_data(); //Once datas set up, retrieve DB's datas
   }
+  
 
   /**
    * Update the DB with the modifications made to datas attributes
@@ -69,6 +71,14 @@ abstract class DB_Object
     $this->oldDatas = clone $this->datas; //Keep a trace of the DB current state
   }
 
+  public function metastasis(...$VALUES){
+    $attributes = getColumnName($this->data_table, 3); //Get the table columns name
+    $this->datas = new DB_datas; //Create a fresh new implementation of DB_data receiving the DB 
+    foreach($attributes as $name => $val){ //Insert each column as an attribute in datas
+      $this->datas->{$val} = "";
+    }
+  }
+
     /**
      * To String
      *
@@ -86,6 +96,10 @@ abstract class DB_Object
  * @abstract
  * Design to receive the DB datas
  */
-abstract class DB_datas{
+class DB_datas{
 
+}
+
+class DB_linked_datas{
+  
 }

@@ -9,9 +9,11 @@ include_once('bd.php');
 abstract class DB_Object
 {
   public $id = '0'; // Id
-  public static $data_table = ' '; // Table name
+  //public static $data_table = ' '; // Table name
   public $id_name = 'id'; // Name of column "id"
   public DB_datas $datas, $oldDatas; // datas related to the Table (modified and last get from DB)
+  public DB_linked_datas_infos $linked_datas_info;
+  public DB_linked_datas $linked_datas;
 
   /**
    * Constructor
@@ -115,6 +117,10 @@ abstract class DB_Object
  * Design to receive the DB datas
  */
 class DB_datas
+{
+}
+
+class DB_linked_datas_infos
 {
 }
 

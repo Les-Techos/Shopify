@@ -12,8 +12,10 @@ abstract class DB_Object
   //public static $data_table = ' '; // Table name
   public $id_name = 'id'; // Name of column "id"
   public DB_datas $datas, $oldDatas; // datas related to the Table (modified and last get from DB)
-  public DB_linked_datas_infos $linked_datas_info;
   public DB_linked_datas $linked_datas;
+
+  public DB_linked_datas_infos $linked_datas_info;
+  public DB_linked_column_infos $linked_column_infos;
 
   /**
    * Constructor
@@ -90,13 +92,33 @@ abstract class DB_Object
     }
   }
 
-  public function metastasis(...$VALUES)
+  public function metastasis()
   {
-    $attributes = getColumnName($this::$data_table); //Get the table columns name
-    $this->datas = new DB_datas; //Create a fresh new implementation of DB_data receiving the DB 
-    foreach ($attributes as $name => $val) { //Insert each column as an attribute in datas
-      $this->datas->{$val} = "";
-    }
+    $reflector = new ReflectionClass($this->linked_datas_infos); //Get properties from linked datas
+        $this->linked_datas = (new class extends DB_linked_datas{}); //Create an instance of the future res attributes
+
+        foreach($reflector->getProperties() as $property) { //For each property of customer
+            $type = $property->getType()->getName(); //Get class name of da property
+            $attribut_name = $property->getName(); //Get the attribute name of $property
+            $refl = new ReflectionClass($type); //Create a reflection class associated to the property
+
+            //print("1 attribut de type : ($type) $attribut_name  <br>");
+
+            getDatasLike(($type)::$data_table, $buff, [$this->linked_column_infos->{$attribut_name}, $this->id]); //Get name of data_table ($type)::$data_table where "customer_id" = $c->id
+            
+            $nb_elem = count($buff); // Get the number of element from sql result
+            //print("Taille du tableau " . $nb_elem . "<br>");        
+            
+            $this->linked_datas->{$attribut_name} = array();
+
+            //print("Creation d'un tableau à la place de l'attribut <br> <br>");
+            foreach($buff as $tuple){
+                //print("Le tableau : "); print_r($tuple);
+                $o = $refl->newInstanceArgs([$tuple["id"]]);  //Create an instance of da property
+                //print("Nouvel élément de l'attribut : " . strval($o) . " <br> <br>");
+                $this->linked_datas->{$attribut_name}[] = $o;
+            }     
+        }
   }
 
   /**
@@ -121,6 +143,10 @@ class DB_datas
 }
 
 class DB_linked_datas_infos
+{
+}
+
+class DB_linked_column_infos
 {
 }
 

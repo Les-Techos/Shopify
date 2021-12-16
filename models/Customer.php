@@ -7,6 +7,7 @@
         public static $data_table = 'customers';
 
         public function __construct($id_p= -1){
+            parent::__construct($id_p);
             $this->linked_datas_infos = (new class extends DB_linked_datas_infos{
                 public Order $orders;
                 public Login $logins;
@@ -16,8 +17,7 @@
                 public $orders = "customer_id";
                 public $logins = "customer_id";
             });
-
-            parent::__construct($id_p);
+            $this->order_66();
         }
     }
 ?>

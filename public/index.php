@@ -14,17 +14,27 @@
         include_once("../models/Customer.php");
         include_once("../models/Seller.php");
         include_once("../models/Order.php");
+        include_once("../models/Login.php");
         $c = new Customer(2);
+        
 
         ///START METASTASIS
 
-        $c->metastasis();
-
         ///END METASTASIS
+        $b = Customer::get_new_fresh_obj();
+        print($b);
+        $b->datas->forname = "Jean-Mouloud";
+        $b->datas->registered = "1";
+        $l = Login::get_new_fresh_obj();
+        $l->datas->customer_id = $b->id;
+        $b->linked_datas->logins[0] = $l;
+        $b->set_data();
 
-        print_r($c->linked_datas->logins[0]->datas);
+        foreach($c->linked_datas->orders as $order){
+            //print(strval($order));
+        }
        
-
+        $c->set_data();
     ?>
 </body>
 

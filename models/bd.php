@@ -86,14 +86,14 @@ function getDatasLike($table, &$res,  ...$VALUES)
  *   @param $table : Table voulant être atteinte
  *   @param ...$VALUES : Tableau de dimensions n*2 des champs de la donnée
  */
-function addData($table,  ...$VALUES)
+function addData($table,  $VALUES)
 {
     $query = "INSERT INTO " . $table . " ";
     $args = "(";
     $vals = "(";
     $flipflop = false;
 
-    foreach ($VALUES as list($arg, $value)) {
+    foreach ($VALUES as [$arg, $value]) {
 
         if (!$flipflop) {
             $flipflop = true;
@@ -110,7 +110,7 @@ function addData($table,  ...$VALUES)
     $vals .= ")";
 
     $query .= $args . " VALUES " . $vals;
-
+    print($query);
     return $GLOBALS['conn']->query($query);
 }
 
@@ -204,6 +204,14 @@ function countRowIn($table, ...$VALUES)
         $count = $row["COUNT(*)"];
     }
     return $count;
+}
+
+function getMaxIdIn($table, $col_name){
+    $query = "SELECT MAX($col_name) FROM $table";
+    $res = $GLOBALS['conn']->query($query);
+    $res = $res->fetchAll();
+    $res = $res[0]["MAX($col_name)"];
+    return (int) $res;
 }
 
 $GLOBALS['conn'] = getLinkToDb();

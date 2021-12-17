@@ -9,7 +9,7 @@ include_once('bd.php');
 abstract class DB_Object
 {
   public $id = '0'; // Id
-  //public static $data_table = ' '; // Table name
+  public static $data_table = ' '; // Table name
   public static $id_name = 'id'; // Name of column "id"
   public $datas = null, $oldDatas = null; // datas related to the Table (modified and last get from DB)
   public $linked_datas = null;
@@ -52,27 +52,17 @@ abstract class DB_Object
         $newProperty = &$val;
         if ($newProperty != $oldProperty) updateDatas($this::$data_table, [static::$id_name, $this->id, $this->id], [$property, $oldProperty, $newProperty]); //In that case, we update the corresponding property in the DB.
       }
-      if ($this->linked_datas != null) {
-        foreach (get_object_vars($this->linked_datas) as $property => $val) { //For each attributes of datas, we verified if they are modified compare to the DB content
-          foreach ($this->linked_datas->{$property} as $key => $val) {
-            $val->set_data();
-          }
-        }
-      }
     } else { // Id it doesn't we have to create it
       $param_to_insert = array();
       foreach (get_object_vars($this->datas) as $property => $val) { //For each attributes of datas, we verified if they are modified compare to the DB content
         $param_to_insert[] = ["$property", "$val"];
       }
       addData(static::$data_table, $param_to_insert);
-
-      
-      if($this->linked_datas != null){
-        foreach (get_object_vars($this->linked_datas) as $property => $val) { //For each attributes of datas, we verified if they are modified compare to the DB content
-          foreach ($this->linked_datas->{$property} as $elem) {
-            print("On met à jour 1 élément");
-            $elem->set_data();
-          }
+    }
+    if ($this->linked_datas != null) { //Do the same for linked datas
+      foreach (get_object_vars($this->linked_datas) as $property => $val) { //For each attributes of datas, we verified if they are modified compare to the DB content and so modified them
+        foreach ($this->linked_datas->{$property} as $key => $val) {
+          $val->set_data();
         }
       }
     }
@@ -125,6 +115,18 @@ abstract class DB_Object
         $this->linked_datas->{$attribut_name}[] = $o;
       }
     }
+  }
+
+  public function apoptose()
+  {
+    if ($this->linked_datas != null) {
+      foreach (get_object_vars($this->linked_datas) as $property => $val) { //For each attributes of datas, we verified if they are modified compare to the DB content
+        foreach ($this->linked_datas->{$property} as $elem) {
+          $elem->apoptose();
+        }
+      }
+    }
+    deleteDatas(static::$data_table, [static::$id_name, $this->id]);
   }
 
   public static function get_data_array(&$OBJ_Array, $id_name, $id)

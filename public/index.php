@@ -15,11 +15,11 @@
         include_once("../models/Seller.php");
         include_once("../models/Order.php");
         include_once("../models/Login.php");
-        $b = new Customer(5);
-        $b->apoptose();
-        $b = null;
+        $b = new Customer(3);
+        //$b->apoptose();
+        //$b = null;
         
-        /*
+        
         $b = Customer::get_new_fresh_obj(); //Créer un tout nouveau objet avec un nouvel id
 
         $d = &$b->datas; //On se réfère à ses données dans la DB
@@ -35,8 +35,22 @@
         $d_l->username = "Ouèch trop bien";
 
         $b->linked_datas->logins[0] = $l; //On dit à l'utilisateur qu'il a un login
+        
+        $o = Order::get_new_fresh_obj();
+        $o_d = &$o->datas;
+        $o_d->customer_id = $b->id;
+        $o_d->registered = "1"; 
+        $o_d->delivery_add_id = "49";
+        $o_d->date = "2020-01-23";
+        $o_d->status = "10";
+        $o_d->total = "90";
+        $o_d->payment_type = "cheque";
+
+        $b->linked_datas->orders[0] = $o;
+        
+        
         $b->set_data(); // On sauvegarde les données
-        */
+        
 
         print($b);
 

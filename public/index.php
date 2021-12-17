@@ -15,24 +15,31 @@
         include_once("../models/Seller.php");
         include_once("../models/Order.php");
         include_once("../models/Login.php");
-        $c = new Customer(3);
-        $c->apoptose();
-
-        ///START METASTASIS
-
-        ///END METASTASIS
+        $b = new Customer(5);
+        $b->apoptose();
+        $b = null;
+        
         /*
-        $b = Customer::get_new_fresh_obj();
-        print($b);
-        $b->datas->forname = "Jean-Mouloud";
-        $b->datas->registered = "1";
-        $l = Login::get_new_fresh_obj();
-        $l->datas->customer_id = $b->id;
-        $b->linked_datas->logins[0] = $l;
-        */
-        //$b->set_data();
+        $b = Customer::get_new_fresh_obj(); //Créer un tout nouveau objet avec un nouvel id
 
-        //$b->apoptose();
+        $d = &$b->datas; //On se réfère à ses données dans la DB
+        $d->forname = "Jean-Mouloud";
+        $d->registered = "1";
+        $d->surname = "Hector";
+        $d->add1="Rue de la Pierre";
+        $d->phone ="0687180914";
+
+        $l = Login::get_new_fresh_obj(); //On crée un nouveau login
+        $d_l = &$l->datas; //" "
+        $d_l->customer_id = $b->id;
+        $d_l->username = "Ouèch trop bien";
+
+        $b->linked_datas->logins[0] = $l; //On dit à l'utilisateur qu'il a un login
+        $b->set_data(); // On sauvegarde les données
+        */
+
+        print($b);
+
     ?>
 </body>
 

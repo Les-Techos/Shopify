@@ -110,7 +110,7 @@ function addData($table,  $VALUES)
     $vals .= ")";
 
     $query .= $args . " VALUES " . $vals;
-    print($query);
+    //print($query);
     return $GLOBALS['conn']->query($query);
 }
 

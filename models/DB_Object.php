@@ -9,11 +9,13 @@ include_once('bd.php');
 abstract class DB_Object
 {
   public $id = '0'; // Id
+  
   public static $data_table = ' '; // Table name
   public static $id_name = 'id'; // Name of column "id"
+  
   public $datas = null, $oldDatas = null; // datas related to the Table (modified and last get from DB)
+  
   public $linked_datas = null;
-
   public $linked_datas_info = null;
   public $linked_column_infos = null;
 
@@ -29,7 +31,7 @@ abstract class DB_Object
     $this->id = $id_p;
 
     $attributes = getColumnName($this::$data_table, 3); //Get the table columns name
-    $this->datas = new DB_datas; //Create a fresh new implementation of DB_data receiving the DB
+    $this->datas = (new class extends DB_datas{}); //Create a fresh new implementation of DB_data receiving the DB
     foreach ($attributes as $name => $val) { //Insert each column as an attribute in datas
       $this->datas->{$val} = "";
     }
@@ -54,14 +56,15 @@ abstract class DB_Object
       }
     } else { // Id it doesn't we have to create it
       $param_to_insert = array();
-      foreach (get_object_vars($this->datas) as $property => $val) { //For each attributes of datas, we verified if they are modified compare to the DB content
+      foreach (get_object_vars($this->datas) as $property => $val) { //Build all query's settings
         $param_to_insert[] = ["$property", "$val"];
       }
-      addData(static::$data_table, $param_to_insert);
+      addData(static::$data_table, $param_to_insert); //Add imself's datas to DB
+      $this->oldDatas = clone $this->datas; //Keep a trace of the DB current state
     }
     if ($this->linked_datas != null) { //Do the same for linked datas
-      foreach (get_object_vars($this->linked_datas) as $property => $val) { //For each attributes of datas, we verified if they are modified compare to the DB content and so modified them
-        foreach ($this->linked_datas->{$property} as $key => $val) {
+      foreach (get_object_vars($this->linked_datas) as $property => $elem) { //We spread the behavior to linked datas
+        foreach ($elem as $key => $val) {
           $val->set_data();
         }
       }
@@ -75,7 +78,7 @@ abstract class DB_Object
    */
   public function get_data()
   {
-    if (getDatasLike($this::$data_table, $res, [static::$id_name, $this->id])) { // Get the tuple with the id of da instancied object and pursue if a result is returned
+    if (getDatasLike($this::$data_table, $res, [static::$id_name, $this->id])) { // Get the tuple with the id of da instantiated object and pursue if a result is returned
       $res = $res[0]; //Extract the first element (Only one element corresponds to the id above).
       foreach ($res as $key => $val) { //Set the attributes with corresponding DB datas
         if (property_exists($this->datas, $key)) { //Check if da property really exists
@@ -86,6 +89,12 @@ abstract class DB_Object
     $this->oldDatas = clone $this->datas; //Keep a trace of the DB current state
   }
 
+  /**
+   * Looks for linked datas in DB according to linked_datas_info and linked_column_info
+   * Put them in linked_datas with same name given in linked_datas_info/linked_column_info
+   *
+   * @return void
+   */
   public function order_66()
   {
     $reflector = new ReflectionClass($this->linked_datas_infos); //Get properties from linked datas
@@ -117,6 +126,11 @@ abstract class DB_Object
     }
   }
 
+  /**
+   * Destroy the object itself and its linked_datas in DB beginning by those lasts
+   *
+   * @return void
+   */
   public function apoptose()
   {
     if ($this->linked_datas != null) {
@@ -129,9 +143,17 @@ abstract class DB_Object
     deleteDatas(static::$data_table, [static::$id_name, $this->id]);
   }
 
+  /**
+   * Get all obj instantiated
+   *
+   * @param [type] $OBJ_Array
+   * @param [type] $id_name
+   * @param [type] $id
+   * @return void
+   */
   public static function get_data_array(&$OBJ_Array, $id_name, $id)
   {
-    if (getDatasLike(self::$data_table, $res, [$id_name, $id])) { // Get the tuple with the id of da instancied object and pursue if a result is returned
+    if (getDatasLike(self::$data_table, $res, [$id_name, $id])) { // Get the tuple with the id of da instantiated object and pursue if a result is returned
       $i = 0;
       foreach ($res as $tuple) {
         $OBJ_Array[] = new static();
@@ -163,8 +185,19 @@ abstract class DB_Object
    */
   public function __toString()
   {
-    $res = "";
-    $res = print_r($this->datas, true);
+    $res = get_class($this) . "<br>";
+    foreach (get_object_vars($this->datas) as $property => $elem) { //For each attributes of datas, we verified if they are modified compare to the DB content and so modified them
+        $res .= "[$property] : $elem <br>";
+    }
+    if ($this->linked_datas != null) { //Do the same for linked datas
+      foreach (get_object_vars($this->linked_datas) as $property => $elem) { //For each attributes of datas, we verified if they are modified compare to the DB content and so modified them
+        $res .= "<br>";
+        foreach ($elem as $key => $val) {
+          $res .= $val->__toString();
+        }
+      }
+    }
+    $res .= "<br>";
     return $res;
   }
 }
@@ -173,18 +206,18 @@ abstract class DB_Object
  * @abstract
  * Design to receive the DB datas
  */
-class DB_datas
+abstract class DB_datas
 {
 }
 
-class DB_linked_datas_infos
+abstract class DB_linked_datas_infos
 {
 }
 
-class DB_linked_column_infos
+abstract class DB_linked_column_infos
 {
 }
 
-class DB_linked_datas
+abstract class DB_linked_datas
 {
 }

@@ -3,11 +3,16 @@ define('END', "end"); // REtourner par une fonction lors d'un résultat alternat
 define('ALL', "%"); // WildCard retourne tout les résultat en ignorant le paramètre associé
 define('NO_CHANGE', "NO_CHANGE"); // Caractère de non défintion
 
+/**
+ * Build da conditionnal filter used in queries
+ *
+ * @param [type] ...$VALUES
+ * @return void
+ */
 function constructConditionsFilter(...$VALUES)
 {
     $condition = "";
     $flipflop = false;
-
 
     foreach ($VALUES as list($arg, $value)) {
 
@@ -19,6 +24,19 @@ function constructConditionsFilter(...$VALUES)
         $condition .= $arg . " LIKE '" . $value . "'";
     }
     return $condition;
+}
+
+/**
+ * Get the Columns name of $tableName
+ *
+ * @param [type] $tableName
+ * @return void
+ */
+function getColumnName($tableName){
+    $query = 'SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = "' . $tableName .'"';
+    $res = $GLOBALS['conn']->query($query);
+    $res = $res->fetchAll(PDO::FETCH_COLUMN,3);
+    return $res;
 }
 
 /**
@@ -46,13 +64,15 @@ function getLinkToDb()
  *   @return $Resultat de la requête de type interne à mysqli
  *
  */
-function getDatasLike($conn, $table,  ...$VALUES)
+function getDatasLike($table, &$res,  ...$VALUES)
 {
     try {
         $query = "SELECT * FROM " . $table . constructConditionsFilter(...$VALUES);
-        $result = $conn->query($query);
+        //print($query);
+        $result = $GLOBALS['conn']->query($query);
         $res  = $result->fetchAll();
-        return $res;
+        if($res == null) return false;
+        else return true;
     } catch (PDOException $e) {
         throw "Erreur !: " . $e->getMessage() . "<br/>";
         die();
@@ -66,14 +86,14 @@ function getDatasLike($conn, $table,  ...$VALUES)
  *   @param $table : Table voulant être atteinte
  *   @param ...$VALUES : Tableau de dimensions n*2 des champs de la donnée
  */
-function addData($conn, $table,  ...$VALUES)
+function addData($table,  $VALUES)
 {
     $query = "INSERT INTO " . $table . " ";
     $args = "(";
     $vals = "(";
     $flipflop = false;
 
-    foreach ($VALUES as list($arg, $value)) {
+    foreach ($VALUES as [$arg, $value]) {
 
         if (!$flipflop) {
             $flipflop = true;
@@ -90,8 +110,8 @@ function addData($conn, $table,  ...$VALUES)
     $vals .= ")";
 
     $query .= $args . " VALUES " . $vals;
-
-    return $conn->query($query);
+    //print($query);
+    return $GLOBALS['conn']->query($query);
 }
 
 /**
@@ -100,7 +120,7 @@ function addData($conn, $table,  ...$VALUES)
  * @param $table : Table voulant être atteinte
  * @param ...$VALUES : Tableau de dimensions n*2 des champs de la donnée
  */
-function deleteDatas($conn, $table,  ...$VALUES)
+function deleteDatas($table,  ...$VALUES)
 {
     $query = "DELETE FROM " . $table . " ";
     $flipflop = false;
@@ -116,7 +136,7 @@ function deleteDatas($conn, $table,  ...$VALUES)
         $query .= " " . $arg . " LIKE '" . $value . "' ";
     }
 
-    return $conn->query($query);
+    return $GLOBALS['conn']->query($query);
 }
 
 /**
@@ -125,7 +145,7 @@ function deleteDatas($conn, $table,  ...$VALUES)
  * @param $table : Table voulant être atteinte
  * @param ...$VALUES : Tableau de dimensions n*3 des champs de la donnée [nomChamp, oldValue, newVal]
  */
-function updateDatas($conn, $table,  ...$VALUES)
+function updateDatas($table,  ...$VALUES)
 {
     $query = "UPDATE " . $table . " ";
     $condition = " WHERE ";
@@ -154,29 +174,7 @@ function updateDatas($conn, $table,  ...$VALUES)
     $query .= $condition;
 
     echo $query;
-    return $conn->query($query);
-}
-
-/**
- * @brief affiche toute une table (Debug)
- * @param $conn : Connexion à la DB
- * @param $table : Table voulant être atteinte
- * @param ...$VALUES : Tableau de dimensions n*1 des champs de la donnée
- */
-function dumpAllEntries($conn, $table, ...$Column)
-{
-    $res = getDatasLike($conn, $table);
-    $buff = getNextRowFrom($res);
-    $nbRow = 0;
-    while ($buff != END) {
-        echo $nbRow . " - ";
-        foreach ($Column as $col) {
-            echo $buff[$col] . " | ";
-        }
-        $nbRow++;
-        echo "<br>";
-        $buff = getNextRowFrom($res);
-    }
+    return $GLOBALS['conn']->query($query);
 }
 
 /**
@@ -187,14 +185,14 @@ function dumpAllEntries($conn, $table, ...$Column)
  * @param $id : Id à vérifer
  */
 
-function isIdIn($conn, $table, $Column, $id, ...$VALUES)
+function isIdIn($table, $Column, $id, ...$VALUES)
 {
-    $buff = getNextRowFrom(getDatasLike($conn, $table, [$Column, $id], ...$VALUES));
+    getDatasLike($table,$buff, [$Column, $id], ...$VALUES);
     if (empty($buff[$Column])) return false;
     else return true;
 }
 
-function countRowIn($conn, $table, ...$VALUES)
+function countRowIn($table, ...$VALUES)
 {
     $query = "SELECT COUNT(*) FROM " . $table . " ";
 
@@ -202,8 +200,19 @@ function countRowIn($conn, $table, ...$VALUES)
 
     $count = 0;
 
-    foreach ($conn->query($query) as $row) {
+    foreach ($GLOBALS['conn']->query($query) as $row) {
         $count = $row["COUNT(*)"];
     }
     return $count;
 }
+
+function getMaxIdIn($table, $col_name){
+    $query = "SELECT MAX($col_name) FROM $table";
+    $res = $GLOBALS['conn']->query($query);
+    $res = $res->fetchAll();
+    $res = $res[0]["MAX($col_name)"];
+    return (int) $res;
+}
+
+$GLOBALS['conn'] = getLinkToDb();
+?>

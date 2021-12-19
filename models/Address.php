@@ -7,7 +7,7 @@
 
         public function __construct($id = -1){
             parent::__construct($id);
-            $this->linked_datas_info = (new class extends DB_linked_datas{
+            $this->linked_datas_infos = (new class extends DB_linked_datas_infos{
                 public Order $orders;
             });
             $this->linked_column_infos = (new class extends DB_linked_column_infos{

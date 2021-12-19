@@ -9,12 +9,12 @@
         public function __construct($id = -1){
             parent::__construct($id);
 
-            $this->linked_datas_info = (new class extends DB_linked_datas_infos{
+            $this->linked_datas_infos = (new class extends DB_linked_datas_infos{
                 public Order_item $orderitems;
                 public Review $reviews;
             });
 
-            $this->linked_column_info = (new class extends DB_linked_column_infos{
+            $this->linked_column_infos = (new class extends DB_linked_column_infos{
                 public $orderitems = "product_id";
                 public $reviews = "id_product";
             });

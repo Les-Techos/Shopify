@@ -21,7 +21,7 @@
     <div class="tab-content" id="pills-tabContent">
       <div class="tab-pane fade show active" id="pills-signin" role="tabpanel" aria-labelledby="pills-signin-tab">
         <div class="col-sm-12 border border-primary shadow rounded pt-2">
-          <div class="text-center"><img src="..\assets\image\theImperial.jpg" class="rounded-circle border p-1"></div>
+          <div class="text-center"><img src="..\assets\image\Web4ShopHeader.png" class="rounded-circle border p-1" style="width:50px; height:80px"></div>
           <form method="post" id="singninFrom">
             <div class="form-group">
               <label class="font-weight-bold">Email <span class="text-danger">*</span></label>

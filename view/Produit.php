@@ -1,7 +1,11 @@
 <div class="row">
-
-    <div class="panel panel-default">
-        <div class="panel-body">
+    <p style="text-align:center">
+        <strongbutton class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#Searchmenu" aria-expanded="false" aria-controls="collapseExample">
+            Filtres
+            </button>
+    </p>
+    <div class="collapse" id="Searchmenu">
+        <div class="card card-body">
             <form class="form-horizontal">
                 <div class="row row-cols-1 row-cols-md-3 row-cols-lg-5 ">
                     <div class="form-floating mb-3">
@@ -20,10 +24,13 @@
                         </div>
                     </div>
                     <div class="col-mb3">
+                        Prix maximum désiré:
                         <input id="rangeInput" type="range" class="form-range" min="0" max="50" oninput="amount.value=rangeInput.value" />
-                        <input id="amount" type="number" value="25" min="0" max="200" oninput="rangeInput.value=amount.value" disabled /> €
                     </div>
-                    <div class="col-mb3">
+                        <div class="col-sm1">
+                        <input id="amount" type="number" value="25" min="0" max="200" oninput="rangeInput.value=amount.value" disabled />€
+                    </div>
+                    <div class="col">
                         <button type="button" class="btn btn-outline-primary">Rechercher</button>
                     </div>
                 </div>
@@ -45,7 +52,8 @@
                 <p class="text-center">Petite description</p>
             </div>
             <div class="card-footer text-center">
-                <a href="#" class="btn btn-primary"> ACHETER!!!!</a>
+                <a href="#" class="btn btn-primary"> Achat direct</a>
+                <a href="#" class="btn btn-primary"> Ajouter au panier</a>
             </div>
         </div>
     </div>'; ?>

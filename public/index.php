@@ -17,7 +17,7 @@
     <div class="container-fluid">        
       <div class="row"> 
             <div class="span4">
-            <?php include_once("../view/Produit.php");?>
+            <?php include_once("../view/admin.php");?>
             </div> 
         </div>
     </div>

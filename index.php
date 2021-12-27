@@ -1,30 +1,29 @@
 <!Doctype HTML>
 <html>
-
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
     <title>Shop Rtf</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <link rel="stylesheet" href="..\public\style.css">
+    <link rel="stylesheet" href=".\assets\style.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </head>
 
 <body>
     <?php
-        include_once("../view/Header.php");
+        include_once("./view/Header.php");
         ?>
     <div class="container-fluid">        
       <div class="row"> 
             <div class="span4">
-            <?php include_once("../view/admin.php");?>
+            <?php include_once("./view/admin.php");?>
             </div> 
         </div>
     </div>
            
         </div>
         <?php
-        include_once("../view/Footer.php");
+        include_once("./view/Footer.php");
         /*
         include_once("../models/Customer.php");
         include_once("../models/Seller.php");

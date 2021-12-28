@@ -153,7 +153,7 @@ abstract class DB_Object
    */
   public static function get_data_array(&$OBJ_Array, $id_name, $id)
   {
-    if (getDatasLike(self::$data_table, $res, [$id_name, $id])) { // Get the tuple with the id of da instantiated object and pursue if a result is returned
+    if (getDatasLike(static::$data_table, $res, [$id_name, $id])) { // Get the tuple with the id of da instantiated object and pursue if a result is returned
       $i = 0;
       foreach ($res as $tuple) {
         $OBJ_Array[] = new static();

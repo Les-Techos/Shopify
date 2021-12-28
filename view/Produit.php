@@ -41,23 +41,7 @@
 
 <!-- Disposition pour le test des card surement un chaangement des card ultériurement si nécessaire-->
 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4">
-    <?php for ($i = 1; $i <= 15; $i++) { ?>
-        <?php echo '<div class="col mb-4">
-        <div class="card card border-primary mb-3">
-            <div class="card-header">
-                Nom du produit
-            </div>
-            <img src="..\assets\image\theCannelle.jpg">
-            <div class="card-body">
-                <p class="text-center">Petite description</p>
-            </div>
-            <div class="card-footer text-center">
-                <a href="#" class="btn btn-primary"> Achat direct</a>
-                <a href="#" class="btn btn-primary"> Ajouter au panier</a>
-            </div>
-        </div>
-    </div>'; ?>
-    <?php } ?>
+    <?= $controllerData ?>
 </div>
 <!-- faire le controlleur pour donner le nombre de page-->
 <div class="pagination justify-content-center">

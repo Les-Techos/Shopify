@@ -68,13 +68,12 @@ function getDatasLike($table, &$res,  ...$VALUES)
 {
     try {
         $query = "SELECT * FROM " . $table . constructConditionsFilter(...$VALUES);
-        //print($query);
         $result = $GLOBALS['conn']->query($query);
         $res  = $result->fetchAll();
         if($res == null) return false;
         else return true;
     } catch (PDOException $e) {
-        throw "Erreur !: " . $e->getMessage() . "<br/>";
+        throw new Exception("Erreur !: " . $e->getMessage() . "<br/>");
         die();
     }
     

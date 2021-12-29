@@ -1,8 +1,9 @@
-<?php
+<?php require_once "controller.php";
 
-class detailController{
+class detailController extends controller{
 
 
+    public function routerDefaultAction(){}
 }
 
 ?>

@@ -17,7 +17,7 @@
                             <label class="input-group-text" for="inputGroupSelect01">Type de produit</label>
                             <select class="form-select" name="inputGroupSelect01">
                                 <option selected value="all">Choisir...</option>
-                                <option value="boissons">Thé et Café</option>
+                                <option value="boissons">Boissons</option>
                                 <option value="biscuits">Biscuit</option>
                                 <option value="fruits secs">Fruit sec</option>
                             </select>

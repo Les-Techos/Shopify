@@ -5,7 +5,7 @@
 </div>
 <div class="container-fluid">
     <nav class="navbar navbar-expand-md navbar-light">
-        <a href="#" class="navbar-brand">
+        <a href="/" class="navbar-brand">
             <img src="..\assets\image\Web4ShopHeader.png" alt="logo" width="30" height="24">
             Web4SHOP</a>
         <button type="button" class="navbar-toggler" data-bs_toggle="collapse" data-bs-target="#toggleMobileMenu" aria-controls="toggleMobileMenu" aria-expanded="false" aria-label="Toggle navigation">
@@ -14,19 +14,14 @@
         <div class="navbar-collapse collapse" id="toggleMobileMenu">
             <ul class="navbar-nav">
                 <li>
-                    <button class="btn btn-primary" type="button">
-                        Prix
-                    </button>
-                </li>
-                <li>
-                    <button class="btn btn-primary" type="button">
+                    <a href="/" class="btn btn-primary">
                         Produit
-                    </button>
+                    </a>
                 </li>
                 <li>
-                    <button class="btn btn-primary" type="button">
+                    <a href="/?action=user" class="btn btn-primary">
                         Mon compte
-                    </button>
+                    </a>
                 </li>
                 <li>
                     <button class="btn btn-primary" type="button">

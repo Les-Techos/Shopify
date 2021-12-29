@@ -1,8 +1,8 @@
-<?php
+<?php require_once "controller.php";
 
-class signInController{
+class signInController extends controller{
 
-
+    public function routerDefaultAction(){}
 }
 
 ?>

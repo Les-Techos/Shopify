@@ -1,8 +1,8 @@
-<?php
+<?php require_once "controller.php";
 
-class userController{
+class userController extends controller{
 
-
+    public function routerDefaultAction(){}
 }
 
 ?>

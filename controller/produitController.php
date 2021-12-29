@@ -1,38 +1,22 @@
-<?php
+<?php 
 
+require_once "controller.php";
 require_once './models/Product.php';
+require_once './models/Category.php';
 
-class produitController
+class produitController extends Controller
 {
-
-    public $p;
-    public $controllerData;
-
     public function __construct()
     {
-        Product::get_data_array($this->p, "id", '%_');
+        Product::get_data_array($this->objDatabase, "id", '%_');
         $this->controllerData  = "";
     }
 
-    public function home()
+    public function routerDefaultAction()
     {
         if (!(isset($_POST['rangeInput']) && isset($_POST['inputGroupSelect01']))) {
-            foreach ($this->p as $aProduct) {
-                $this->controllerData  .= '<div class="col-md-12 col-lg-4">
-            <div class="card card border-primary mb-3">
-                <div class="card-header">' .
-                    $aProduct->datas->name
-                    . '</div>
-                <img src="..\assets\image\\' . $aProduct->datas->image . '">
-                <div class="card-body">
-                    <p class="text-center">' . $aProduct->datas->description . '</p>
-                </div>
-                <div class="card-footer text-center">
-                    <a href="#" class="btn btn-primary"> Achat direct</a>
-                    <a href="#" class="btn btn-primary"> Ajouter au panier</a>
-                </div>
-            </div>
-        </div>';
+            foreach ($this->objDatabase as $aProduct) {
+                $this->returnProductCard($aProduct);
             }
         } else {
             if (empty($_POST["floatingInput"])) {
@@ -40,27 +24,40 @@ class produitController
             } else {
                 $textToSearch = $_POST["floatingInput"];
             }
-            
-            foreach ($this->p as $aProduct) {
+            $catreceived =  filter_input(INPUT_POST, "inputGroupSelect01", FILTER_SANITIZE_STRING);
 
-                if ((strpos($aProduct->datas->description, $textToSearch) !== false) && ($aProduct->datas->price <= intval($_POST['rangeInput']))) {
-                    $this->controllerData  .= '<div class="col-md-12 col-lg-4">
+            foreach ($this->objDatabase as $aProduct) {
+
+                if ($catreceived == "all") {
+                    if ((strpos($aProduct->datas->description, $textToSearch) !== false) && ($aProduct->datas->price <= intval($_POST['rangeInput']))) {
+                        $this->returnProductCard($aProduct);
+                    }
+                } else {
+                    $catProduct = new Category($aProduct->datas->cat_id);
+
+                    if ((strpos($aProduct->datas->description, $textToSearch) !== false) && ($aProduct->datas->price <= intval($_POST['rangeInput'])) && ($catreceived == $catProduct->datas->name)) {
+                        $this->returnProductCard($aProduct);
+                    }
+                }
+            }
+        }
+        return $this->controllerData;
+    }
+
+    public function returnProductCard($aProduct){
+        $this->controllerData  .= '<div class="col-md-12 col-lg-4">
                             <div class="card card border-primary mb-3">
                                 <div class="card-header">' .
-                                        $aProduct->datas->name
-                                        . '</div>
+                            $aProduct->datas->name
+                            . '</div>
                                 <img src="..\assets\image\\' . $aProduct->datas->image . '">
                                 <div class="card-body">
                                     <p class="text-center">' . $aProduct->datas->description . '</p>
                                 </div>
                                 <div class="card-footer text-center">
-                                    <a href="#" class="btn btn-primary"> Achat direct</a>
-                                    <a href="#" class="btn btn-primary"> Ajouter au panier</a>
+                                    <a href="#" class="btn btn-primary"> Ajouter au panier : ' . $aProduct->datas->price . '€</a>
                                 </div>
                             </div>
                         </div>';
-                }
-            }
-        }
     }
 }

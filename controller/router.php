@@ -36,16 +36,15 @@ class router
             if (isset($_GET['action']) && !empty($_GET['action'])) {
                 $action = $_GET['action'];
                 if (file_exists($_SERVER['DOCUMENT_ROOT'] . "/view/" . $action . ".php")) {
-                    include($action . "Controller.php");
                     $contents = $action . ".php";
+                    $controllerData = $this->{$action.'Controller'}->routerDefaultAction();
                 } else {
                     throw new Exception("action invalide");
                 }
                 require_once("./view/template.php");
             } else {
                 $contents = "produit.php";
-                $this->produitController->home();
-                $controllerData = $this->produitController->controllerData;
+                $controllerData = $this->produitController->routerDefaultAction();
                 require_once("./view/template.php");
             }
         } catch (Exception $e) {

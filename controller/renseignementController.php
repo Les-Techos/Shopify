@@ -1,8 +1,8 @@
-<?php
+<?php require_once "controller.php";
 
-class renseignementController{
+class renseignementController extends controller{
 
-
+    public function routerDefaultAction(){}
 }
 
 ?>

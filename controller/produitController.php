@@ -14,6 +14,7 @@ class produitController extends Controller
 
     public function routerDefaultAction()
     {
+      
         if (!(isset($_POST['rangeInput']) && isset($_POST['inputGroupSelect01']))) {
             foreach ($this->objDatabase as $aProduct) {
                 $this->returnProductCard($aProduct);
@@ -45,7 +46,7 @@ class produitController extends Controller
     }
 
     public function returnProductCard($aProduct){
-        $this->controllerData  .= '<div class="col-md-12 col-lg-4">
+        $this->controllerData  .= '<div class="col-md-12 col-lg-4" id = "'.$aProduct->datas->id.'">
                             <div class="card card border-primary mb-3">
                                 <div class="card-header">' .
                             $aProduct->datas->name
@@ -55,7 +56,10 @@ class produitController extends Controller
                                     <p class="text-center">' . $aProduct->datas->description . '</p>
                                 </div>
                                 <div class="card-footer text-center">
-                                    <a href="#" class="btn btn-primary"> Ajouter au panier : ' . $aProduct->datas->price . '€</a>
+                                    <form action="#'.$aProduct->datas->id.'" method="post" class="form-example">
+                                        <input type="hidden" id ="idProduct" name="idProduct" value="'.$aProduct->datas->id.'"/>
+                                        <button type="submit" class="btn btn-primary"> Ajouter au panier : ' . $aProduct->datas->price . '€</button>
+                                    </form>
                                 </div>
                             </div>
                         </div>';

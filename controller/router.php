@@ -36,7 +36,7 @@ class router
             if (isset($_GET['action']) && !empty($_GET['action'])) {
                 $action = $_GET['action'];
                 if (file_exists($_SERVER['DOCUMENT_ROOT'] . "/view/" . $action . ".php")) {
-                    $contents = $action . ".php";
+                    $contents = $action.".php";
                     $controllerData = $this->{$action.'Controller'}->routerDefaultAction();
                 } else {
                     throw new Exception("action invalide");
@@ -50,5 +50,9 @@ class router
         } catch (Exception $e) {
             throw new Exception("Erreur !: " . $e->getMessage() . "<br/>");
         }
+    }
+
+    public function displayCart(){
+       return $this->panierController->routerDefaultAction();
     }
 }

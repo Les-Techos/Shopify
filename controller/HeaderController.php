@@ -27,10 +27,18 @@ class HeaderController extends controller{
                     </a>
                 </li>
                 <li>
-                    <a href="/?action=user" class="btn btn-primary">
-                        Déconnexion
+                    <form method="post" action="/?action=signIn">
+                        <input type="submit" name="deconnexion" value = "Déconnexion" class="btn btn-primary"/>
+                    </form>
+                </li>
+                ';
+                if($_SESSION['status']=="admin"){
+                $this->ConnectionButton .='<li>
+                    <a href="/?action=admin" class="btn btn-primary">
+                        Admin
                     </a>
                 </li>';
+            }
             }else{
                 $this->ConnectionButton ='<li>
                     <a href="/?action=signIn" class="btn btn-primary">
@@ -38,6 +46,8 @@ class HeaderController extends controller{
                     </a>
                 </li>';
             }
+            
+
     }
 
     public function displayCart()
@@ -51,5 +61,3 @@ class HeaderController extends controller{
         }
     }
 }
-
-?>

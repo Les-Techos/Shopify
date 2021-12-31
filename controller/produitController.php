@@ -58,7 +58,7 @@ class produitController extends Controller
                                 <div class="card-footer text-center">
                                     <form action="/?action=detail" method="post" class="form-example">
                                         <input type="hidden" id ="product_to_add" name="product_to_add" value="'.$aProduct->datas->id.'"/>
-                                        <button type="submit" class="btn btn-primary"> Ajouter au panier</button>
+                                        <button type="submit" class="btn btn-primary"> Voir les détails</button>
                                     </form>
                                 </div>
                             </div>

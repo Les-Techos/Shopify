@@ -172,7 +172,7 @@ function updateDatas($table,  ...$VALUES)
 
     $query .= $condition;
 
-    echo $query;
+    //echo $query;
     return $GLOBALS['conn']->query($query);
 }
 

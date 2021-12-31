@@ -1,39 +1,6 @@
 <!-- Footer -->
 <footer class="text-center text-lg-start bg-light text-muted">
-  <!-- Section: Social media -->
-  <section
-    class="d-flex justify-content-center justify-content-lg-between p-4 border-bottom"
-  >
-    <!-- Left -->
-    <div class="me-5 d-none d-lg-block">
-      <span>Rejoignez nos réseaux:</span>
-    </div>
-    <!-- Left -->
-
-    <!-- Right -->
-    <div>
-      <a href="" class="me-4 text-reset">
-        <i class="fab fa-facebook-f"></i>
-      </a>
-      <a href="" class="me-4 text-reset">
-        <i class="fab fa-twitter"></i>
-      </a>
-      <a href="" class="me-4 text-reset">
-        <i class="fab fa-google"></i>
-      </a>
-      <a href="" class="me-4 text-reset">
-        <i class="fab fa-instagram"></i>
-      </a>
-      <a href="" class="me-4 text-reset">
-        <i class="fab fa-linkedin"></i>
-      </a>
-      <a href="" class="me-4 text-reset">
-        <i class="fab fa-github"></i>
-      </a>
-    </div>
-    <!-- Right -->
-  </section>
-  <!-- Section: Social media -->
+  <br/>
 
   <!-- Section: Links  -->
   <section class="">
@@ -50,28 +17,7 @@
             Nous sommes un E-shop sur et en accord avec le modèle MVC
           </p>
         </div>
-        <!-- Grid column -->
 
-        <!-- Grid column -->
-        <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
-          <!-- Links -->
-          <h6 class="text-uppercase fw-bold mb-4">
-            Products
-          </h6>
-          <p>
-            <a href="#!" class="text-reset">Biscuits</a>
-          </p>
-          <p>
-            <a href="#!" class="text-reset">Thé</a>
-          </p>
-          <p>
-            <a href="#!" class="text-reset">Biscuits</a>
-          </p>
-          <p>
-            <a href="#!" class="text-reset">Thé</a>
-          </p>
-        </div>
-        <!-- Grid column -->
 
         <!-- Grid column -->
         <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
@@ -80,16 +26,10 @@
             liens utiles
           </h6>
           <p>
-            <a href="#!" class="text-reset">Produits</a>
+            <a href="/" class="text-reset">Produits</a>
           </p>
           <p>
-            <a href="#!" class="text-reset">Paramètres</a>
-          </p>
-          <p>
-            <a href="#!" class="text-reset">Commandes</a>
-          </p>
-          <p>
-            <a href="#!" class="text-reset">Aide</a>
+            <a href="/?action=panier" class="text-reset">Panier</a>
           </p>
         </div>
         <!-- Grid column -->

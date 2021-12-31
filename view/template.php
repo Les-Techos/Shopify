@@ -13,7 +13,7 @@
     <?php
     include_once("./view/Header.php");
     ?>
-    <div class="container-fluid">
+    <div class="container">
         <div class="row">
             <div class="span4">
                 <?php 

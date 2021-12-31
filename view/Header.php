@@ -18,16 +18,7 @@
                         Produit
                     </a>
                 </li>
-                <li>
-                    <a href="/?action=user" class="btn btn-primary">
-                        Mon compte
-                    </a>
-                </li>
-                <li>
-                    <button class="btn btn-primary" type="button">
-                        Demande
-                    </button>
-                </li>
+                <?= $ConnectionButton?>
                 <li>
 
                     <strongbutton class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#Panier" aria-expanded="false" aria-controls="collapseExample">
@@ -39,8 +30,9 @@
     <div class="containers">
         <div class="collapse" id="Panier">
             <ul class="list-group">
-                <?= $this->displayCart(); ?>
+                <?= $HeaderPanier; ?>
             </ul>
+            <!--<a href="/?action=panier" class="btn btn-success"> Vérifier mon panier</a>-->
         </div>
     </div>
 </div>

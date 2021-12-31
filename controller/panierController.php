@@ -7,7 +7,6 @@ class panierController extends controller
 
     public function __construct()
     {
-        Product::get_data_array($this->objDatabase, "id", '%_');
         $this->controllerData  = "";
     }
 
@@ -15,10 +14,22 @@ class panierController extends controller
     {
         if (!empty($_POST['changevalue'])) {
             $this->changevalue($_POST['idProduct'], $_POST['quantity']);
+        }elseif(!empty($_POST['delete'])){
+            
+            $this->changevalue($_POST['idProduct'], 0);
         }
         elseif (!empty($_POST['idProduct'])) {
-            $this->addToCart($_POST['idProduct']);
+            if(empty($_POST['quantity']))
+                $this->addToCart($_POST['idProduct']);
+            else
+                $this->addToCart($_POST['idProduct'], $_POST['quantity']);
         }
+       return $this->displayAllCart();
+       
+    }
+
+    public function displayAllCart(){
+        $this->controllerData  = "";
         if (empty($_SESSION['PANIER'])) {
             $this->controllerData = "<h2> Votre panier est tristement vide :( </h2>";
         } else {
@@ -34,14 +45,14 @@ class panierController extends controller
     {
         $this->controllerData .= '
         <li class="list-group-item" >
-        <input type="checkbox" value="" id="product A">
-           <form method="post" class="form-example" action="#begin">                
+           <form method="post" class="form-example">                
                 <img style="height:50px" src="..\assets\image\\' . $Product->datas->image . '">
                 ' . $Product->datas->name . '
                 <input type="number" name="quantity" style="min-width:25px; max-width:50px" min="0" value = "' . $quantity . '"/>
                 <input type="hidden" id ="idProduct" name="idProduct" value="' . $Product->datas->id . '"/>
-                <input type="submit" name="changevalue" class="btn btn-success" value="&#10004"/>
-                <input type="reset" class="btn btn-primary" value="&#8617">
+                <input type="submit" name="changevalue" class="btn btn-success check" value="&#10004"/>
+                <input type="reset" class="btn btn-primary" value="&#8617"/>
+                <input type="submit" name="delete" class="btn btn-danger" value="&#10060;"/>
             </form>
         </li>
         ';

@@ -56,9 +56,9 @@ class produitController extends Controller
                                     <p class="text-center">' . $aProduct->datas->description . '</p>
                                 </div>
                                 <div class="card-footer text-center">
-                                    <form action="#'.$aProduct->datas->id.'" method="post" class="form-example">
-                                        <input type="hidden" id ="idProduct" name="idProduct" value="'.$aProduct->datas->id.'"/>
-                                        <button type="submit" class="btn btn-primary"> Ajouter au panier : ' . $aProduct->datas->price . '€</button>
+                                    <form action="/?action=detail" method="post" class="form-example">
+                                        <input type="hidden" id ="product_to_add" name="product_to_add" value="'.$aProduct->datas->id.'"/>
+                                        <button type="submit" class="btn btn-primary"> Ajouter au panier</button>
                                     </form>
                                 </div>
                             </div>

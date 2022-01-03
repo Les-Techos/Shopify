@@ -102,14 +102,14 @@ function addData($table,  $VALUES)
         }
 
         $args .=  $arg;
-        $vals .= "'" . $value . "'";
+        $vals .=  $value ;
     }
 
     $args .= ")";
     $vals .= ")";
 
     $query .= $args . " VALUES " . $vals;
-    //print($query);
+    print($query);
     return $GLOBALS['conn']->query($query);
 }
 
@@ -160,7 +160,7 @@ function updateDatas($table,  ...$VALUES)
                 $query .= " SET ";
             } else $query .= ", ";
 
-            $query .= " $arg = '" . $newValue . "'";
+            $query .= " $arg = '" .  $newValue . "'";
         }
 
         if (!$flipflopAND) {
@@ -172,7 +172,7 @@ function updateDatas($table,  ...$VALUES)
 
     $query .= $condition;
 
-    //echo $query;
+    print $query;
     return $GLOBALS['conn']->query($query);
 }
 

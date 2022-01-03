@@ -39,6 +39,7 @@ class signInController extends controller
             } elseif (($users[0]->datas->username == $username) && ($password == $users[0]->datas->password)) {
                 $_SESSION["connection_id"] = $users[0]->datas->id;
                 $_SESSION["status"] = "user";
+                $_SESSION["justConnected"] = true;
                 header('Location: /');
                 exit();
             } else {
@@ -48,6 +49,7 @@ class signInController extends controller
             if (($admin[0]->datas->username == $username) && ($password == $admin[0]->datas->password)) {
                 $_SESSION["connection_id"] = $admin[0]->datas->id;
                 $_SESSION["status"] = "admin";
+                $_SESSION["justConnected"] = true;
                 header('Location: /');
                 exit();
             } else {
@@ -96,6 +98,7 @@ class signInController extends controller
 
             $_SESSION["connection_id"] = $l->datas->id;
             $_SESSION["status"] = "user";
+            $_SESSION["justConnected"] = true;
             header('Location: /');
             exit();
         }

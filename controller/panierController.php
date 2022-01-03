@@ -1,5 +1,6 @@
 <?php require_once "controller.php";
-require_once "./models/order.php";
+require_once "./models/Order.php";
+require_once "./models/Order_item.php";
 
 class panierController extends controller
 {
@@ -7,44 +8,55 @@ class panierController extends controller
 
     public function __construct()
     {
-        $this->controllerData  = "";
+        $this->controllerData["list"] = "";
+        $this->controllerData["Total"] = 0;
+        $this->controllerData["nbArticles"] = 0;
+        $this->controllerData["ValidateButton"] = "";
     }
 
     public function routerDefaultAction()
     {
         if (!empty($_POST['changevalue'])) {
             $this->changevalue($_POST['idProduct'], $_POST['quantity']);
-        }elseif(!empty($_POST['delete'])){
-            
+            $this->cloudSave();
+        } elseif (!empty($_POST['delete'])) {
+
             $this->changevalue($_POST['idProduct'], 0);
-        }
-        elseif (!empty($_POST['idProduct'])) {
-            if(empty($_POST['quantity']))
+            $this->cloudSave();
+        } elseif (!empty($_POST['idProduct'])) {
+            if (empty($_POST['quantity']))
                 $this->addToCart($_POST['idProduct']);
             else
                 $this->addToCart($_POST['idProduct'], $_POST['quantity']);
+
+            $this->cloudSave();
         }
-       return $this->displayAllCart();
-       
+
+        return $this->displayAllCart();
     }
 
-    public function displayAllCart(){
-        $this->controllerData  = "";
+    public function displayAllCart()
+    {
+        $this->getCartFromCloud();
+        $this->controllerData["list"] = "";
         if (empty($_SESSION['PANIER'])) {
-            $this->controllerData = "<h2> Votre panier est tristement vide :( </h2>";
+            $this->controllerData["list"] = "<h2> Votre panier est tristement vide :( </h2>";
         } else {
 
             foreach ($_SESSION['PANIER'] as $ProductData) {
                 $this->returnCards(new Product($ProductData["product_id"]), $ProductData["quantity"]);
             }
+            $this->controllerData["ValidateButton"] = '<a href="/?action=renseignement" class="btn btn-success" style="width:100%">Procéder au Paiement</a>';
         }
         return $this->controllerData;
     }
 
     public function returnCards($Product, $quantity)
     {
-        $this->controllerData .= '
+        $this->controllerData["list"] .= '
         <li class="list-group-item" >
+        <div class="row">
+            <div class=" float-left" style="width:90%">
            <form method="post" class="form-example">                
                 <img style="height:50px" src="..\assets\image\\' . $Product->datas->image . '">
                 ' . $Product->datas->name . '
@@ -53,9 +65,15 @@ class panierController extends controller
                 <input type="submit" name="changevalue" class="btn btn-success check" value="&#10004"/>
                 <input type="reset" class="btn btn-primary" value="&#8617"/>
                 <input type="submit" name="delete" class="btn btn-danger" value="&#10060;"/>
+                
             </form>
+            </div>
+            <div style="text-align:right; width:10%">' . $quantity * $Product->datas->price . ' €</div>
+            </div>           
         </li>
         ';
+        $this->controllerData["nbArticles"] += $quantity;
+        $this->controllerData["Total"] += $quantity * $Product->datas->price;
     }
 
     public function addToCart($Product, $quantity = 1)
@@ -90,11 +108,12 @@ class panierController extends controller
             $offset = 0;
             foreach ($_SESSION['PANIER'] as $Product) {
                 if ($Product['product_id'] == $product_id) {
-                    
+
                     if ($quantity >= $Product['quantity']) {
                         array_splice($_SESSION['PANIER'], $offset, 1);
-                    } else {echo($quantity."  ".$offset);
-                        $_SESSION['PANIER'][$offset]["quantity"] = $_SESSION['PANIER'][$offset]["quantity"]-$quantity;
+                    } else {
+                        echo ($quantity . "  " . $offset);
+                        $_SESSION['PANIER'][$offset]["quantity"] = $_SESSION['PANIER'][$offset]["quantity"] - $quantity;
                     }
                 }
                 $offset++;
@@ -114,6 +133,97 @@ class panierController extends controller
                         $this->removeFromCart($Product['product_id'], ($Product['quantity'] - $newQuantity));
                     }
                 }
+            }
+        }
+    }
+
+    public function selectOrder()
+    {
+        if (!empty($_SESSION["connection_id"]) && empty($_SESSION["OrderNumber"])) {
+            $arrayUnachievedOrders = [];
+            Order::get_data_array($arrayUnachievedOrders, "customer_id", $_SESSION["connection_id"]);
+            if (!empty($arrayUnachievedOrders))
+                $offset = 0;
+            foreach ($arrayUnachievedOrders as $Order) {
+                if ($Order->datas->status > 0) {
+                    unset($arrayUnachievedOrders[$offset]);
+                }
+                $offset++;
+            }
+            if (empty($arrayUnachievedOrders)) {
+                $this->objDatabase["order"] = Order::get_new_fresh_obj();
+                $offset = 0;
+                $this->objDatabase["order"]->datas->delivery_add_id = "NULL";
+                $this->objDatabase["order"]->datas->payment_type = "NULL";
+                $this->objDatabase["order"]->datas->date = "'" . date('Y-m-d', time()) . "'";
+                $this->objDatabase["order"]->datas->status = 0;
+                $this->objDatabase["order"]->datas->session = "'" . session_id() . "'";
+                $this->objDatabase["order"]->datas->total = "NULL";
+                $this->objDatabase["order"]->datas->customer_id = $_SESSION["connection_id"];
+                $this->objDatabase["order"]->datas->registered = 1;
+            } else {
+                foreach ($arrayUnachievedOrders as $ord) {
+                    $this->objDatabase["order"] = new Order($ord->id);
+                }
+            }
+        }
+    }
+
+    public function cleanDatabase()
+    {
+        $orderitems = [];
+        Order_item::get_data_array($orderitems, "order_id", $this->objDatabase["order"]->datas->id);
+        if (!empty($orderitems)) {
+            foreach ($orderitems as $order_item) {
+                $order_item->apoptose();
+            }
+        }
+    }
+
+    public function setCartInCloud()
+    {
+        $this->selectOrder();
+        $this->objDatabase["order"]->datas->status = 0;
+        $this->cleanDatabase();
+        $Cart_products = [];
+        $offset = 0;
+        var_dump($_SESSION['PANIER']);
+        foreach ($_SESSION['PANIER'] as $Product) {
+            array_push($Cart_products, Order_item::get_new_fresh_obj());
+            $Cart_products[$offset]->datas->order_id = $this->objDatabase["order"]->datas->id;
+            $Cart_products[$offset]->datas->product_id = $Product['product_id'];
+            $Cart_products[$offset]->datas->quantity = $Product['quantity'];
+            $Cart_products[$offset]->set_data();
+        }
+        //$this->objDatabase["order"]->linked_datas->orderitems=$Cart_products;
+        $this->objDatabase["order"]->datas->total = $this->controllerData["Total"];
+        $this->objDatabase["order"]->set_data();
+    }
+
+    public function cloudSave()
+    {
+        if (!empty($_SESSION["connection_id"]) && !empty($_SESSION['PANIER'])) {
+            $this->setCartInCloud();
+        }
+    }
+
+    public function getCartFromCloud()
+    {
+        if (!empty($_SESSION["connection_id"])) {
+            $this->selectOrder();
+            $orderitems = [];
+            Order_item::get_data_array($orderitems, "order_id", $this->objDatabase["order"]->datas->id);
+            if (!empty($orderitems)) {
+                if ($_SESSION["justConnected"])
+                    $_SESSION["justConnected"] = false;
+                else
+                    unset($_SESSION["PANIER"]);
+
+                foreach ($orderitems as $order_item) {
+                    $this->addToCart($order_item->datas->product_id, $order_item->datas->quantity);
+                }
+                if ($_SESSION["justConnected"])
+                    $this->cloudSave();
             }
         }
     }

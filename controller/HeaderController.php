@@ -53,9 +53,9 @@ class HeaderController extends controller{
     public function displayCart()
     {
         if (empty($this->action)) {
-            $this->HeaderPanier =  $this->panierController->routerDefaultAction().'<a href="/?action=panier" class="btn btn-success"> Voir mon panier</a>';
+            $this->HeaderPanier =  $this->panierController->routerDefaultAction()["list"].'<a href="/?action=panier" class="btn btn-success"> Voir mon panier</a>';
         } elseif ($this->action != 'panier') {
-            $this->HeaderPanier =  $this->panierController->routerDefaultAction().'<a href="/?action=panier" class="btn btn-success"> Voir mon panier</a>';
+            $this->HeaderPanier =  $this->panierController->routerDefaultAction()["list"].'<a href="/?action=panier" class="btn btn-success"> Voir mon panier</a>';
         } else {
             $this->HeaderPanier =  "";
         }

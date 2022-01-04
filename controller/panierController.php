@@ -188,7 +188,6 @@ class panierController extends controller
         $this->selectOrder();
         $this->objDatabase["order"]->datas->status = 0;
         $this->cleanDatabase();
-        var_dump($_SESSION['PANIER']);
         if (!empty($_SESSION['PANIER'])) {
             foreach ($_SESSION['PANIER'] as $Product) {
                 $Cart_products = Order_item::get_new_fresh_obj();

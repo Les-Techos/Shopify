@@ -14,7 +14,7 @@ class produitController extends Controller
 
     public function routerDefaultAction()
     {
-      
+        $this->throwAdmin();
         if (!(isset($_POST['rangeInput']) && isset($_POST['inputGroupSelect01']))) {
             foreach ($this->objDatabase as $aProduct) {
                 $this->returnProductCard($aProduct);

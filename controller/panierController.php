@@ -16,6 +16,7 @@ class panierController extends controller
 
     public function routerDefaultAction()
     {
+        $this->throwAdmin();
         if (!empty($_POST['changevalue'])) {
             $this->changevalue($_POST['idProduct'], $_POST['quantity']);
             $this->cloudSave();
@@ -119,6 +120,7 @@ class panierController extends controller
                 $offset++;
             }
         }
+        $this->setCartInCloud();
     }
 
     public function changeValue($product_id, $newQuantity)
@@ -139,16 +141,17 @@ class panierController extends controller
 
     public function selectOrder()
     {
-        if (!empty($_SESSION["connection_id"]) && empty($_SESSION["OrderNumber"])) {
+        if (!empty($_SESSION["connection_id"]) && empty($_SESSION["OrderNumber"]) && ($_SESSION["status"]=="user")) {
             $arrayUnachievedOrders = [];
             Order::get_data_array($arrayUnachievedOrders, "customer_id", $_SESSION["connection_id"]);
-            if (!empty($arrayUnachievedOrders))
+            if (!empty($arrayUnachievedOrders)) {
                 $offset = 0;
-            foreach ($arrayUnachievedOrders as $Order) {
-                if ($Order->datas->status > 0) {
-                    unset($arrayUnachievedOrders[$offset]);
+                foreach ($arrayUnachievedOrders as $Order) {
+                    if (($Order->datas->status > 0) || ($Order->datas->customer_id != $_SESSION["connection_id"]))  {
+                        unset($arrayUnachievedOrders[$offset]);
+                    }
+                    $offset++;
                 }
-                $offset++;
             }
             if (empty($arrayUnachievedOrders)) {
                 $this->objDatabase["order"] = Order::get_new_fresh_obj();
@@ -185,15 +188,15 @@ class panierController extends controller
         $this->selectOrder();
         $this->objDatabase["order"]->datas->status = 0;
         $this->cleanDatabase();
-        $Cart_products = [];
-        $offset = 0;
         var_dump($_SESSION['PANIER']);
-        foreach ($_SESSION['PANIER'] as $Product) {
-            array_push($Cart_products, Order_item::get_new_fresh_obj());
-            $Cart_products[$offset]->datas->order_id = $this->objDatabase["order"]->datas->id;
-            $Cart_products[$offset]->datas->product_id = $Product['product_id'];
-            $Cart_products[$offset]->datas->quantity = $Product['quantity'];
-            $Cart_products[$offset]->set_data();
+        if (!empty($_SESSION['PANIER'])) {
+            foreach ($_SESSION['PANIER'] as $Product) {
+                $Cart_products = Order_item::get_new_fresh_obj();
+                $Cart_products->datas->order_id = $this->objDatabase["order"]->datas->id;
+                $Cart_products->datas->product_id = $Product['product_id'];
+                $Cart_products->datas->quantity = $Product['quantity'];
+                $Cart_products->set_data();
+            }
         }
         //$this->objDatabase["order"]->linked_datas->orderitems=$Cart_products;
         $this->objDatabase["order"]->datas->total = $this->controllerData["Total"];
@@ -213,18 +216,16 @@ class panierController extends controller
             $this->selectOrder();
             $orderitems = [];
             Order_item::get_data_array($orderitems, "order_id", $this->objDatabase["order"]->datas->id);
+            if (!$_SESSION["justConnected"])
+                unset($_SESSION["PANIER"]);
             if (!empty($orderitems)) {
-                if ($_SESSION["justConnected"])
-                    $_SESSION["justConnected"] = false;
-                else
-                    unset($_SESSION["PANIER"]);
-
                 foreach ($orderitems as $order_item) {
                     $this->addToCart($order_item->datas->product_id, $order_item->datas->quantity);
                 }
-                if ($_SESSION["justConnected"])
-                    $this->cloudSave();
             }
+            if ($_SESSION["justConnected"])
+                $this->cloudSave();
+            $_SESSION["justConnected"] = false;
         }
     }
 }

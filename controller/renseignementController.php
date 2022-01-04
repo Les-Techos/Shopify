@@ -2,7 +2,9 @@
 
 class renseignementController extends controller{
 
-    public function routerDefaultAction(){}
+    public function routerDefaultAction(){
+        $this->throwAdmin();
+    }
 }
 
 ?>

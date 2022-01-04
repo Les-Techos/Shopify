@@ -1,8 +1,9 @@
 <?php require_once "controller.php";
 
-class HeaderController extends controller{
+class HeaderController extends controller
+{
     public $ConnectionButton = "";
-    public $HeaderPanier="";
+    public $HeaderPanier = "";
     public $action;
     public $panierController;
 
@@ -13,15 +14,16 @@ class HeaderController extends controller{
     }
 
     public function routerDefaultAction()
-    {    
+    {
         $this->displayConnectionBtn();
         $this->displayCart();
     }
 
 
-    public function displayConnectionBtn(){
-        if(!empty($_SESSION["connection_id"])){
-            $this->ConnectionButton ='<li>
+    public function displayConnectionBtn()
+    {
+        if (!empty($_SESSION["connection_id"])) {
+            $this->ConnectionButton = '<li>
                     <a href="/?action=user" class="btn btn-primary">
                         Mon compte
                     </a>
@@ -32,32 +34,35 @@ class HeaderController extends controller{
                     </form>
                 </li>
                 ';
-                if($_SESSION['status']=="admin"){
-                $this->ConnectionButton .='<li>
+            if ($_SESSION['status'] == "admin") {
+                $this->ConnectionButton .= '<li>
                     <a href="/?action=admin" class="btn btn-primary">
                         Admin
                     </a>
                 </li>';
             }
-            }else{
-                $this->ConnectionButton ='<li>
+        } else {
+            $this->ConnectionButton = '<li>
                     <a href="/?action=signIn" class="btn btn-primary">
                         Se connecter
                     </a>
                 </li>';
-            }
-            
-
+        }
     }
 
     public function displayCart()
     {
-        if (empty($this->action)) {
-            $this->HeaderPanier =  $this->panierController->routerDefaultAction()["list"].'<a href="/?action=panier" class="btn btn-success"> Voir mon panier</a>';
-        } elseif ($this->action != 'panier') {
-            $this->HeaderPanier =  $this->panierController->routerDefaultAction()["list"].'<a href="/?action=panier" class="btn btn-success"> Voir mon panier</a>';
-        } else {
-            $this->HeaderPanier =  "";
+        if (empty($_SESSION["status"]) || ("admin" != $_SESSION["status"])) {
+            if (empty($this->action)) {
+                $this->HeaderPanier =  $this->panierController->routerDefaultAction()["list"] . '<a href="/?action=panier" class="btn btn-success"> Voir mon panier</a>';
+            } elseif ($this->action != 'panier') {
+                $this->HeaderPanier =  $this->panierController->routerDefaultAction()["list"] . '<a href="/?action=panier" class="btn btn-success"> Voir mon panier</a>';
+            } else {
+                $this->HeaderPanier =  "";
+            }
+        }else{
+            $this->HeaderPanier ="Vous êtes administrateur, vous n'avez pas accès aux commandes";
+
         }
     }
 }

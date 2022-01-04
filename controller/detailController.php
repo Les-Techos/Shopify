@@ -9,6 +9,7 @@ class detailController extends controller{
 
 
     public function routerDefaultAction(){
+        $this->throwAdmin();
         if (!empty($_POST['product_to_add'])) {
             $this->returnCards($_POST['product_to_add']);
             return($this->controllerData);

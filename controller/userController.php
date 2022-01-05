@@ -16,6 +16,7 @@ class userController extends controller
 
     public function routerDefaultAction()
     {
+        $this->throwAdmin();
         $user = new Customer($_SESSION["connection_id"]);
         $login = [];
         Login::get_data_array($login, "customer_id", $_SESSION["connection_id"]);
@@ -88,7 +89,10 @@ class userController extends controller
     {
         $username = $_POST["username"];
         $users = [];
+        $admins = [];
         Login::get_data_array($users, "username", $username);
+        Admin::get_data_array($admins, "username", $username);
+        
 
         $d = &$b->datas; //On se réfère à ses données dans la DB
         $d->forname = $_POST["prenom"];
@@ -105,11 +109,12 @@ class userController extends controller
         if (!empty($_POST["password"])) {
             if ($_POST["password"] != $_POST["cpassword"]) {
                 $this->controllerData["message"] = '<div class="alert alert-danger" role="alert"> Les mots de passe ne correspondent pas</div>';
-                $d_l->password = hash("sha1", $_POST["signuppassword"]);
+            }else{
+                $d_l->password = hash("sha1", $_POST["password"]);
             }
         }
         $b->linked_datas->logins[0] = $l; //On dit à l'utilisateur qu'il a un login
-        if (empty($users) || ($username == $l->datas->username)) {
+        if ((empty($users) && empty($admins)) || ($username == $l->datas->username)) {
             $d_l->username = $_POST["username"];
             $b->set_data();
         } else {

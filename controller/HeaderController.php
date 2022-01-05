@@ -23,11 +23,7 @@ class HeaderController extends controller
     public function displayConnectionBtn()
     {
         if (!empty($_SESSION["connection_id"])) {
-            $this->ConnectionButton = '<li>
-                    <a href="/?action=user" class="btn btn-primary">
-                        Mon compte
-                    </a>
-                </li>
+            $this->ConnectionButton = '
                 <li>
                     <form method="post" action="/?action=signIn">
                         <input type="submit" name="deconnexion" value = "Déconnexion" class="btn btn-primary"/>
@@ -40,6 +36,12 @@ class HeaderController extends controller
                         Admin
                     </a>
                 </li>';
+            } else {
+                '<li>
+                <a href="/?action=user" class="btn btn-primary">
+                    Mon compte
+                </a>
+            </li>';
             }
         } else {
             $this->ConnectionButton = '<li>
@@ -60,9 +62,8 @@ class HeaderController extends controller
             } else {
                 $this->HeaderPanier =  "";
             }
-        }else{
-            $this->HeaderPanier ="Vous êtes administrateur, vous n'avez pas accès aux commandes";
-
+        } else {
+            $this->HeaderPanier = "Vous êtes administrateur, vous n'avez pas accès aux commandes";
         }
     }
 }

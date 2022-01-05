@@ -35,7 +35,7 @@ class router
     {
         try {
             
-            if (isset($_GET['action']) && !empty($_GET['action'])) {
+            if (!empty($_GET['action'])) {
                 $action = $_GET['action'];
                 if (file_exists($_SERVER['DOCUMENT_ROOT'] . "/view/" . $action . ".php")) {
                     $contents = $action . ".php";

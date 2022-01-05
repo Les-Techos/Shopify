@@ -50,7 +50,7 @@ class signInController extends controller
                 $_SESSION["connection_id"] = $admin[0]->datas->id;
                 $_SESSION["status"] = "admin";
                 $_SESSION["justConnected"] = true;
-                header('Location: /');
+                header('Location: /?action=admin');
                 exit();
             } else {
                 $this->controllerData = '<div class="alert alert-danger" role="alert"> Identifiant ou mot de passe incorrect</div>';
@@ -69,8 +69,10 @@ class signInController extends controller
     {
         $username = $_POST["signupusername"];
         $users = [];
+        $admins = [];
         Login::get_data_array($users, "username", $username);
-        if (!empty($users)) {
+        Admin::get_data_array($admins, "username", $username);
+        if (!empty($users) || !empty($admins)) {
             $this->controllerData = '<div class="alert alert-danger" role="alert"> Identifiant ou mot de passe incorrect</div>';
         } elseif ($_POST["signuppassword"] != $_POST["signupcpassword"]) {
             $this->controllerData = '<div class="alert alert-danger" role="alert"> Les mots de passe ne correspondent pas</div>';

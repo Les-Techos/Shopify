@@ -19,12 +19,7 @@
                     </a>
                 </li>
                 <?= $ConnectionButton?>
-                <li>
-
-                    <strongbutton class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#Panier" aria-expanded="false" aria-controls="collapseExample">
-                        Panier
-                        </button>
-                </li>
+               
             </ul>
     </nav>
     <div class="containers">

@@ -36,7 +36,7 @@
             <div class="row g-3">
               <div class="col-sm-6">
                 <label for="firstName" class="form-label">Prénom</label>
-                <input type="text" class="form-control" id="firstName" placeholder="" value="" required>
+                <input type="text" class="form-control" id="firstName" placeholder="" value="<?=$controllerData["prenom"]?>" required>
                 <div class="invalid-feedback">
                   Un prénom valide est requis
                 </div>
@@ -44,7 +44,7 @@
 
               <div class="col-sm-6">
                 <label for="lastName" class="form-label">Nom de famille</label>
-                <input type="text" class="form-control" id="lastName" placeholder="" value="" required>
+                <input type="text" class="form-control" id="lastName" placeholder="" value="<?=$controllerData["nom"]?>" required>
                 <div class="invalid-feedback">
                   Un nom valide est requis
                 </div>
@@ -52,7 +52,7 @@
 
               <div class="col-12">
                 <label for="email" class="form-label">Email <span class="text-muted">(Optional)</span></label>
-                <input type="email" class="form-control" id="email" placeholder="you@example.com">
+                <input type="email" class="form-control" id="email" placeholder="you@example.com" value="<?=$controllerData["mail"]?>">
                 <div class="invalid-feedback">
                   Entrez un email valide.
                 </div>
@@ -60,7 +60,7 @@
 
               <div class="col-12">
                 <label for="add1" class="form-label">Adresse</label>
-                <input type="text" class="form-control" id="address" placeholder="1234 Main St" required>
+                <input type="text" class="form-control" id="address" placeholder="1234 Main St" required value="<?=$controllerData["add1"]?>">
                 <div class="invalid-feedback">
                   Entrez une adresse d'expédition valide
                 </div>
@@ -68,12 +68,12 @@
 
               <div class="col-12">
                 <label for="add2" class="form-label">Complément d'adresse <span class="text-muted">(Optional)</span></label>
-                <input type="text" class="form-control" id="address2" placeholder="Etage, code immeuble...">
+                <input type="text" class="form-control" id="address2" placeholder="Etage, code immeuble..." value="<?=$controllerData["add2"]?>">
               </div>
 
               <div class="col-12">
                 <label for="add3" class="form-label">Ville</label>
-                <input type="text" class="form-control" id="address" placeholder="New York" required>
+                <input type="text" class="form-control" id="address" placeholder="New York" value="<?=$controllerData["add3"]?>" required>
                 <div class="invalid-feedback">
                   Entrez une ville valide
                 </div>
@@ -81,9 +81,9 @@
 
               <div class="col-md-3">
                 <label for="postalcode" class="form-label">Code Postal</label>
-                <input type="text" class="form-control" id="zip" placeholder="" required>
+                <input type="text" class="form-control" id="zip" placeholder="" value="<?=$controllerData["codepostal"]?>" required>
                 <div class="invalid-feedback">
-                  Zip code required.
+                  Entrez un code postal
                 </div>
               </div>
             </div>

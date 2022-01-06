@@ -16,6 +16,7 @@ class HeaderController extends controller
     public function routerDefaultAction()
     {
         $this->displayConnectionBtn();
+        $this->displayCartButton();
         $this->displayCart();
     }
 
@@ -37,7 +38,7 @@ class HeaderController extends controller
                     </a>
                 </li>';
             } else {
-                '<li>
+                $this->ConnectionButton .= '<li>
                 <a href="/?action=user" class="btn btn-primary">
                     Mon compte
                 </a>
@@ -52,12 +53,24 @@ class HeaderController extends controller
         }
     }
 
+    public function displayCartButton()
+    {
+
+        if ((empty($_SESSION["status"]) || ("admin" != $_SESSION["status"])) && (empty($this->action) || (($this->action != 'panier') && ($this->action != 'renseignement')))) {
+            $this->ConnectionButton .= '<li>
+                <strongbutton class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#Panier" aria-expanded="false" aria-controls="collapseExample">
+                    Panier
+                    </button>
+            </li>';
+        }
+    }
+
     public function displayCart()
     {
         if (empty($_SESSION["status"]) || ("admin" != $_SESSION["status"])) {
             if (empty($this->action)) {
                 $this->HeaderPanier =  $this->panierController->routerDefaultAction()["list"] . '<a href="/?action=panier" class="btn btn-success"> Voir mon panier</a>';
-            } elseif ($this->action != 'panier') {
+            } elseif (($this->action != 'panier') && ($this->action != 'renseignement')) {
                 $this->HeaderPanier =  $this->panierController->routerDefaultAction()["list"] . '<a href="/?action=panier" class="btn btn-success"> Voir mon panier</a>';
             } else {
                 $this->HeaderPanier =  "";

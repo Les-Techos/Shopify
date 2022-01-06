@@ -120,7 +120,7 @@ class panierController extends controller
                 $offset++;
             }
         }
-        $this->setCartInCloud();
+        $this->cloudSave();
     }
 
     public function changeValue($product_id, $newQuantity)

@@ -37,7 +37,7 @@ class HeaderController extends controller
                     </a>
                 </li>';
             } else {
-                '<li>
+                $this->ConnectionButton .= '<li>
                 <a href="/?action=user" class="btn btn-primary">
                     Mon compte
                 </a>

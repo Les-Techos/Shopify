@@ -113,7 +113,7 @@ abstract class DB_Object
       getDatasLike(($type)::$data_table, $buff, [$this->linked_column_infos->{$attribut_name}, $this->id]); //Get name of data_table ($type)::$data_table where "customer_id" = $c->id
 
       $nb_elem = count($buff); // Get the number of element from sql result
-      print("Taille du tableau " . $nb_elem . "<br>");        
+      //print("Taille du tableau " . $nb_elem . "<br>");        
 
       $this->linked_datas->{$attribut_name} = array();
 

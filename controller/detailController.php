@@ -23,12 +23,11 @@ class detailController extends controller
 
     public function returnCards($Product_id)
     {
-        print("Accès aux produits <br>");
         $Product = new Product($Product_id);
         $Product->order_66();
 
         $this->controllerData["reviews"] = "";
-        print($Product->__toString());
+        
         foreach($Product->linked_datas->reviews as $Review){
             
             $this->controllerData["reviews"] .= 

@@ -1,11 +1,4 @@
-<head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <style>
+<style>
         h5 {
   position: relative;
   animation-name: bouge;
@@ -22,11 +15,8 @@
   100% { color: #1a1a1a; left:100px; }
 }
     </style>
-</head>
-
-<body>
 <div class="container-fluid" style="text-align: center;">
-    <img src="assets\image\pngegg.png" style=" display: block; margin-left: auto; margin-right: auto; width: 50%;">
+    <img src="./assets/image/404.png" style=" display: block; margin-left: auto; margin-right: auto; width: 50%;">
     <h5> On cherche la panne pour vous fournir le meilleur service possible </h5>
 </div>
 <div class="row">
@@ -34,4 +24,3 @@
         <button type="button" class="btn btn-outline-info btn-lg">Retour page principale</button>
     </div>
 </div>
-</body>

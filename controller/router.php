@@ -8,6 +8,7 @@ require_once "renseignementController.php";
 require_once "signInController.php";
 require_once "userController.php";
 require_once "HeaderController.php";
+require_once "errorController.php";
 
 class router
 {
@@ -19,6 +20,7 @@ class router
     private $renseignementController;
     private $signInController;
     private $userController;
+    private $errorController;
 
     public function __construct()
     {
@@ -30,6 +32,7 @@ class router
         $this->signInController = new signInController();
         $this->userController = new userController();
         $this->HeaderController = new HeaderController($_GET['action'], $this->panierController);
+        $this->errorController = new errorController();
     }
     public function guideRequest()
     {
@@ -56,9 +59,25 @@ class router
             }
             
         } catch (Exception $e) {
-            throw new Exception("Erreur !: " . $e->getMessage() . "<br/>");
+            echo "<br/>". $this->MakePrettyException($e);
         }
     }
+
+    public function MakePrettyException(Exception $e) {
+        $trace = $e->getTrace();
+    
+        $result = 'Exception: "';
+        $result .= $e->getMessage();
+        $result .= '" @ ';
+        if($trace[0]['class'] != '') {
+          $result .= $trace[0]['class'];
+          $result .= '->';
+        }
+        $result .= $trace[0]['function'];
+        $result .= '();<br />';
+    
+        return $result;
+      }
 
     
 }

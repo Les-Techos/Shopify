@@ -155,7 +155,6 @@ class panierController extends controller
             }
             if (empty($arrayUnachievedOrders)) {
                 $this->objDatabase["order"] = Order::get_new_fresh_obj();
-                $offset = 0;
                 $this->objDatabase["order"]->datas->delivery_add_id = "NULL";
                 $this->objDatabase["order"]->datas->payment_type = "NULL";
                 $this->objDatabase["order"]->datas->date = "'" . date('Y-m-d', time()) . "'";
@@ -168,6 +167,8 @@ class panierController extends controller
                 foreach ($arrayUnachievedOrders as $ord) {
                     $this->objDatabase["order"] = new Order($ord->id);
                 }
+                $this->objDatabase["order"]->datas->delivery_add_id = "NULL";
+                $this->objDatabase["order"]->datas->payment_type = "NULL";
             }
         }
     }
@@ -188,6 +189,8 @@ class panierController extends controller
         $this->selectOrder();
         $this->objDatabase["order"]->datas->status = 0;
         $this->cleanDatabase();
+        $this->objDatabase["order"]->datas->total = $this->controllerData["Total"];
+        $this->objDatabase["order"]->set_data();
         if (!empty($_SESSION['PANIER'])) {
             foreach ($_SESSION['PANIER'] as $Product) {
                 $Cart_products = Order_item::get_new_fresh_obj();
@@ -197,9 +200,7 @@ class panierController extends controller
                 $Cart_products->set_data();
             }
         }
-        //$this->objDatabase["order"]->linked_datas->orderitems=$Cart_products;
-        $this->objDatabase["order"]->datas->total = $this->controllerData["Total"];
-        $this->objDatabase["order"]->set_data();
+        
     }
 
     public function cloudSave()

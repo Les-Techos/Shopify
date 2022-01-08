@@ -32,10 +32,11 @@ function constructConditionsFilter(...$VALUES)
  * @param [type] $tableName
  * @return void
  */
-function getColumnName($tableName){
-    $query = 'SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = "' . $tableName .'"';
+function getColumnName($tableName)
+{
+    $query = 'SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = "' . $tableName . '"';
     $res = $GLOBALS['conn']->query($query);
-    $res = $res->fetchAll(PDO::FETCH_COLUMN,3);
+    $res = $res->fetchAll(PDO::FETCH_COLUMN, 3);
     return $res;
 }
 
@@ -71,13 +72,12 @@ function getDatasLike($table, &$res,  ...$VALUES)
         print($query . "<br>");
         $result = $GLOBALS['conn']->query($query);
         $res  = $result->fetchAll();
-        if($res == null) return false;
+        if ($res == null) return false;
         else return true;
     } catch (PDOException $e) {
         throw new Exception("Erreur !: " . $e->getMessage() . "<br/>");
         die();
     }
-    
 }
 
 /**
@@ -103,14 +103,14 @@ function addData($table,  $VALUES)
         }
 
         $args .=  $arg;
-        $vals .=  $value ;
+        $vals .=  $value;
     }
 
     $args .= ")";
     $vals .= ")";
 
     $query .= $args . " VALUES " . $vals;
-    //print($query);
+    print($query . "<br/>");
     return $GLOBALS['conn']->query($query);
 }
 
@@ -161,19 +161,21 @@ function updateDatas($table,  ...$VALUES)
                 $query .= " SET ";
             } else $query .= ", ";
 
-            $query .= " $arg = '" .  $newValue . "'";
+            $query .= " $arg = " .  $newValue;
         }
 
         if (!$flipflopAND) {
             !$flipflopAND = true;
-        } else $condition .= " AND ";
+        } elseif ($oldValue != "NULL" && $oldValue != NULL && !empty($oldValue)) $condition .= " AND ";
 
-        $condition .= $arg . " LIKE '" . $oldValue . "'";
+        if ($oldValue != "NULL" && $oldValue != NULL && !empty($oldValue)) {
+            $condition .= $arg . " LIKE '" . $oldValue . "'";
+        }
     }
 
     $query .= $condition;
 
-    //print $query;
+    print($query . "<br/>");
     return $GLOBALS['conn']->query($query);
 }
 
@@ -187,7 +189,7 @@ function updateDatas($table,  ...$VALUES)
 
 function isIdIn($table, $Column, $id, ...$VALUES)
 {
-    getDatasLike($table,$buff, [$Column, $id], ...$VALUES);
+    getDatasLike($table, $buff, [$Column, $id], ...$VALUES);
     if (empty($buff[$Column])) return false;
     else return true;
 }
@@ -206,7 +208,8 @@ function countRowIn($table, ...$VALUES)
     return $count;
 }
 
-function getMaxIdIn($table, $col_name){
+function getMaxIdIn($table, $col_name)
+{
     $query = "SELECT MAX($col_name) FROM $table";
     $res = $GLOBALS['conn']->query($query);
     $res = $res->fetchAll();
@@ -215,4 +218,3 @@ function getMaxIdIn($table, $col_name){
 }
 
 $GLOBALS['conn'] = getLinkToDb();
-?>

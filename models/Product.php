@@ -8,7 +8,6 @@
 
         public function __construct($id = -1){
             parent::__construct($id);
-
             $this->linked_datas_infos = (new class extends DB_linked_datas_infos{
                 public Order_item $orderitems;
                 public Review $reviews;
@@ -18,5 +17,6 @@
                 public $orderitems = "product_id";
                 public $reviews = "id_product";
             });
+            
         }
     }

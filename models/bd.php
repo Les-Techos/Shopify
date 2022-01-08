@@ -68,6 +68,7 @@ function getDatasLike($table, &$res,  ...$VALUES)
 {
     try {
         $query = "SELECT * FROM " . $table . constructConditionsFilter(...$VALUES);
+        print($query . "<br>");
         $result = $GLOBALS['conn']->query($query);
         $res  = $result->fetchAll();
         if($res == null) return false;

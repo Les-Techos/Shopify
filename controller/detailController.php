@@ -23,7 +23,35 @@ class detailController extends controller
 
     public function returnCards($Product_id)
     {
+        print("Accès aux produits <br>");
         $Product = new Product($Product_id);
+        $Product->order_66();
+
+        $this->controllerData["reviews"] = "";
+        print($Product->__toString());
+        foreach($Product->linked_datas->reviews as $Review){
+            
+            $this->controllerData["reviews"] .= 
+            
+            '<div class="card mb-3" style="max-width: 480px;">
+                        <div class="row g-0">
+                            <div class="col-md-4">
+                                <img src="assets/image/' . $Review->datas->photo_user .'" class="img-fluid rounded-start" alt="...">
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <h5 class="card-title">' . $Review->datas->name_user . '</h5>
+                                    <p class="card-text">'.
+                                    $Review->datas->description
+                                    . '</p>
+                                    
+                                    <p class="card-text"><small class="text-muted">Last updated 3 mins ago texte grise  la</small></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>';
+            }
+
         $this->controllerData["detailProduit"] .= '
         <div class="col-sm">
             <img src="../assets\image\\' . $Product->datas->image . '" style="max-width:100%;">
@@ -48,3 +76,4 @@ class detailController extends controller
        ';
     }
 }
+?>

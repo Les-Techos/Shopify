@@ -30,7 +30,7 @@ abstract class DB_Object
   {
     $this->id = $id_p;
 
-    $attributes = getColumnName($this::$data_table, 3); //Get the table columns name
+    $attributes = getColumnName($this::$data_table); //Get the table columns name
     $this->datas = (new class extends DB_datas{}); //Create a fresh new implementation of DB_data receiving the DB
     foreach ($attributes as $name => $val) { //Insert each column as an attribute in datas
       $this->datas->{$val} = "";
@@ -97,6 +97,7 @@ abstract class DB_Object
    */
   public function order_66()
   {
+    //print("<br>");
     $reflector = new ReflectionClass($this->linked_datas_infos); //Get properties from linked datas
     $this->linked_datas = (new class extends DB_linked_datas
     {
@@ -112,14 +113,14 @@ abstract class DB_Object
       getDatasLike(($type)::$data_table, $buff, [$this->linked_column_infos->{$attribut_name}, $this->id]); //Get name of data_table ($type)::$data_table where "customer_id" = $c->id
 
       $nb_elem = count($buff); // Get the number of element from sql result
-      //print("Taille du tableau " . $nb_elem . "<br>");        
+      print("Taille du tableau " . $nb_elem . "<br>");        
 
       $this->linked_datas->{$attribut_name} = array();
 
       //print("Creation d'un tableau à la place de l'attribut <br> <br>");
       foreach ($buff as $tuple) {
         //print("Le tableau : "); print_r($tuple);
-        $o = $refl->newInstanceArgs([$tuple["id"]]);  //Create an instance of da property
+        $o = $refl->newInstanceArgs([$tuple[static::$id_name]]);  //Create an instance of da property
         //print("Nouvel élément de l'attribut : " . strval($o) . " <br> <br>");
         $this->linked_datas->{$attribut_name}[] = $o;
       }

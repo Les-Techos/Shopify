@@ -7,6 +7,7 @@
     <title>Shop Rtf</title>
     <link href="./bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href=".\assets\style.css">
+    <script type="text/javascript" src=".\assets\utils.js"></script>
 </head>
 
 <body>

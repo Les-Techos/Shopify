@@ -35,7 +35,7 @@
           <div class="row g-3">
             <div class="col-sm-6">
               <label for="firstName" class="form-label">Prénom</label>
-              <input type="text" class="form-control" id="firstName" placeholder="" name="prenom" value="<?= $controllerData["prenom"] ?>" required>
+              <input type="text" class="form-control" id="firstName" placeholder="" name="prenom" value="<?= $controllerData["prenom"] ?>" required onkeypress="return(testString(event));">
               <div class="invalid-feedback">
                 Un prénom valide est requis
               </div>
@@ -43,7 +43,7 @@
 
             <div class="col-sm-6">
               <label for="lastName" class="form-label">Nom de famille</label>
-              <input type="text" class="form-control" id="lastName" placeholder="" name="nom" value="<?= $controllerData["nom"] ?>" required>
+              <input type="text" class="form-control" id="lastName" placeholder="" name="nom" value="<?= $controllerData["nom"] ?>" required onkeypress="return(testString(event));">
               <div class="invalid-feedback">
                 Un nom valide est requis
               </div>
@@ -72,7 +72,7 @@
 
             <div class="col-12">
               <label for="add3" class="form-label">Ville</label>
-              <input type="text" class="form-control" id="address" placeholder="New York" name="add3" value="<?= $controllerData["add3"] ?>" required>
+              <input type="text" class="form-control" id="address" placeholder="New York" name="add3" value="<?= $controllerData["add3"] ?>" required onkeypress="return(testString(event));">
               <div class="invalid-feedback">
                 Entrez une ville valide
               </div>
@@ -80,7 +80,7 @@
 
             <div class="col-md-3">
               <label for="postalcode" class="form-label">Code Postal</label>
-              <input type="text" class="form-control" id="zip" placeholder="" name="codepostal" value="<?= $controllerData["codepostal"] ?>" required>
+              <input type="text" class="form-control" id="zip" placeholder="" name="codepostal" value="<?= $controllerData["codepostal"] ?>" required size="5" maxlength="5" onkeypress="return(testNumerique(event));">
               <div class="invalid-feedback">
                 Entrez un code postal
               </div>
@@ -88,7 +88,7 @@
 
             <div class="col-md-3">
               <label for="postalcode" class="form-label">Tel</label>
-              <input type="text" class="form-control" id="zip" placeholder="" name="tel" value="<?= $controllerData["tel"] ?>" required>
+              <input type="text" class="form-control" id="zip" placeholder="" name="tel" value="<?= $controllerData["tel"] ?>" required size="10" maxlength="10" onkeypress="return(testNumerique(event));">
               <div class="invalid-feedback">
                 Entrez le numéro de teléphone
               </div>
@@ -100,7 +100,7 @@
           <div class="row g-3">
             <div class="col-sm-6">
               <label for="firstName" class="form-label">Prénom</label>
-              <input type="text" class="form-control" id="firstName" placeholder="" name="prenomL" value="<?= $controllerData["prenomL"] ?>" required>
+              <input type="text" class="form-control" id="firstName" placeholder="" name="prenomL" value="<?= $controllerData["prenomL"] ?>" required onkeypress="return(testString(event));">
               <div class="invalid-feedback">
                 Un prénom valide est requis
               </div>
@@ -108,7 +108,7 @@
 
             <div class="col-sm-6">
               <label for="lastName" class="form-label">Nom de famille</label>
-              <input type="text" class="form-control" id="lastName" placeholder="" name="nomL" value="<?= $controllerData["nomL"] ?>" required>
+              <input type="text" class="form-control" id="lastName" placeholder="" name="nomL" value="<?= $controllerData["nomL"] ?>" required onkeypress="return(testString(event));">
               <div class="invalid-feedback">
                 Un nom valide est requis
               </div>
@@ -137,7 +137,7 @@
 
             <div class="col-12">
               <label for="add3" class="form-label">Ville</label>
-              <input type="text" class="form-control" id="address" placeholder="New York" name="add3L" value="<?= $controllerData["add3L"] ?>" required>
+              <input type="text" class="form-control" id="address" placeholder="New York" name="add3L" value="<?= $controllerData["add3L"] ?>" onkeypress="return(testString(event));">
               <div class="invalid-feedback">
                 Entrez une ville valide
               </div>
@@ -145,14 +145,14 @@
 
             <div class="col-md-3">
               <label for="postalcode" class="form-label">Code Postal</label>
-              <input type="text" class="form-control" id="zip" placeholder="" name="codepostalL" value="<?= $controllerData["codepostalL"] ?>" required>
+              <input type="text" class="form-control" id="zip" placeholder="" name="codepostalL" value="<?= $controllerData["codepostalL"] ?>" required size="5" maxlength="5" onkeypress="return(testNumerique(event));">
               <div class="invalid-feedback">
                 Entrez un code postal
               </div>
             </div>
             <div class="col-md-3">
               <label for="postalcode" class="form-label">Tel</label>
-              <input type="text" class="form-control" id="zip" placeholder="" name="telL" value="<?= $controllerData["telL"] ?>" required>
+              <input type="text" class="form-control" id="zip" placeholder="" name="telL" value="<?= $controllerData["telL"] ?>" required size="10" maxlength="10" onkeypress="return(testNumerique(event));">
               <div class="invalid-feedback">
                 Entrez le numéro de teléphone
               </div>

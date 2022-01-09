@@ -1,5 +1,6 @@
 <?php require_once "controller.php";
 require_once "./models/Address.php";
+require_once('./assets/fpdf/fpdf.php');
 
 class renseignementController extends controller
 {
@@ -33,8 +34,10 @@ class renseignementController extends controller
             $this->getCustomerInfo();
             $this->getCartInfos();
             if (!empty($_POST["pay"])) {
-                $this->selectOrder();
+                $this->selectOrder(); 
+                $this->generateBill();               
                 $this->setOrderInCloud();
+                
                 header('Location: /?action=fin');
                 exit();
             }
@@ -101,7 +104,6 @@ class renseignementController extends controller
                 foreach ($arrayUnachievedOrders as $ord) {
                     $this->objDatabase["order"] = new Order($ord->id);
                 }
-                
             }
         } elseif (empty($_SESSION["connection_id"]) && empty($_SESSION["OrderNumber"])) {
             $this->getNeworder();
@@ -147,34 +149,34 @@ class renseignementController extends controller
 
     public function setDeliveryAdd()
     {
-        $this->objDatabase["Add"]->datas->firstname = "'" .$_POST["prenomL"]. "'";
-        $this->objDatabase["Add"]->datas->lastname ="'" .$_POST["nomL"]. "'";
-        $this->objDatabase["Add"]->datas->add1 = "'" .$_POST["add1L"]. "'";
-        $this->objDatabase["Add"]->datas->add2 = "'" .$_POST["add2L"]. "'";
-        $this->objDatabase["Add"]->datas->city = "'" .$_POST["add3L"]. "'";
-        $this->objDatabase["Add"]->datas->postcode ="'" . $_POST["codepostalL"]. "'";
-        $this->objDatabase["Add"]->datas->phone = "'" .$_POST["telL"]. "'";
-        $this->objDatabase["Add"]->datas->email = "'" .$_POST["mailL"]. "'";
+        $this->objDatabase["Add"]->datas->firstname = "'" . $_POST["prenomL"] . "'";
+        $this->objDatabase["Add"]->datas->lastname = "'" . $_POST["nomL"] . "'";
+        $this->objDatabase["Add"]->datas->add1 = "'" . $_POST["add1L"] . "'";
+        $this->objDatabase["Add"]->datas->add2 = "'" . $_POST["add2L"] . "'";
+        $this->objDatabase["Add"]->datas->city = "'" . $_POST["add3L"] . "'";
+        $this->objDatabase["Add"]->datas->postcode = "'" . $_POST["codepostalL"] . "'";
+        $this->objDatabase["Add"]->datas->phone = "'" . $_POST["telL"] . "'";
+        $this->objDatabase["Add"]->datas->email = "'" . $_POST["mailL"] . "'";
         $this->objDatabase["Add"]->set_data();
     }
     public function setCustomer()
     {
-        $this->objDatabase["customer"]->datas->forname ="'" . $_POST["prenom"]. "'";
-        $this->objDatabase["customer"]->datas->surname ="'" . $_POST["nom"]. "'";
-        $this->objDatabase["customer"]->datas->add1 = "'" .$_POST["add1"]. "'";
-        $this->objDatabase["customer"]->datas->add2 = "'" .$_POST["add2"]. "'";
-        $this->objDatabase["customer"]->datas->add3 = "'" .$_POST["add3"]. "'";
-        $this->objDatabase["customer"]->datas->postcode ="'" . $_POST["codepostal"]. "'";
-        $this->objDatabase["customer"]->datas->phone ="'" . $_POST["tel"]. "'";
-        $this->objDatabase["customer"]->datas->email ="'" . $_POST["mail"]. "'";
-        $this->objDatabase["customer"]->datas->registered =1;
+        $this->objDatabase["customer"]->datas->forname = "'" . $_POST["prenom"] . "'";
+        $this->objDatabase["customer"]->datas->surname = "'" . $_POST["nom"] . "'";
+        $this->objDatabase["customer"]->datas->add1 = "'" . $_POST["add1"] . "'";
+        $this->objDatabase["customer"]->datas->add2 = "'" . $_POST["add2"] . "'";
+        $this->objDatabase["customer"]->datas->add3 = "'" . $_POST["add3"] . "'";
+        $this->objDatabase["customer"]->datas->postcode = "'" . $_POST["codepostal"] . "'";
+        $this->objDatabase["customer"]->datas->phone = "'" . $_POST["tel"] . "'";
+        $this->objDatabase["customer"]->datas->email = "'" . $_POST["mail"] . "'";
+        $this->objDatabase["customer"]->datas->registered = 1;
         $this->objDatabase["customer"]->set_data();
     }
 
     public function setOrder()
     {
         $this->objDatabase["order"]->datas->delivery_add_id = $this->objDatabase["Add"]->datas->id;
-        $this->objDatabase["order"]->datas->payment_type = "'" .$_POST["paymentMethod"]. "'";
+        $this->objDatabase["order"]->datas->payment_type = "'" . $_POST["paymentMethod"] . "'";
         $this->objDatabase["order"]->datas->date = "'" . date('Y-m-d', time()) . "'";
         if ($_POST["paymentMethod"] == "paypal") {
             $this->objDatabase["order"]->datas->status = 3;
@@ -217,16 +219,96 @@ class renseignementController extends controller
                 $Cart_products->set_data();
             }
         }
+        unset($_SESSION["PANIER"]);
     }
-
-    public function cloudSave()
+    
+    public function generateBill()
     {
-        if (!empty($_SESSION["connection_id"]) && !empty($_SESSION['PANIER'])) {
-            $this->setOrderInCloud();
+        $pdf = new FPDF('P', 'mm', 'A4');
+
+        $pdf->AddPage();
+
+        //set font to arial, bold, 14pt
+        $pdf->SetFont('Arial', 'B', 14);
+
+        //Cell(width , height , text , border , end line , [align] )
+
+        $pdf->Cell(94, 5, 'WEB4SHOP', 0, 0);
+        $pdf->Cell(94, 5, utf8_decode('Récapitulatif de commande'), 0, 1); //end of line
+
+        //set font to arial, regular, 12pt
+        $pdf->SetFont('Arial', '', 12);
+
+        $pdf->Cell(94, 5, '', 0, 0);
+        $pdf->Cell(94, 5, '', 0, 1); //end of line
+
+        $pdf->Cell(94, 5, '', 0, 0);
+        $pdf->Cell(47, 5, 'Date', 0, 0);
+        $pdf->Cell(47, 5, 'date', 0, 1); //end of line
+
+        $pdf->Cell(94, 5, '', 0, 0);
+        $pdf->Cell(47, 5, utf8_decode('Numéro de commande'), 0, 0);
+        $pdf->Cell(47, 5, 'invoiceID', 0, 1); //end of line
+
+        $pdf->Cell(94, 5, '', 0, 0);
+        $pdf->Cell(47, 5, utf8_decode("Numéro de client"), 0, 0);
+        $pdf->Cell(47, 5, 'clientID', 0, 1); //end of line
+
+        //make a dummy empty cell as a vertical spacer
+        $pdf->Cell(189, 10, '', 0, 1); //end of line
+
+        //billing address
+        $pdf->Cell(100, 5, 'Destinataire de la facture', 0, 1); //end of line
+
+        //add dummy cell at beginning of each line for indentation
+        $pdf->Cell(10, 5, '', 0, 0);
+        $pdf->Cell(90, 5, 'name', 0, 1);
+
+        $pdf->Cell(10, 5, '', 0, 0);
+        $pdf->Cell(90, 5, 'company', 0, 1);
+
+        $pdf->Cell(10, 5, '', 0, 0);
+        $pdf->Cell(90, 5, "adresse", 0, 1);
+
+        $pdf->Cell(10, 5, '', 0, 0);
+        $pdf->Cell(90, 5, "phone", 0, 1);
+
+        //make a dummy empty cell as a vertical spacer
+        $pdf->Cell(189, 10, '', 0, 1); //end of line
+
+        //invoice contents
+        $pdf->SetFont('Arial', 'B', 12);
+
+        $pdf->Cell(130, 5, 'Nom du Produit', 1, 0);
+        $pdf->Cell(25, 5, utf8_decode('Quantité'), 1, 0);
+        $pdf->Cell(34, 5, 'Prix', 1, 1); //end of line
+
+        $pdf->SetFont('Arial', '', 12);
+
+        //Numbers are right-aligned so we give 'R' after new line parameter
+        $amount = 0;
+        //display the items
+        foreach ($_SESSION["PANIER"] as $item) {
+            $pdf->Cell(130, 5, $item['product_id'], 1, 0);
+            //add thousand separator using number_format function
+            $pdf->Cell(25, 5, number_format($item['quantity']), 1, 0);
+            $pdf->Cell(34, 5, "montant", 1, 1, 'R'); //end of line
+            //accumulate tax and amount
+            //$amount += $item['amount'];
         }
+
+        //summary
+
+
+        $pdf->Cell(130, 5, '', 0, 0);
+        $pdf->Cell(25, 5, 'Total Due', 0, 0);
+        $pdf->Cell(4, 5, '€', 1, 0);
+        $pdf->Cell(30, 5, number_format($amount), 1, 1, 'R'); //end of line
+        $name = "./assets/bills/".session_id().".pdf";
+        $pdf->Output('F',  $name);
+
+
     }
 
-    public function generateBill(){
-
-    }
+    
 }

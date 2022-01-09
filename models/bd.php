@@ -67,9 +67,10 @@ function getLinkToDb()
  */
 function getDatasLike($table, &$res,  ...$VALUES)
 {
+    debug_print_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
     try {
         $query = "SELECT * FROM " . $table . constructConditionsFilter(...$VALUES);
-        //print($query . "<br>");
+        print($query . "<br>");
         $result = $GLOBALS['conn']->query($query);
         $res  = $result->fetchAll();
         if ($res == null) return false;
@@ -110,7 +111,7 @@ function addData($table,  $VALUES)
     $vals .= ")";
 
     $query .= $args . " VALUES " . $vals;
-    //print($query . "<br/>");
+    print($query . "<br/>");
     return $GLOBALS['conn']->query($query);
 }
 
@@ -175,7 +176,7 @@ function updateDatas($table,  ...$VALUES)
 
     $query .= $condition;
 
-    //print($query . "<br/>");
+    print($query . "<br/>");
     return $GLOBALS['conn']->query($query);
 }
 

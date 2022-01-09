@@ -21,7 +21,6 @@ class panierController extends controller
             $this->changevalue($_POST['idProduct'], $_POST['quantity']);
             $this->cloudSave();
         } elseif (!empty($_POST['delete'])) {
-
             $this->changevalue($_POST['idProduct'], 0);
             $this->cloudSave();
         } elseif (!empty($_POST['idProduct'])) {
@@ -113,7 +112,6 @@ class panierController extends controller
                     if ($quantity >= $Product['quantity']) {
                         array_splice($_SESSION['PANIER'], $offset, 1);
                     } else {
-                        echo ($quantity . "  " . $offset);
                         $_SESSION['PANIER'][$offset]["quantity"] = $_SESSION['PANIER'][$offset]["quantity"] - $quantity;
                     }
                 }
@@ -193,6 +191,7 @@ class panierController extends controller
         $this->objDatabase["order"]->set_data();
         if (!empty($_SESSION['PANIER'])) {
             foreach ($_SESSION['PANIER'] as $Product) {
+                
                 $Cart_products = Order_item::get_new_fresh_obj();
                 $Cart_products->datas->order_id = $this->objDatabase["order"]->datas->id;
                 $Cart_products->datas->product_id = $Product['product_id'];
@@ -205,7 +204,7 @@ class panierController extends controller
 
     public function cloudSave()
     {
-        if (!empty($_SESSION["connection_id"]) && !empty($_SESSION['PANIER'])) {
+        if (!empty($_SESSION["connection_id"])) {
             $this->setCartInCloud();
         }
     }

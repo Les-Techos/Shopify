@@ -1,6 +1,5 @@
 <?php require_once "controller.php";
 require_once "./models/Address.php";
-require_once "facture.php";
 
 class renseignementController extends controller
 {

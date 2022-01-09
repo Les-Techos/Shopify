@@ -9,6 +9,7 @@ require_once "signInController.php";
 require_once "userController.php";
 require_once "HeaderController.php";
 require_once "errorController.php";
+require_once "finController.php";
 
 class router
 {
@@ -33,6 +34,7 @@ class router
         $this->userController = new userController();
         $this->HeaderController = new HeaderController($_GET['action'], $this->panierController);
         $this->errorController = new errorController();
+        $this->finController = new finController();
     }
     public function guideRequest()
     {

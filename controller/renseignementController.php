@@ -1,5 +1,6 @@
 <?php require_once "controller.php";
 require_once "./models/Address.php";
+require_once "facture.php";
 
 class renseignementController extends controller
 {
@@ -35,7 +36,7 @@ class renseignementController extends controller
             if (!empty($_POST["pay"])) {
                 $this->selectOrder();
                 $this->setOrderInCloud();
-                header('Location: /');
+                header('Location: /?action=fin');
                 exit();
             }
 
@@ -224,5 +225,9 @@ class renseignementController extends controller
         if (!empty($_SESSION["connection_id"]) && !empty($_SESSION['PANIER'])) {
             $this->setOrderInCloud();
         }
+    }
+
+    public function generateBill(){
+
     }
 }

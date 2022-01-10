@@ -8,12 +8,13 @@ class produitController extends Controller
 {
     public function __construct()
     {
-        Product::get_data_array($this->objDatabase, "id", '%_');
+        
         $this->controllerData  = "";
     }
 
     public function routerDefaultAction()
     {
+        Product::get_data_array($this->objDatabase, "id", '%_');
         $this->throwAdmin();
         if (!(isset($_POST['rangeInput']) && isset($_POST['inputGroupSelect01']))) {
             foreach ($this->objDatabase as $aProduct) {

@@ -8,13 +8,14 @@ class adminController extends controller
 {
     public function __construct()
     {
-        Order::get_data_array($this->objDatabase, "id", '%_');
+        
         $this->controllerData["order"] = "";
         $this->controllerData["username"] ="";
     }
 
     public function routerDefaultAction()
-    {
+    {   
+        Order::get_data_array($this->objDatabase, "id", '%_');
         if ($_SESSION["status"] == "admin") {
             if (!empty($_POST["valideradmin"]))
                 $this->increaseState($_POST["idOrder"]);

@@ -7,8 +7,7 @@ class userController extends controller
 
     public function __construct()
     {
-        if (!empty($_SESSION["connection_id"]))
-            Order::get_data_array($this->objDatabase, "customer_id", $_SESSION["connection_id"]);
+
         $this->controllerData  = [];
         $this->controllerData["commandes"] = "";
         $this->controllerData["message"] = "";
@@ -16,6 +15,8 @@ class userController extends controller
 
     public function routerDefaultAction()
     {
+        if (!empty($_SESSION["connection_id"]))
+            Order::get_data_array($this->objDatabase, "customer_id", $_SESSION["connection_id"]);
         $this->throwAdmin();
         $user = new Customer($_SESSION["connection_id"]);
         $login = [];
@@ -92,7 +93,7 @@ class userController extends controller
         $admins = [];
         Login::get_data_array($users, "username", $username);
         Admin::get_data_array($admins, "username", $username);
-        
+
 
         $d = &$b->datas; //On se réfère à ses données dans la DB
         $d->forname = $_POST["prenom"];
@@ -109,7 +110,7 @@ class userController extends controller
         if (!empty($_POST["password"])) {
             if ($_POST["password"] != $_POST["cpassword"]) {
                 $this->controllerData["message"] = '<div class="alert alert-danger" role="alert"> Les mots de passe ne correspondent pas</div>';
-            }else{
+            } else {
                 $d_l->password = hash("sha1", $_POST["password"]);
             }
         }

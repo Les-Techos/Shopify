@@ -155,18 +155,8 @@ abstract class DB_Object
   public static function get_data_array(&$OBJ_Array, $id_name, $id)
   {
     if (getDatasLike(static::$data_table, $res, [$id_name, $id])) { // Get the tuple with the id of da instantiated object and pursue if a result is returned
-      $i = 0;
       foreach ($res as $tuple) {
-        $OBJ_Array[] = new static();
-        $curr_obj = &$OBJ_Array[$i];
-        foreach ($tuple as $key => $val) { //Set the attributes with corresponding DB datas
-          if (property_exists($curr_obj->datas, $key)) { //Check if da property really exists
-            $curr_obj->datas->{$key} = $val; //Set the value
-          }
-        }
-        $curr_obj->oldDatas = clone  $curr_obj->datas; //Keep a trace of the DB current state
-        $curr_obj->id = $curr_obj->datas->{"id"};
-        $i++;
+        $OBJ_Array[] = new static($tuple["id"]);
       }
     }
   }

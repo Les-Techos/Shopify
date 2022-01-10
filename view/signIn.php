@@ -29,11 +29,11 @@
         <form method="post" id="singnupFrom">
           <div class="form-group">
             <label class="font-weight-bold">Prénom <span class="text-danger">*</span></label>
-            <input type="text" name="signupforname" id="signupforname" class="form-control" placeholder="Prénom" required>
+            <input type="text" name="signupforname" id="signupforname" class="form-control" placeholder="Prénom" required onkeypress="return(testString(event));">
           </div>
           <div class="form-group">
             <label class="font-weight-bold">Nom <span class="text-danger">*</span></label>
-            <input type="text" name="signupname" id="signupname" class="form-control" placeholder="nom" required>
+            <input type="text" name="signupname" id="signupname" class="form-control" placeholder="nom" required onkeypress="return(testString(event));">
           </div>
           <div class="form-group">
             <label class="font-weight-bold">Email <span class="text-danger">*</span></label>
@@ -46,7 +46,7 @@
           </div>
           <div class="form-group">
             <label class="font-weight-bold">Numéro de téléphone</label>
-            <input type="text" name="signupphone" id="signupphone" class="form-control" placeholder="0XXXXXXXXX">
+            <input type="text" name="signupphone" id="signupphone" class="form-control" placeholder="0XXXXXXXXX" size="10" maxlength="10" onkeypress="return(testNumerique(event));">
           </div>
           <div class="form-group">
             <label class="font-weight-bold">Adresse</label>
@@ -58,11 +58,11 @@
           </div>
           <div class="form-group">
             <label class="font-weight-bold">Ville</label>
-            <input type="text" name="signupCity" id="signupCity" class="form-control" placeholder="Ville">
+            <input type="text" name="signupCity" id="signupCity" class="form-control" placeholder="Ville" onkeypress="return(testString(event));">
           </div>
           <div class="form-group">
             <label class="font-weight-bold">Code postal</label>
-            <input type="text" name="signupCP" id="signupCP" class="form-control" placeholder="Code Postal">
+            <input type="text" name="signupCP" id="signupCP" class="form-control" placeholder="Code Postal" size="5" maxlength="5" onkeypress="return(testNumerique(event));">
           </div>
           <div class="form-group">
             <label class="font-weight-bold">Mot de passe<span class="text-danger">*</span></label>

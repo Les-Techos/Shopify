@@ -6,8 +6,8 @@
   </ul>
   <div class="tab-content" id="pills-tabContent">
     <div class="tab-pane fade show active" id="pills-signin" role="tabpanel" aria-labelledby="pills-signin-tab">
-      <div class="col-sm-12 border border-primary shadow rounded pt-2">
-        <div class="text-center"><img src="..\assets\image\Web4ShopHeader.png" class="rounded-circle border p-1" style="width:80px; height:80px"></div>
+      <div class="col-sm-12 border border-primary shadow rounded pt-2" id="card-signin">
+        <div class="text-center"><img src="..\assets\image\Web4ShopHeader.png" id="co_img" class="rounded-circle border p-1"></div>
         <form method="post" id="singninFrom">
           <div class="form-group">
             <label class="font-weight-bold">identifiant <span class="text-danger">*</span></label>
@@ -18,13 +18,13 @@
             <input type="password" name="password" id="password" class="form-control" placeholder="***********" required>
           </div>
           <div class="form-group">
-            <input type="submit" name="submit" value="Se connecter" class="btn btn-block btn-primary">
+            <input type="submit" name="submit"  id="signupsubmit" value="Se connecter" class="btn btn-block btn-primary">
           </div>
         </form>
       </div>
     </div>
     <div class="tab-pane fade" id="pills-signup" role="tabpanel" aria-labelledby="pills-signup-tab">
-      <div class="col-sm-12 border border-primary shadow rounded pt-2">
+      <div class="col-sm-12 border border-primary shadow rounded pt-2" id="card-signin">
         <div class="text-center"><img src="..\assets\image\theImperial.jpg" class="rounded-circle border p-1"></div>
         <form method="post" id="singnupFrom">
           <div class="form-group">
@@ -73,7 +73,7 @@
             <input type="password" name="signupcpassword" id="signupcpassword" class="form-control" pattern="^\S{6,}$" onchange="this.setCustomValidity(this.validity.patternMismatch ? 'Please enter the same Password as above' : '');" placeholder="***********" required>
           </div>
           <div class="form-group">
-            <input type="submit" name="signupsubmit" value="S'inscrire" class="btn btn-block btn-primary">
+            <input type="submit" name="signupsubmit" id="signupsubmit"  value="S'inscrire" class="btn btn-block btn-primary">
           </div>
         </form>
       </div>

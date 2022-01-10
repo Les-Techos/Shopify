@@ -27,26 +27,26 @@ class HeaderController extends controller
             $this->ConnectionButton = '
                 <li>
                     <form method="post" action="/?action=signIn">
-                        <input type="submit" name="deconnexion" value = "Déconnexion" class="btn btn-primary"/>
+                        <input type="submit" name="deconnexion" value = "Déconnexion"  id="Mobile_Btn" class="btn btn-primary"/>
                     </form>
                 </li>
                 ';
             if ($_SESSION['status'] == "admin") {
                 $this->ConnectionButton .= '<li>
-                    <a href="/?action=admin" class="btn btn-primary">
+                    <a href="/?action=admin" class="btn btn-primary" id="Mobile_Btn">
                         Admin
                     </a>
                 </li>';
             } else {
                 $this->ConnectionButton .= '<li>
-                <a href="/?action=user" class="btn btn-primary">
+                <a href="/?action=user" class="btn btn-primary" id="Mobile_Btn">
                     Mon compte
                 </a>
             </li>';
             }
         } else {
             $this->ConnectionButton = '<li>
-                    <a href="/?action=signIn" class="btn btn-primary">
+                    <a href="/?action=signIn" class="btn btn-primary" id="Mobile_Btn">
                         Se connecter
                     </a>
                 </li>';
@@ -58,7 +58,7 @@ class HeaderController extends controller
 
         if ((empty($_SESSION["status"]) || ("admin" != $_SESSION["status"])) && (empty($this->action) || (($this->action != 'panier') && ($this->action != 'renseignement')))) {
             $this->ConnectionButton .= '<li>
-                <strongbutton class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#Panier" aria-expanded="false" aria-controls="collapseExample">
+                <strongbutton class="btn btn-primary" id="Mobile_Btn" type="button" data-bs-toggle="collapse" data-bs-target="#Panier" aria-expanded="false" aria-controls="collapseExample">
                     Panier
                     </button>
             </li>';
@@ -69,9 +69,9 @@ class HeaderController extends controller
     {
         if (empty($_SESSION["status"]) || ("admin" != $_SESSION["status"])) {
             if (empty($this->action)) {
-                $this->HeaderPanier =  $this->panierController->routerDefaultAction()["list"] . '<a href="/?action=panier" class="btn btn-success"> Voir mon panier</a>';
+                $this->HeaderPanier =  $this->panierController->routerDefaultAction()["list"] . '<a href="/?action=panier" class="btn btn-success" "> Voir mon panier</a>';
             } elseif (($this->action != 'panier') && ($this->action != 'renseignement')) {
-                $this->HeaderPanier =  $this->panierController->routerDefaultAction()["list"] . '<a href="/?action=panier" class="btn btn-success"> Voir mon panier</a>';
+                $this->HeaderPanier =  $this->panierController->routerDefaultAction()["list"] . '<a href="/?action=panier" class="btn btn-success" "> Voir mon panier</a>';
             } else {
                 $this->HeaderPanier =  "";
             }

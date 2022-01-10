@@ -1,12 +1,41 @@
-input:checked
-{background-color:aqua;}
 
-body {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
+/* Header */
+#Headerimg{
+    width:100%;
+    height:250px;
 }
 
-footer {
-    margin-top: auto;
+#Navbarimg{
+    width:30px;
+    height:24px;
 }
+
+#co_img{
+    width:80px; 
+    height:80px;
+}
+
+#Mobile_Btn {
+    width:100%;
+    margin: 2px 2px ;
+}
+
+/* Sign in and up */
+
+input.form-control{
+    width : 80%;
+    margin:0 auto;
+}
+
+#signupsubmit{
+    margin-top: 10px;
+    width : 50%;
+}
+
+#card-signin{
+    text-align: center;
+    padding: 10px;
+}
+
+/* page produit */
+

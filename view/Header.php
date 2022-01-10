@@ -1,26 +1,40 @@
 <div class="container-fluid" id="begin">
     <div class="row">
-        <img src="..\assets\image\Web4ShopHeader.png" alt="logo" width="100%" height="250">
+        <img src="..\assets\image\Web4ShopHeader.png" id="Headerimg" alt="logo">
     </div>
 </div>
 <div class="container-fluid">
     <nav class="navbar navbar-expand-md navbar-light">
         <a href="/" class="navbar-brand">
-            <img src="..\assets\image\Web4ShopHeader.png" alt="logo" width="30" height="24">
+            <img src="..\assets\image\Web4ShopHeader.png" id="Navbarimg" alt="logo">
             Web4SHOP</a>
-        <button type="button" class="navbar-toggler" data-bs_toggle="collapse" data-bs-target="#toggleMobileMenu" aria-controls="toggleMobileMenu" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon">Toggle navigation</span>
-        </button>
-        <div class="navbar-collapse collapse" id="toggleMobileMenu">
+        <div class="collapse" id="collapseMobileMenu">
             <ul class="navbar-nav">
                 <li>
-                    <a href="/" class="btn btn-primary">
+                    <a href="/" class="btn btn-primary" id="Mobile_Btn">
+                        Produit
+                    </a>
+                
+                <?= $ConnectionButton ?>
+                </li>
+            </ul>
+        </div>
+        <button type="button" class="navbar-toggler" data-bs_toggle="collapse" data-bs-target="#toggleMenu" aria-controls="toggleMenu" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon" data-toggle="collapse" href="#collapseMobileMenu" role="button" aria-expanded="false" aria-controls="collapseMobileMenu">
+            </span>
+        </button>
+        
+        <div class="navbar-collapse collapse" id="toggleMenu">
+            <ul class="navbar-nav">
+                <li>
+                    <a href="/" class="btn btn-primary" id="Mobile_Btn">
                         Produit
                     </a>
                 </li>
-                <?= $ConnectionButton?>
-               
+                <?= $ConnectionButton ?>
+
             </ul>
+        
     </nav>
     <div class="containers">
         <div class="collapse" id="Panier">

@@ -14,7 +14,7 @@
     <?php
     include_once("./view/Header.php");
     ?>
-    <div class="container">
+    <div class="container" id="maincontent">
         <div class="row">
             <div class="span4">
                 <?php
@@ -28,9 +28,11 @@
     </div>
 
     </div>
+    <div class="sticky-bottom">
     <?php
     include_once("./view/Footer.php");
     ?>
+    </div>
     <script src="./bootstrap/js/bootstrap.bundle.min.js"></script>
 </body>
 

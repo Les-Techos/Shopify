@@ -61,14 +61,14 @@ class detailController extends controller
                 <div class="card-body">
                     <h5 class="card-title">' . $Product->datas->price . ' €</h5>
                     <p class="card-text">' . $Product->datas->description . '</p>
-                    <div class="button-group">
+                    
                         <form method="post" action="\?action=panier">
                             Quantité
                             <input type="number" value="1"  name="quantity" style="min-width:25px; max-width:50px" min="1" />
                             <input type="hidden" id ="idProduct" name="idProduct" value="' . $Product->datas->id . '"/>
                             <button type="submit" class="btn btn-success" >Ajouter au Panier</a>
                         </form>
-                    </div>
+                    
                 </div>
             </div>
         </div>

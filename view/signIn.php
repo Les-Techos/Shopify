@@ -1,4 +1,4 @@
-<div class="col-sm-12 ml-auto mr-auto">
+<div class="col-sm-12 ml-auto mr-auto" id="signincontent">
   <?= $controllerData ?>
   <ul class="nav nav-pills nav-fill mb-1" id="pills-tab" role="tablist">
     <li class="nav-item"> <a class="nav-link active" id="pills-signin-tab" data-toggle="pill" href="#pills-signin" role="tab" aria-controls="pills-signin" aria-selected="true">Se connecter</a> </li>

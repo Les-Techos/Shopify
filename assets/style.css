@@ -24,7 +24,11 @@
 
 input.form-control{
     width : 80%;
-    margin:0 auto;
+    margin:5px auto;
+}
+
+#signincontent{
+ margin-bottom: 30%;
 }
 
 #signupsubmit{
@@ -39,3 +43,30 @@ input.form-control{
 
 /* page produit */
 
+#CardProduit {
+    background-color: rgb(172, 236, 245);
+    height: 98%;
+}
+
+#CardHeader {
+    text-align: center;
+    font-family:"Fantasy", serif; 
+}
+
+/* Footer */
+
+#maincontent{
+    height: 100%;
+}
+
+#idProduct{
+    margin-bottom: 10px;
+}
+
+#CardCommentBody {
+    overflow-y: scroll;
+}
+
+textarea{
+    resize: none;
+}

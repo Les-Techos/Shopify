@@ -4,7 +4,7 @@
             <div class="col-sm">
             <div class="card" style="max-height: 600px; width: 500px;">
             <h5 class="card-header"> Commentaire et note </h5> 
-                <div class="card-body" style="overflow-y: scroll">
+                <div class="card-body" id="CommentCardBody">
                 
                 
                 <?= $controllerData["reviews"] ?>
@@ -16,7 +16,7 @@
                 <textarea
                   class="form-control"
                   id="textAreaExample"
-                  rows="1" style="background: #fff;"></textarea>
+                  rows="3" style="background: #fff;" ></textarea>
                
               </div>
               <div class="float-end mt-2 pt-1">

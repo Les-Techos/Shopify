@@ -47,11 +47,11 @@ class produitController extends Controller
     }
 
     public function returnProductCard($aProduct){
-        $this->controllerData  .= '<div class="col-md-12 col-lg-4" id = "'.$aProduct->datas->id.'">
-                            <div class="card card border-primary mb-3">
-                                <div class="card-header">' .
+        $this->controllerData  .= ' <div class="col-md-12 col-lg-4" id = "'.$aProduct->datas->id.'">
+                                <div class="card card border-primary mb-3" id="CardProduit">
+                                <div class="card-header" id="CardHeader"> <h3>'.
                             $aProduct->datas->name
-                            . '</div>
+                            . '</h1></div>
                                 <img src="..\assets\image\\' . $aProduct->datas->image . '">
                                 <div class="card-body">
                                     <p class="text-center">' . $aProduct->datas->description . '</p>
@@ -63,6 +63,7 @@ class produitController extends Controller
                                     </form>
                                 </div>
                             </div>
-                        </div>';
+                        </div>
+                        ';
     }
 }

@@ -6,7 +6,7 @@
     </p>
     <div class="collapse" id="Searchmenu">
         <div class="card card-body">
-            <form class="form-horizontal" action="" method="post">
+            <form class="form-horizontal" "" method="post">
                 <div class="row row-cols-1 row-cols-md-3 row-cols-lg-5 ">
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" name="floatingInput" placeholder="Thé au Jasmin">

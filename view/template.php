@@ -18,7 +18,7 @@
         <div class="row">
             <div class="span4">
                 <?php
-                if (file_exists($_SERVER['DOCUMENT_ROOT'] . "/view/" . $contents)) {
+                if (file_exists('.' . "/view/" . $contents)) {
                     include $contents;
                 } else {
                     throw new Exception("File does not exist");

@@ -26,10 +26,10 @@
             liens utiles
           </h6>
           <p>
-            <a href="/" class="text-reset">Produits</a>
+            <a href="./" class="text-reset">Produits</a>
           </p>
           <p>
-            <a href="/?action=panier" class="text-reset">Panier</a>
+            <a href="./?action=panier" class="text-reset">Panier</a>
           </p>
         </div>
         <!-- Grid column -->

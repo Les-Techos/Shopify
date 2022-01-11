@@ -38,13 +38,13 @@ class renseignementController extends controller
                 $this->generateBill();               
                 $this->setOrderInCloud();
                 
-                header('Location: /?action=fin');
+                header('Location: ./?action=fin');
                 exit();
             }
 
             return $this->controllerData;
         } else {
-            header('Location: /');
+            header('Location: ./');
             exit();
         }
     }

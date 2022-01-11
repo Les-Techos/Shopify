@@ -7,7 +7,7 @@
   <div class="tab-content" id="pills-tabContent">
     <div class="tab-pane fade show active" id="pills-signin" role="tabpanel" aria-labelledby="pills-signin-tab">
       <div class="col-sm-12 border border-primary shadow rounded pt-2" id="card-signin">
-        <div class="text-center"><img src="..\assets\image\Web4ShopHeader.png" id="co_img" class="rounded-circle border p-1"></div>
+        <div class="text-center"><img src=".\assets\image\Web4ShopHeader.png" id="co_img" class="rounded-circle border p-1"></div>
         <form method="post" id="singninFrom">
           <div class="form-group">
             <label class="font-weight-bold">identifiant <span class="text-danger">*</span></label>
@@ -25,8 +25,8 @@
     </div>
     <div class="tab-pane fade" id="pills-signup" role="tabpanel" aria-labelledby="pills-signup-tab">
       <div class="col-sm-12 border border-primary shadow rounded pt-2" id="card-signin">
-        <div class="text-center"><img src="..\assets\image\theImperial.jpg" class="rounded-circle border p-1"></div>
-        <form method="post" id="singnupFrom">
+        <div class="text-center"><img src=".\assets\image\theImperial.jpg" class="rounded-circle border p-1"></div>
+        <form method="post" id="singnupFrom" action="">
           <div class="form-group">
             <label class="font-weight-bold">Prénom <span class="text-danger">*</span></label>
             <input type="text" name="signupforname" id="signupforname" class="form-control" placeholder="Prénom" required onkeypress="return(testString(event));">

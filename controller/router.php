@@ -42,7 +42,7 @@ class router
             
             if (!empty($_GET['action'])) {
                 $action = $_GET['action'];
-                if (file_exists($_SERVER['DOCUMENT_ROOT'] . "/view/" . $action . ".php")) {
+                if (file_exists('.' . "/view/" . $action . ".php")) {
                     $contents = $action . ".php";
                     $controllerData = $this->{$action . 'Controller'}->routerDefaultAction();
                 } else {

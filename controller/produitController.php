@@ -52,12 +52,12 @@ class produitController extends Controller
                                 <div class="card-header" id="CardHeader"> <h3>'.
                             $aProduct->datas->name
                             . '</h1></div>
-                                <img src="..\assets\image\\' . $aProduct->datas->image . '">
+                                <img src=".\assets\image\\' . $aProduct->datas->image . '">
                                 <div class="card-body">
                                     <p class="text-center">' . $aProduct->datas->description . '</p>
                                 </div>
                                 <div class="card-footer text-center">
-                                    <form action="/?action=detail" method="post" class="form-example">
+                                    <form action="./?action=detail" method="post" class="form-example">
                                         <input type="hidden" id ="product_to_add" name="product_to_add" value="'.$aProduct->datas->id.'"/>
                                         <button type="submit" class="btn btn-primary"> Voir les détails</button>
                                     </form>

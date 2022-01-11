@@ -1,17 +1,17 @@
 <div class="container-fluid" id="begin">
     <div class="row">
-        <img src="..\assets\image\Web4ShopHeader.png" id="Headerimg" alt="logo">
+        <img src=".\assets\image\Web4ShopHeader.png" id="Headerimg" alt="logo">
     </div>
 </div>
 <div class="container-fluid">
     <nav class="navbar navbar-expand-md navbar-light">
-        <a href="/" class="navbar-brand">
-            <img src="..\assets\image\Web4ShopHeader.png" id="Navbarimg" alt="logo">
+        <a href="./" class="navbar-brand">
+            <img src=".\assets\image\Web4ShopHeader.png" id="Navbarimg" alt="logo">
             Web4SHOP</a>
         <div class="collapse" id="collapseMobileMenu">
             <ul class="navbar-nav">
                 <li>
-                    <a href="/" class="btn btn-primary" id="Mobile_Btn">
+                    <a href="./" class="btn btn-primary" id="Mobile_Btn">
                         Produit
                     </a>
                 
@@ -27,7 +27,7 @@
         <div class="navbar-collapse collapse" id="toggleMenu">
             <ul class="navbar-nav">
                 <li>
-                    <a href="/" class="btn btn-primary" id="Mobile_Btn">
+                    <a href="./" class="btn btn-primary" id="Mobile_Btn">
                         Produit
                     </a>
                 </li>

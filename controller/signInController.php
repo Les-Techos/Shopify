@@ -40,7 +40,7 @@ class signInController extends controller
                 $_SESSION["connection_id"] = $users[0]->datas->id;
                 $_SESSION["status"] = "user";
                 $_SESSION["justConnected"] = true;
-                header('Location: /');
+                header('Location: ./');
                 exit();
             } else {
                 $this->controllerData = '<div class="alert alert-danger" role="alert"> Identifiant ou mot de passe incorrect</div>';
@@ -50,7 +50,7 @@ class signInController extends controller
                 $_SESSION["connection_id"] = $admin[0]->datas->id;
                 $_SESSION["status"] = "admin";
                 $_SESSION["justConnected"] = true;
-                header('Location: /?action=admin');
+                header('Location: ./?action=admin');
                 exit();
             } else {
                 $this->controllerData = '<div class="alert alert-danger" role="alert"> Identifiant ou mot de passe incorrect</div>';
@@ -61,7 +61,7 @@ class signInController extends controller
     public function disconnect()
     {
         session_unset();
-        header('Location: /');
+        header('Location: ./');
         exit();
     }
 
@@ -101,7 +101,7 @@ class signInController extends controller
             $_SESSION["connection_id"] = $l->datas->id;
             $_SESSION["status"] = "user";
             $_SESSION["justConnected"] = true;
-            header('Location: /');
+            header('Location: ./');
             exit();
         }
     }

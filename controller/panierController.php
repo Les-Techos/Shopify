@@ -46,7 +46,7 @@ class panierController extends controller
             foreach ($_SESSION['PANIER'] as $ProductData) {
                 $this->returnCards(new Product($ProductData["product_id"]), $ProductData["quantity"]);
             }
-            $this->controllerData["ValidateButton"] = '<a href="/?action=renseignement" class="btn btn-success" style="width:100%">Procéder au Paiement</a>';
+            $this->controllerData["ValidateButton"] = '<a href="./?action=renseignement" class="btn btn-success" style="width:100%">Procéder au Paiement</a>';
         }
         return $this->controllerData;
     }
@@ -58,7 +58,7 @@ class panierController extends controller
         <div class="row">
             <div class=" float-left" style="width:90%">
            <form method="post" class="form-example">                
-                <img style="height:50px" src="..\assets\image\\' . $Product->datas->image . '">
+                <img style="height:50px" src=".\assets\image\\' . $Product->datas->image . '">
                 ' . $Product->datas->name . '
                 <input type="number" name="quantity" style="min-width:25px; max-width:50px" min="0" value = "' . $quantity . '"/>
                 <input type="hidden" id ="idProduct" name="idProduct" value="' . $Product->datas->id . '"/>

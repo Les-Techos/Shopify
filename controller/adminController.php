@@ -27,7 +27,7 @@ class adminController extends controller
             $this->diplayAllOrders();
             return $this->controllerData;
         } else {
-            header('Location: /');
+            header('Location: ./');
             exit();
         }
     }
@@ -68,7 +68,7 @@ class adminController extends controller
         foreach ($itemArray as $order_product) {
             $Product = new Product($order_product->datas->product_id);
             $result .= '<li class="list-group-item" >
-            <img style="height:50px" src="/assets/image/' . $Product->datas->image . '">
+            <img style="height:50px" src="./assets/image/' . $Product->datas->image . '">
                 ' . $Product->datas->name . '
                 <input type="number" name="quantity" style="min-width:25px; max-width:50px" min="0" value = "' . $order_product->datas->quantity . '" disabled/>
             </li>

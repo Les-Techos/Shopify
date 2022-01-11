@@ -10,7 +10,7 @@ abstract class Controller
     public function throwAdmin()
     {
         if (!empty($_SESSION["status"]) && ("admin" == $_SESSION["status"])) {
-            header('Location: /?action=admin');
+            header('Location: ./?action=admin');
             exit();
             
         }

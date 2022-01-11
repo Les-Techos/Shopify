@@ -55,7 +55,6 @@ class HeaderController extends controller
 
     public function displayCartButton()
     {
-
         if ((empty($_SESSION["status"]) || ("admin" != $_SESSION["status"])) && (empty($this->action) || (($this->action != 'panier') && ($this->action != 'renseignement')))) {
             $this->ConnectionButton .= '<li>
                 <strongbutton class="btn btn-primary" id="Mobile_Btn" type="button" data-bs-toggle="collapse" data-bs-target="#Panier" aria-expanded="false" aria-controls="collapseExample">

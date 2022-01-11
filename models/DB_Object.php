@@ -154,17 +154,27 @@ abstract class DB_Object
    */
   public static function get_data_array(&$OBJ_Array, $id_name, $id)
   {
-    if (getDatasLike(static::$data_table, $res, [$id_name, $id])) { // Get the tuple with the id of da instantiated object and pursue if a result is returned
-      foreach ($res as $tuple) {
-        $OBJ_Array[] = new static($tuple["id"]);
+    try{
+      if (getDatasLike(static::$data_table, $res, [$id_name, $id])) { // Get the tuple with the id of da instantiated object and pursue if a result is returned
+        foreach ($res as $tuple) {
+          $OBJ_Array[] = new static($tuple["id"]);
+        }
       }
+    }catch (Exception $e) {
+      throw $e;
+      return;
     }
   }
 
   public static function get_new_fresh_obj()
   {
     $new_obj = new static();
-    $new_obj->id = getMaxIdIn(static::$data_table, static::$id_name) + 1;
+    try{
+      $new_obj->id = getMaxIdIn(static::$data_table, static::$id_name) + 1;
+    }catch (Exception $e) {
+      throw $e;
+      return;
+    }
     $new_obj->datas->id = $new_obj->id;
     return $new_obj;
   }

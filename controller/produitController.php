@@ -14,7 +14,7 @@ class produitController extends Controller
 
     public function routerDefaultAction()
     {
-        Product::get_data_array($this->objDatabase, "id", '%_');
+        try{Product::get_data_array($this->objDatabase, "id", '%_');}catch(Exception $e){throw $e;}
         $this->throwAdmin();
         if (!(isset($_POST['rangeInput']) && isset($_POST['inputGroupSelect01']))) {
             foreach ($this->objDatabase as $aProduct) {
@@ -35,7 +35,7 @@ class produitController extends Controller
                         $this->returnProductCard($aProduct);
                     }
                 } else {
-                    $catProduct = new Category($aProduct->datas->cat_id);
+                    try{$catProduct = new Category($aProduct->datas->cat_id);}catch(Exception $e){throw $e;}
 
                     if ((strpos($aProduct->datas->description, $textToSearch) !== false) && ($aProduct->datas->price <= intval($_POST['rangeInput'])) && ($catreceived == $catProduct->datas->name)) {
                         $this->returnProductCard($aProduct);

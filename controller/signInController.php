@@ -31,8 +31,8 @@ class signInController extends controller
         $password = hash("sha1", $password);
         $users = [];
         $admin = [];
-        Login::get_data_array($users, "username", $username);
-        Admin::get_data_array($admin, "username", $username);
+        try{Login::get_data_array($users, "username", $username);
+        Admin::get_data_array($admin, "username", $username);}catch(Exception $e){throw $e;}
         if (empty($admin[0])) {
             if (empty($users[0])) {
                 $this->controllerData = '<div class="alert alert-danger" role="alert"> Identifiant non reconnu </div>';
@@ -70,14 +70,19 @@ class signInController extends controller
         $username = $_POST["signupusername"];
         $users = [];
         $admins = [];
-        Login::get_data_array($users, "username", $username);
-        Admin::get_data_array($admins, "username", $username);
+        try{
+            Login::get_data_array($users, "username", $username);
+            Admin::get_data_array($admins, "username", $username);
+        }catch(Exception $e){ throw $e;}
+
         if (!empty($users) || !empty($admins)) {
             $this->controllerData = '<div class="alert alert-danger" role="alert"> Identifiant ou mot de passe incorrect</div>';
         } elseif ($_POST["signuppassword"] != $_POST["signupcpassword"]) {
             $this->controllerData = '<div class="alert alert-danger" role="alert"> Les mots de passe ne correspondent pas</div>';
         } else {
-            $b = Customer::get_new_fresh_obj(); //Créer un tout nouveau objet avec un nouvel id
+            $b = null;
+            try{ $b = Customer::get_new_fresh_obj(); //Créer un tout nouveau objet avec un nouvel id
+            }catch(Exception $e){ throw $e;}
             $d = &$b->datas; //On se réfère à ses données dans la DB
             $d->forname = $_POST["signupforname"];
             $d->surname = $_POST["signupname"];
@@ -89,14 +94,20 @@ class signInController extends controller
             $d->phone = $_POST["signupphone"];
             $d->email = $_POST["signupemail"];
 
-            $l = Login::get_new_fresh_obj(); //On crée un nouveau login
+            try{
+                $l = Login::get_new_fresh_obj(); //On crée un nouveau login
+            }catch(Exception $e){ throw $e;}
+
             $d_l = &$l->datas; //" "
             $d_l->customer_id = $b->id;
             $d_l->username = $_POST["signupusername"];
             $d_l->password = hash("sha1", $_POST["signuppassword"]);
             $b->linked_datas->logins[0] = $l; //On dit à l'utilisateur qu'il a un login
 
-            $b->set_data();
+            try{
+                $b->set_data();
+            }catch(Exception $e){ throw $e;}
+            
 
             $_SESSION["connection_id"] = $l->datas->id;
             $_SESSION["status"] = "user";

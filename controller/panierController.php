@@ -44,7 +44,11 @@ class panierController extends controller
         } else {
 
             foreach ($_SESSION['PANIER'] as $ProductData) {
-                $this->returnCards(new Product($ProductData["product_id"]), $ProductData["quantity"]);
+                try{
+                    $this->returnCards(new Product($ProductData["product_id"]), $ProductData["quantity"]);
+                }catch(Exception $e){
+                    throw $e;
+                }
             }
             $this->controllerData["ValidateButton"] = '<a href="/?action=renseignement" class="btn btn-success" style="width:100%">Procéder au Paiement</a>';
         }
@@ -141,7 +145,11 @@ class panierController extends controller
     {
         if (!empty($_SESSION["connection_id"]) && empty($_SESSION["OrderNumber"]) && ($_SESSION["status"]=="user")) {
             $arrayUnachievedOrders = [];
-            Order::get_data_array($arrayUnachievedOrders, "customer_id", $_SESSION["connection_id"]);
+            try{  
+                Order::get_data_array($arrayUnachievedOrders, "customer_id", $_SESSION["connection_id"]);
+            }catch(Exception $e){
+                throw $e;
+            }
             if (!empty($arrayUnachievedOrders)) {
                 $offset = 0;
                 foreach ($arrayUnachievedOrders as $Order) {
@@ -152,7 +160,11 @@ class panierController extends controller
                 }
             }
             if (empty($arrayUnachievedOrders)) {
-                $this->objDatabase["order"] = Order::get_new_fresh_obj();
+                try{  
+                    $this->objDatabase["order"] = Order::get_new_fresh_obj();
+                }catch(Exception $e){
+                    throw $e;
+                }
                 $this->objDatabase["order"]->datas->delivery_add_id = "NULL";
                 $this->objDatabase["order"]->datas->payment_type = "NULL";
                 $this->objDatabase["order"]->datas->date = "'" . date('Y-m-d', time()) . "'";
@@ -163,7 +175,7 @@ class panierController extends controller
                 $this->objDatabase["order"]->datas->registered = 1;
             } else {
                 foreach ($arrayUnachievedOrders as $ord) {
-                    $this->objDatabase["order"] = new Order($ord->id);
+                    try{$this->objDatabase["order"] = new Order($ord->id);}catch(Exception $e){throw $e;};
                 }
                 $this->objDatabase["order"]->datas->delivery_add_id = "NULL";
                 $this->objDatabase["order"]->datas->payment_type = "NULL";
@@ -174,7 +186,7 @@ class panierController extends controller
     public function cleanDatabase()
     {
         $orderitems = [];
-        Order_item::get_data_array($orderitems, "order_id", $this->objDatabase["order"]->datas->id);
+        try{Order_item::get_data_array($orderitems, "order_id", $this->objDatabase["order"]->datas->id);}catch(Exception $e){throw $e;};
         if (!empty($orderitems)) {
             foreach ($orderitems as $order_item) {
                 $order_item->apoptose();
@@ -192,7 +204,7 @@ class panierController extends controller
         if (!empty($_SESSION['PANIER'])) {
             foreach ($_SESSION['PANIER'] as $Product) {
                 
-                $Cart_products = Order_item::get_new_fresh_obj();
+                try{$Cart_products = Order_item::get_new_fresh_obj();}catch(Exception $e){throw $e;}
                 $Cart_products->datas->order_id = $this->objDatabase["order"]->datas->id;
                 $Cart_products->datas->product_id = $Product['product_id'];
                 $Cart_products->datas->quantity = $Product['quantity'];
@@ -214,7 +226,7 @@ class panierController extends controller
         if (!empty($_SESSION["connection_id"])) {
             $this->selectOrder();
             $orderitems = [];
-            Order_item::get_data_array($orderitems, "order_id", $this->objDatabase["order"]->datas->id);
+            try{Order_item::get_data_array($orderitems, "order_id", $this->objDatabase["order"]->datas->id);}catch(Exception $e){throw $e;};
             if (!$_SESSION["justConnected"])
                 unset($_SESSION["PANIER"]);
             if (!empty($orderitems)) {

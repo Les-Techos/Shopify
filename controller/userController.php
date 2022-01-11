@@ -15,18 +15,19 @@ class userController extends controller
 
     public function routerDefaultAction()
     {
-        if (!empty($_SESSION["connection_id"]))
-            Order::get_data_array($this->objDatabase, "customer_id", $_SESSION["connection_id"]);
-        $this->throwAdmin();
-        $user = new Customer($_SESSION["connection_id"]);
-        $login = [];
-        Login::get_data_array($login, "customer_id", $_SESSION["connection_id"]);
-        if (!empty($_POST["modify"])) {
-            $this->updateInfos($user, $login[0]);
-        }
-        $this->getCustomerInfo($user, $login[0]);
-        $this->diplayAllOrders();
-
+        try{
+                if (!empty($_SESSION["connection_id"]))
+                Order::get_data_array($this->objDatabase, "customer_id", $_SESSION["connection_id"]);
+            $this->throwAdmin();
+            $user = new Customer($_SESSION["connection_id"]);
+            $login = [];
+            Login::get_data_array($login, "customer_id", $_SESSION["connection_id"]);
+            if (!empty($_POST["modify"])) {
+                $this->updateInfos($user, $login[0]);
+            }
+            $this->getCustomerInfo($user, $login[0]);
+            $this->diplayAllOrders();
+        }catch(Exception $e){ throw $e;}
 
         return $this->controllerData;
     }

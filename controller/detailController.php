@@ -23,8 +23,14 @@ class detailController extends controller
 
     public function returnCards($Product_id)
     {
-        $Product = new Product($Product_id);
-        $Product->order_66();
+        $Product = null;
+
+        try{
+            $Product = new Product($Product_id);
+            $Product->order_66();
+        }catch(Exception $e){
+            throw $e;
+        }
 
         $this->controllerData["reviews"] = "";
         

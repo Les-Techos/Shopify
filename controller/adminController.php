@@ -8,18 +8,28 @@ class adminController extends controller
 {
     public function __construct()
     {
-        
+
         $this->controllerData["order"] = "";
-        $this->controllerData["username"] ="";
+        $this->controllerData["username"] = "";
     }
 
     public function routerDefaultAction()
-    {   
-        Order::get_data_array($this->objDatabase, "id", '%_');
+    {
+        try {
+            Order::get_data_array($this->objDatabase, "id", '%_');
+        } catch (Exception $e) {
+            throw $e;
+        }
+
         if ($_SESSION["status"] == "admin") {
             if (!empty($_POST["valideradmin"]))
                 $this->increaseState($_POST["idOrder"]);
-            $Admin = new Admin($_SESSION["connection_id"]);
+                try{
+                    $Admin = new Admin($_SESSION["connection_id"]);
+                }catch (Exception $e){
+                    throw $e;
+                }
+                
             if (!empty($_POST["modify"])) {
                 $this->updateInfos($Admin);
             }
@@ -63,10 +73,20 @@ class adminController extends controller
     public function displayOrderProducts($idOrder)
     {
         $itemArray = [];
-        Order_item::get_data_array($itemArray, "order_id", $idOrder);
+        try{
+            Order_item::get_data_array($itemArray, "order_id", $idOrder);
+        }catch(Exception $e){
+            throw $e;
+        }
+        
         $result = "";
         foreach ($itemArray as $order_product) {
-            $Product = new Product($order_product->datas->product_id);
+            try{
+                $Product = new Product($order_product->datas->product_id);
+            }catch(Exception $e){
+                throw $e;
+            }
+            
             $result .= '<li class="list-group-item" >
             <img style="height:50px" src="/assets/image/' . $Product->datas->image . '">
                 ' . $Product->datas->name . '
@@ -99,23 +119,34 @@ class adminController extends controller
     public function displayAddress($idAddress)
     {
         $result = "";
-        $Address = new Address($idAddress);
-        foreach ($Address->datas as $key => $parameters) {
-            if ($key != "id")
-                $result .= '<h6>' . $key . " : " . $parameters . "</h6>";
+        try{
+            $Address = new Address($idAddress);
+            foreach ($Address->datas as $key => $parameters) {
+                if ($key != "id")
+                    $result .= '<h6>' . $key . " : " . $parameters . "</h6>";
+            }
+            return $result;
+        }catch(Exception $e){
+            throw $e;
         }
-        return $result;
+        
+        
     }
 
     public function increaseState($Orderid)
     {
-        $Order = new Order($Orderid);
-        if ($Order->datas->status == 1) {
-            $Order->datas->status++;
-        } elseif ($Order->datas->status > 1 && $Order->datas->status < 10) {
-            $Order->datas->status = 10;
+        try{
+                $Order = new Order($Orderid);
+            if ($Order->datas->status == 1) {
+                $Order->datas->status++;
+            } elseif ($Order->datas->status > 1 && $Order->datas->status < 10) {
+                $Order->datas->status = 10;
+            }
+            $Order->set_data();
+        }catch(Exception $e){
+            throw $e;
         }
-        $Order->set_data();
+        
     }
 
     public function updateInfos(&$l)
@@ -123,23 +154,31 @@ class adminController extends controller
         $username = $_POST["username"];
         $users = [];
         $admins = [];
-        Login::get_data_array($users, "username", $username);
-        Admin::get_data_array($admins, "username", $username);
-        
+
+        try{
+            Login::get_data_array($users, "username", $username);
+            Admin::get_data_array($admins, "username", $username);
+        }catch(Exception $e){
+            throw $e;
+        }
+
+
         $d_l = &$l->datas;
 
         if (!empty($_POST["password"])) {
             if ($_POST["password"] != $_POST["cpassword"]) {
                 $this->controllerData["message"] = '<div class="alert alert-danger" role="alert"> Les mots de passe ne correspondent pas</div>';
-                
-            }else{
+            } else {
                 $d_l->password = hash("sha1", $_POST["password"]);
             }
         }
-        
+
         if ((empty($users) && empty($admins)) || ($username == $l->datas->username)) {
             $d_l->username = $_POST["username"];
-            $l->set_data();
+            try{
+                $l->set_data();
+            }catch(Exception $e){ throw $e; }
+            
         } else {
             $this->controllerData["message"] = '<div class="alert alert-danger" role="alert"> Le login existe déjà</div>';
         }

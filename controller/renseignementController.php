@@ -52,7 +52,7 @@ class renseignementController extends controller
     public function getCustomerInfo()
     {
         if (!empty($_SESSION["connection_id"])) {
-            $this->objDatabase["customer"] = new Customer($_SESSION["connection_id"]);
+            try{$this->objDatabase["customer"] = new Customer($_SESSION["connection_id"]);}catch(Exception $e){throw $e;}
             $customer = &$this->objDatabase["customer"];
             $this->controllerData["nom"]  = $customer->datas->surname;
             $this->controllerData["prenom"] = $customer->datas->forname;
@@ -71,14 +71,15 @@ class renseignementController extends controller
             $this->controllerData["codepostalL"] = $customer->datas->postcode;
             $this->controllerData["telL"] = $customer->datas->phone;
         } else {
-            $this->objDatabase["customer"] = Customer::get_new_fresh_obj();
+            try{$this->objDatabase["customer"] = Customer::get_new_fresh_obj();}catch(Exception $e){throw $e;}
         }
     }
 
     public function getCartInfos()
     {
         foreach ($_SESSION['PANIER'] as $ProductData) {
-            $Product  = new Product($ProductData["product_id"]);
+            $Product  = null;
+            try{$Product = new Product($ProductData["product_id"]);}catch(Exception $e){throw $e;}
             $this->controllerData["nbArticles"] += $ProductData["quantity"];
             $this->controllerData["Total"] +=  $ProductData["quantity"] * $Product->datas->price;
         }
@@ -88,7 +89,7 @@ class renseignementController extends controller
     {
         if (!empty($_SESSION["connection_id"]) && empty($_SESSION["OrderNumber"]) && ($_SESSION["status"] == "user")) {
             $arrayUnachievedOrders = [];
-            Order::get_data_array($arrayUnachievedOrders, "customer_id", $_SESSION["connection_id"]);
+            try{Order::get_data_array($arrayUnachievedOrders, "customer_id", $_SESSION["connection_id"]);}catch(Exception $e){throw $e;}
             if (!empty($arrayUnachievedOrders)) {
                 $offset = 0;
                 foreach ($arrayUnachievedOrders as $Order) {
@@ -102,7 +103,7 @@ class renseignementController extends controller
                 $this->getNeworder();
             } else {
                 foreach ($arrayUnachievedOrders as $ord) {
-                    $this->objDatabase["order"] = new Order($ord->id);
+                    try{$this->objDatabase["order"] = new Order($ord->id);}catch(Exception $e){throw $e;};
                 }
             }
         } elseif (empty($_SESSION["connection_id"]) && empty($_SESSION["OrderNumber"])) {
@@ -112,7 +113,7 @@ class renseignementController extends controller
 
     public function getNeworder()
     {
-        $this->objDatabase["order"] = Order::get_new_fresh_obj();
+        try{$this->objDatabase["order"] = Order::get_new_fresh_obj();}catch(Exception $e){throw $e;}
         $this->objDatabase["order"]->datas->delivery_add_id = "NULL";
         $this->objDatabase["order"]->datas->payment_type = "NULL";
         $this->objDatabase["order"]->datas->date = "'" . date('Y-m-d', time()) . "'";
@@ -125,7 +126,7 @@ class renseignementController extends controller
 
     public function getNewDeliveryAdd()
     {
-        $this->objDatabase["Add"] = Address::get_new_fresh_obj();
+        try{$this->objDatabase["Add"] = Address::get_new_fresh_obj();}catch(Exception $e){throw $e;}
         $this->objDatabase["Add"]->datas->firstname = "NULL";
         $this->objDatabase["Add"]->datas->lastname = "NULL";
         $this->objDatabase["Add"]->datas->add1 = "NULL";
@@ -139,10 +140,10 @@ class renseignementController extends controller
     public function cleanDatabase()
     {
         $orderitems = [];
-        Order_item::get_data_array($orderitems, "order_id", $this->objDatabase["order"]->datas->id);
+        try{Order_item::get_data_array($orderitems, "order_id", $this->objDatabase["order"]->datas->id);}catch(Exception $e){throw $e;};
         if (!empty($orderitems)) {
             foreach ($orderitems as $order_item) {
-                $order_item->apoptose();
+                try{$order_item->apoptose();}catch(Exception $e){throw $e;}
             }
         }
     }
@@ -157,7 +158,7 @@ class renseignementController extends controller
         $this->objDatabase["Add"]->datas->postcode = "'" . $_POST["codepostalL"] . "'";
         $this->objDatabase["Add"]->datas->phone = "'" . $_POST["telL"] . "'";
         $this->objDatabase["Add"]->datas->email = "'" . $_POST["mailL"] . "'";
-        $this->objDatabase["Add"]->set_data();
+        try{$this->objDatabase["Add"]->set_data();}catch(Exception $e){throw $e;}
     }
     public function setCustomer()
     {
@@ -170,7 +171,7 @@ class renseignementController extends controller
         $this->objDatabase["customer"]->datas->phone = "'" . $_POST["tel"] . "'";
         $this->objDatabase["customer"]->datas->email = "'" . $_POST["mail"] . "'";
         $this->objDatabase["customer"]->datas->registered = 1;
-        $this->objDatabase["customer"]->set_data();
+        try{$this->objDatabase["customer"]->set_data();}catch(Exception $e){throw $e;}
     }
 
     public function setOrder()
@@ -187,7 +188,7 @@ class renseignementController extends controller
         $this->objDatabase["order"]->datas->total = $this->controllerData["Total"];
         $this->objDatabase["order"]->datas->customer_id = $this->objDatabase["customer"]->datas->id;
         $this->objDatabase["order"]->datas->registered = 1;
-        $this->objDatabase["order"]->set_data();
+        try{$this->objDatabase["order"]->set_data();}catch(Exception $e){throw $e;}
     }
 
     public function setOrderInCloud()
@@ -212,11 +213,12 @@ class renseignementController extends controller
         $this->cleanDatabase();
         if (!empty($_SESSION['PANIER'])) {
             foreach ($_SESSION['PANIER'] as $Product) {
-                $Cart_products = Order_item::get_new_fresh_obj();
+                $Cart_products = null;
+                try{$Cart_products = Order_item::get_new_fresh_obj();}catch(Exception $e){throw $e;}
                 $Cart_products->datas->order_id = $this->objDatabase["order"]->datas->id;
                 $Cart_products->datas->product_id = $Product['product_id'];
                 $Cart_products->datas->quantity = $Product['quantity'];
-                $Cart_products->set_data();
+                try{$Cart_products->set_data();}catch(Exception $e){throw $e;}
             }
         }
         unset($_SESSION["PANIER"]);

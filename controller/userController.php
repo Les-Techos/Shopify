@@ -76,8 +76,10 @@ class userController extends controller
 
         $this->controllerData["commandes"] .= '<li class = "list-group-item">
         Achat  le ' . $Order->datas->date . '
-        <button type="button" class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#Details' . $Order->id . '" aria-expanded="false" aria-controls="collapseExample" >Détails achat &#9997; </button>
-        <div class="collapse" id="Details' . $Order->id . '">
+        <button type="button" class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#Details' . $Order->id . '" aria-expanded="false" aria-controls="collapseExample" >Détails achat &#9997; </button>';
+        if (file_exists('./assets/bills/'.$Order->datas->session.$Order->id.'.pdf'))
+            $this->controllerData["commandes"] .= '<a href="./assets/bills/' . $Order->datas->session . $Order->id . '.pdf" class="btn btn-warning">Télécharger la facture</a>';
+        $this->controllerData["commandes"] .= '<div class="collapse" id="Details' . $Order->id . '">
             <ul class="list-group">
                 ' . $this->displayOrderProducts($Order->id) . '
             </ul>

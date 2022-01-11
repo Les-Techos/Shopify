@@ -9,7 +9,11 @@ class finController extends controller
 
     public function routerDefaultAction()
     {
-       var_dump($_SESSION);
+        $this->throwAdmin();
+        if(empty($_GET["file"])){
+            header('Location: ./');
+            exit();
+        }
     }
 
 

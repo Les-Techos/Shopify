@@ -166,13 +166,26 @@
 
           <div class="my-3">
             <div class="form-check">
-              <input id="paypal" name="paymentMethod" type="radio" class="form-check-input" value="paypal" checked required>
-              <label class="form-check-label" for="paypal">PayPal</label>
+              <input id="paypal" name="paymentMethod" type="radio" class="form-check-input" value="paypal" data-bs-toggle="collapse" data-bs-target="#collapsePayement" aria-expanded="true" aria-controls="collapseExample" checked required>
+              <label class="form-check-label h5" for="paypal">PayPal</label>
+            </div>
+            <div id="collapsePayement" class="panel-collapse collapse show">
+              <div class="panel-body">
+                <p>Pour effectuer le paiement, vous allez être redirigé sur le site de Paypal. Aucun frais supplémentaire ne sera appliqué et le paiement est sécurisé.</p>
+                <p>Votre commande sera expédiée dès que possible.</p>
+              </div>
             </div>
             <div class="form-check">
-              <input id="paypal" name="paymentMethod" type="radio" class="form-check-input" value="cheque" required>
-              <label class="form-check-label" for="paypal">Chèque</label>
+              <input id="cheque" name="paymentMethod" type="radio" class="form-check-input" value="cheque" data-bs-toggle="collapse" data-bs-target="#collapsePayement" aria-expanded="true" aria-controls="collapseExample" required>
+              <label class="form-check-label h5" for="cheque">Chèque</label>
             </div>
+            <div id="collapsePayement" class="panel-collapse collapse">
+              <div class="panel-body">
+                <p>Pour effectuer le paiement, vous devrez envoyer un chèque à l'ordre Web4Shop du montant de votre commande à l'adresse 450 rue de la république, Satolas-et-Bonce 38290.</p>
+                <p>Votre commande sera expédiée dès que le montant sera transféré dans nos caisses.</p>
+              </div>
+            </div>
+
           </div>
 
           <hr class="my-4">

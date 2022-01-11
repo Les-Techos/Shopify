@@ -113,15 +113,15 @@ class detailController extends controller
                         <input type="hidden" id="product_to_add" name="product_to_add" value="'.$_POST["product_to_add"].'" />
                         <input type="text" name="title" class="form-control" id="textAreaExample" rows="2" style="background: #fff;" placeholder="Titre" required />
                         <input type="text" name="comment" class="form-control" id="textAreaExample" rows="2" style="background: #fff;" placeholder="Commentaire" required />
-                        <input type="number" value="5" name="note" min="1" max="5" width="10px" />
+                        
 
                     </div>
 
-                    <div class="float-end mt-2 pt-1">
-
-
-                        <input type="submit" name="post" class="btn btn-primary btn-sm" value="Poster Commentaire" />
-                        <input type="reset" class="btn btn-outline-primary btn-sm" value="Annuler" />
+                    <div class="float-end mt-2 pt-1">   
+                        <h6 style="margin-left:15%">Note :
+                        <input type="number" value="5" name="note" min="1" max="5" style="width:10%; margin-left:0%;"/>
+                        <input type="submit" name="post" class="btn btn-primary btn-sm" value="Poster Commentaire" style="margin:auto"/>
+                        <input type="reset" class="btn btn-outline-primary btn-sm" value="Annuler" style="margin-right:15%"/></h6>
 
                     </div>
                 </form>';

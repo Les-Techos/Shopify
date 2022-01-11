@@ -8,6 +8,10 @@ class detailController extends controller
     public function __construct()
     {
         $this->controllerData["detailProduit"] = "";
+        $this->controllerData["formComment"]  = "";
+        $this->controllerData["reviews"] = "";
+        $this->controllerData['note']=0;
+
     }
 
 
@@ -18,6 +22,7 @@ class detailController extends controller
             if (!empty($_POST['post']))
                 $this->sendComment();
             $this->returnCards($_POST['product_to_add']);
+            $this->commentAllowed();
             return ($this->controllerData);
         } else {
             header('Location: ./');
@@ -30,10 +35,10 @@ class detailController extends controller
         $Product = new Product($Product_id);
         $Product->order_66();
 
-        $this->controllerData["reviews"] = "";
+
 
         foreach ($Product->linked_datas->reviews as $Review) {
-
+            $this->controllerData['note'] += $Review->datas->stars;
             $this->controllerData["reviews"] .=
 
                 '<div class="card mb-3" style="max-width: 480px;">
@@ -41,7 +46,7 @@ class detailController extends controller
 
                             <div class="col-md-8">
                                 <div class="card-body">
-                                    <h5 class="card-title">' . $Review->datas->name_user . '</h5>
+                                    <h5 class="card-title">' . $Review->datas->name_user . ' : '. $Review->datas->stars.'/5</h5> 
                                     <p class="card-text">' .
                 $Review->datas->title
                 . '</p>
@@ -54,6 +59,7 @@ class detailController extends controller
                         </div>
                     </div>';
         }
+        $this->controllerData['note'] = number_format((float) ($this->controllerData['note']/count($Product->linked_datas->reviews)), 1, ",", " ");
 
         $this->controllerData["detailProduit"] .= '
         <div class="col-sm">
@@ -96,5 +102,33 @@ class detailController extends controller
     {
         $res = preg_replace('/[0-9\@\.\;\" "]+/', ' ', $str);
         return $res;
+    }
+
+    public function commentAllowed()
+    {
+        if (!empty($_SESSION['connection_id'])) {
+            $this->controllerData["formComment"] = '<div class="card-footer">
+                <form method="post" action="">
+                    <div class="form-outline w-100">
+                        <input type="hidden" id="product_to_add" name="product_to_add" value="'.$_POST["product_to_add"].'" />
+                        <input type="text" name="title" class="form-control" id="textAreaExample" rows="2" style="background: #fff;" placeholder="Titre" required />
+                        <input type="text" name="comment" class="form-control" id="textAreaExample" rows="2" style="background: #fff;" placeholder="Commentaire" required />
+                        <input type="number" value="5" name="note" min="1" max="5" width="10px" />
+
+                    </div>
+
+                    <div class="float-end mt-2 pt-1">
+
+
+                        <input type="submit" name="post" class="btn btn-primary btn-sm" value="Poster Commentaire" />
+                        <input type="reset" class="btn btn-outline-primary btn-sm" value="Annuler" />
+
+                    </div>
+                </form>';
+        } else {
+            $this->controllerData["formComment"] = '<a href="./?action=signIn" class="btn btn-primary" id="Mobile_Btn">
+                                                        Se connecter pour poster un avis
+                                                    </a>';
+        }
     }
 }

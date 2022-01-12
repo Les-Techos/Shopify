@@ -68,7 +68,8 @@ class router
             }
             
         } catch (Exception $e) {
-            echo "<br/>". $this->MakePrettyException($e);
+            $controllerData = "<br/>". $this->MakePrettyException($e);
+            require_once("./view/error.php");
         }
     }
 

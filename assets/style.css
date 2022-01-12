@@ -1,72 +1,71 @@
-
 /* Header */
-#Headerimg{
-    width:100%;
-    height:250px;
+#Headerimg {
+  width: 100%;
+  height: 250px;
 }
 
-#Navbarimg{
-    width:30px;
-    height:24px;
+#Navbarimg {
+  width: 30px;
+  height: 24px;
 }
 
-#co_img{
-    width:80px; 
-    height:80px;
+#co_img {
+  width: 80px;
+  height: 80px;
 }
 
 #Mobile_Btn {
-    width:100%;
-    margin: 2px 2px ;
+  width: 100%;
+  margin: 2px 2px;
 }
 
 /* Sign in and up */
 
-input.form-control{
-    width : 80%;
-    margin:5px auto;
+input.form-control {
+  width: 80%;
+  margin: 5px auto;
 }
 
-#signincontent{
- margin-bottom: 30%;
+#signincontent {
+  margin-bottom: 30%;
 }
 
-#signupsubmit{
-    margin-top: 10px;
-    width : 50%;
+#signupsubmit {
+  margin-top: 10px;
+  width: 50%;
 }
 
-#card-signin{
-    text-align: center;
-    padding: 10px;
+#card-signin {
+  text-align: center;
+  padding: 10px;
 }
 
 /* page produit */
 
 #CardProduit {
-    background-color: rgb(172, 236, 245);
-    height: 98%;
+  background-color: rgb(172, 236, 245);
+  height: 98%;
 }
 
 #CardHeader {
-    text-align: center;
-    font-family:"Fantasy", serif; 
+  text-align: center;
+  font-family: "Fantasy", serif;
 }
 
 /* Footer */
 
-#maincontent{
-    height: 100%;
+#maincontent {
+  height: 100%;
 }
 
-#idProduct{
-    margin-bottom: 10px;
+#idProduct {
+  margin-bottom: 10px;
 }
 
 #CardCommentBody {
-    overflow-y: scroll;
+  overflow-y: scroll;
 }
 
-textarea{
-    resize: none;
+textarea {
+  resize: none;
 }

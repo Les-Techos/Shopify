@@ -4,6 +4,9 @@ require_once "controller.php";
 require_once './models/Product.php';
 require_once './models/Category.php';
 
+/**
+ * Controller for the website's main page
+ */
 class produitController extends Controller
 {
     public function __construct()
@@ -46,6 +49,10 @@ class produitController extends Controller
         return $this->controllerData;
     }
 
+    /**
+     * @param Product $aProduct
+     * Send to the view the html code to display the product in parameter
+     */
     public function returnProductCard($aProduct){
         $this->controllerData  .= ' <div class="col-md-12 col-lg-4" id = "'.$aProduct->datas->id.'">
                                 <div class="card card border-primary mb-3" id="CardProduit">

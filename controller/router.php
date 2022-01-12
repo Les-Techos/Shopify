@@ -11,6 +11,9 @@ require_once "HeaderController.php";
 require_once "errorController.php";
 require_once "finController.php";
 
+/**
+ * This class is the router. It calls the appropriate methods and controllers whenever a page is called.
+ */
 class router
 {
 
@@ -36,6 +39,10 @@ class router
         $this->errorController = new errorController();
         $this->finController = new finController();
     }
+    /**
+     * This method is called whenever a page is loaded and routes the request to the appropriate controller and view.
+     * @return void
+     */
     public function guideRequest()
     {
         try {
@@ -65,6 +72,11 @@ class router
         }
     }
 
+    /**
+     * @param Exception $e
+     * this function is used for debug purposes only and allow to show the exceptions in a prettier way.
+     * @return [type]
+     */
     public function MakePrettyException(Exception $e) {
         $trace = $e->getTrace();
     

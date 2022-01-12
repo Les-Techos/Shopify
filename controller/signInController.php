@@ -3,10 +3,13 @@ require_once "./models/Login.php";
 require_once "./models/Admin.php";
 require_once "./models/Customer.php";
 
+/**
+ * Controller to do signin/signup/signout Process
+ */
 class signInController extends controller
 {
 
-    //$_SESSION["connection_id"] "status"
+    
     public function __construct()
     {
         $this->controllerData  = "";
@@ -24,6 +27,9 @@ class signInController extends controller
         return $this->controllerData;
     }
 
+    /**
+     * If the user decided to connect, verify if the connection is correct
+     */
     public function verifyConnection()
     {
         $username = $_POST["username"];
@@ -58,6 +64,9 @@ class signInController extends controller
         }
     }
 
+    /**
+     * Disconnect the current user and erase is local cart
+     */
     public function disconnect()
     {
         session_unset();
@@ -65,7 +74,10 @@ class signInController extends controller
         exit();
     }
 
-    public function signup()
+    /**
+     * If the user decided to signup, verify if the infos and creates a new login and customer
+     */
+     public function signup()
     {
         $username = $_POST["signupusername"];
         $users = [];

@@ -2,6 +2,9 @@
 require_once "./models/Customer.php";
 require_once "./models/Login.php";
 
+/**
+ * Controller for the user infos page
+ */
 class userController extends controller
 {
 
@@ -32,6 +35,11 @@ class userController extends controller
         return $this->controllerData;
     }
 
+    /**
+     * @param Customer &$customer
+     * @param Login &$login
+     * get the current infos of the user
+     */
     public function getCustomerInfo(&$customer, &$login)
     {
         $this->controllerData["nom"] = $customer->datas->surname;
@@ -46,6 +54,9 @@ class userController extends controller
     }
 
 
+    /**
+     * Send to the view all the html code to display user's commands
+     */
     public function diplayAllOrders()
     {
         foreach ($this->objDatabase as $order) {
@@ -55,6 +66,11 @@ class userController extends controller
         }
     }
 
+    /**
+     * @param int $idOrder
+     * Reuturn the html code to diplay the products of the order passed in parameter.
+     * @return String html code to display in the view
+     */
     public function displayOrderProducts($idOrder)
     {
         $itemArray = [];
@@ -72,6 +88,10 @@ class userController extends controller
         return $result;
     }
 
+    /**
+     * @param Order $Order
+     * Send to the view the html code to display the command passed in parameters
+     */
     public function displayOrder($Order)
     {
 
@@ -89,6 +109,11 @@ class userController extends controller
         </li>';
     }
 
+    /**
+     * @param Customer &$b
+     * @param Login &$l
+     * Updates the customer and login of the user with the form infos of User.php
+     */
     public function updateInfos(&$b, &$l)
     {
         $username = $_POST["username"];

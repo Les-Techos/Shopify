@@ -38,7 +38,7 @@ class renseignementController extends controller
                 $this->generateBill();               
                 $this->setOrderInCloud();
                 
-                header('Location: ./?action=fin');
+                header('Location: ./?action=fin&file='.session_id().$this->objDatabase["order"]->datas->id);
                 exit();
             }
 
@@ -246,40 +246,75 @@ class renseignementController extends controller
 
         $pdf->Cell(94, 5, '', 0, 0);
         $pdf->Cell(47, 5, 'Date', 0, 0);
-        $pdf->Cell(47, 5, 'date', 0, 1); //end of line
+        $pdf->Cell(47, 5, utf8_decode($this->objDatabase["order"]->datas->date), 0, 1); //end of line
 
         $pdf->Cell(94, 5, '', 0, 0);
         $pdf->Cell(47, 5, utf8_decode('Numéro de commande'), 0, 0);
-        $pdf->Cell(47, 5, 'invoiceID', 0, 1); //end of line
+        $pdf->Cell(47, 5, utf8_decode($this->objDatabase["order"]->datas->id), 0, 1); //end of line
 
         $pdf->Cell(94, 5, '', 0, 0);
         $pdf->Cell(47, 5, utf8_decode("Numéro de client"), 0, 0);
-        $pdf->Cell(47, 5, 'clientID', 0, 1); //end of line
+        $pdf->Cell(47, 5, utf8_decode($this->objDatabase["order"]->datas->customer_id), 0, 1); //end of line
 
         //make a dummy empty cell as a vertical spacer
         $pdf->Cell(189, 10, '', 0, 1); //end of line
 
+        $pdf->SetFont('Arial', 'B', 14);
         //billing address
-        $pdf->Cell(100, 5, 'Destinataire de la facture', 0, 1); //end of line
-
+        $pdf->Cell(90, 5, 'Adresse de Livraison', 0, 0); //end of line
+        $pdf->Cell(90, 5, 'Adresse de Facturation', 0, 1); //end of line
         //add dummy cell at beginning of each line for indentation
-        $pdf->Cell(10, 5, '', 0, 0);
-        $pdf->Cell(90, 5, 'name', 0, 1);
+
+        $pdf->SetFont('Arial', '', 14);
 
         $pdf->Cell(10, 5, '', 0, 0);
-        $pdf->Cell(90, 5, 'company', 0, 1);
+        $pdf->Cell(90, 5, utf8_decode($_POST["prenomL"].' '.$_POST["nomL"]) , 0, 0);
+        $pdf->Cell(10, 5, '', 0, 0);
+        $pdf->Cell(90, 5, utf8_decode($_POST["prenom"].' '.$_POST["nom"]) , 0, 1);
+        
+        $pdf->Cell(10, 5, '', 0, 0);
+        $pdf->Cell(90, 5, utf8_decode($_POST["add1L"]), 0, 0);
+        $pdf->Cell(10, 5, '', 0, 0);
+        $pdf->Cell(90, 5, utf8_decode($_POST["add1"]), 0, 1);
+
 
         $pdf->Cell(10, 5, '', 0, 0);
-        $pdf->Cell(90, 5, "adresse", 0, 1);
+        $pdf->Cell(90, 5, utf8_decode($_POST["add2L"]), 0, 0);
+        $pdf->Cell(10, 5, '', 0, 0);
+        $pdf->Cell(90, 5, utf8_decode($_POST["add2"]), 0, 1);
+
 
         $pdf->Cell(10, 5, '', 0, 0);
-        $pdf->Cell(90, 5, "phone", 0, 1);
+        $pdf->Cell(90, 5, utf8_decode($_POST["add3L"]), 0, 0);
+        $pdf->Cell(10, 5, '', 0, 0);
+        $pdf->Cell(90, 5, utf8_decode($_POST["add3"]), 0, 1);
+
+        $pdf->Cell(10, 5, '', 0, 0);
+        $pdf->Cell(90, 5, utf8_decode($_POST["codepostalL"]) , 0, 0);
+        $pdf->Cell(10, 5, '', 0, 0);
+        $pdf->Cell(90, 5, utf8_decode($_POST["codepostal"]) , 0, 1);
+
+        $pdf->Cell(10, 5, '', 0, 0);
+        $pdf->Cell(90, 5, utf8_decode($_POST["mailL"]), 0, 0);
+        $pdf->Cell(10, 5, '', 0, 0);
+        $pdf->Cell(90, 5, utf8_decode($_POST["mail"]), 0, 1);
+
+        $pdf->Cell(10, 5, '', 0, 0);
+        $pdf->Cell(90, 5, utf8_decode($_POST["telL"]), 0, 0);
+        $pdf->Cell(10, 5, '', 0, 0);
+        $pdf->Cell(90, 5, utf8_decode($_POST["tel"]), 0, 1);
+
+        $pdf->Cell(189, 10, '', 0, 1); //end of line
+
+        $pdf->SetFont('Arial', 'B', 14);
+
+        $pdf->Cell(90, 5, "Paiement choisi : ", 0, 0);
+        $pdf->Cell(90, 5, $_POST["paymentMethod"], 0, 1);
+
 
         //make a dummy empty cell as a vertical spacer
         $pdf->Cell(189, 10, '', 0, 1); //end of line
 
-        //invoice contents
-        $pdf->SetFont('Arial', 'B', 12);
 
         $pdf->Cell(130, 5, 'Nom du Produit', 1, 0);
         $pdf->Cell(25, 5, utf8_decode('Quantité'), 1, 0);
@@ -291,22 +326,25 @@ class renseignementController extends controller
         $amount = 0;
         //display the items
         foreach ($_SESSION["PANIER"] as $item) {
-            $pdf->Cell(130, 5, $item['product_id'], 1, 0);
+            $orderItem = new Product($item['product_id']);
+            $pdf->Cell(130, 5, utf8_decode($orderItem->datas->name), 1, 0);
             //add thousand separator using number_format function
             $pdf->Cell(25, 5, number_format($item['quantity']), 1, 0);
-            $pdf->Cell(34, 5, "montant", 1, 1, 'R'); //end of line
+            $montant = $orderItem->datas->price * $item['quantity'];
+            $pdf->Cell(34, 5, number_format($montant), 1, 1, 'R'); //end of line
             //accumulate tax and amount
-            //$amount += $item['amount'];
+            $amount += $montant;
         }
 
         //summary
 
 
         $pdf->Cell(130, 5, '', 0, 0);
-        $pdf->Cell(25, 5, 'Total Due', 0, 0);
-        $pdf->Cell(4, 5, '€', 1, 0);
-        $pdf->Cell(30, 5, number_format($amount), 1, 1, 'R'); //end of line
-        $name = "./assets/bills/".session_id().".pdf";
+        define('EURO',chr(128));
+        $pdf->Cell(25, 5, 'Total :', 1, 0);        
+        $pdf->Cell(30, 5, number_format($amount), 1, 0, 'R'); //end of line
+        $pdf->Cell(4, 5, EURO, 1, 1);
+        $name = "./assets/bills/".session_id().$this->objDatabase["order"]->datas->id.".pdf";
         $pdf->Output('F',  $name);
 
 

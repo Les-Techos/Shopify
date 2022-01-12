@@ -31,13 +31,13 @@ class produitController extends Controller
             foreach ($this->objDatabase as $aProduct) {
 
                 if ($catreceived == "all") {
-                    if ((strpos($aProduct->datas->description, $textToSearch) !== false) && ($aProduct->datas->price <= intval($_POST['rangeInput']))) {
+                    if (((strpos($aProduct->datas->description, $textToSearch) !== false)  || (strpos($aProduct->datas->name, $textToSearch) !== false))   && ($aProduct->datas->price <= intval($_POST['rangeInput']))) {
                         $this->returnProductCard($aProduct);
                     }
                 } else {
                     try{$catProduct = new Category($aProduct->datas->cat_id);}catch(Exception $e){throw $e;}
 
-                    if ((strpos($aProduct->datas->description, $textToSearch) !== false) && ($aProduct->datas->price <= intval($_POST['rangeInput'])) && ($catreceived == $catProduct->datas->name)) {
+                    if (((strpos($aProduct->datas->description, $textToSearch) !== false)  || (strpos($aProduct->datas->name, $textToSearch) !== false)) && ($aProduct->datas->price <= intval($_POST['rangeInput'])) && ($catreceived == $catProduct->datas->name)) {
                         $this->returnProductCard($aProduct);
                     }
                 }

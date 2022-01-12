@@ -2,6 +2,9 @@
 require_once "./models/Customer.php";
 require_once "./models/Customer.php";
 
+/**
+ * Controller for the product details view
+ */
 class detailController extends controller
 {
 
@@ -30,6 +33,11 @@ class detailController extends controller
         }
     }
 
+    /**
+     * @param mixed $Product_id
+     * Send to the view the html code to display the product
+     * @return void
+     */
     public function returnCards($Product_id)
     {
         $Product = new Product($Product_id);
@@ -85,6 +93,9 @@ class detailController extends controller
        ';
     }
 
+    /**
+     * Send a comment
+     */
     public function sendComment()
     {
         $customer = new Customer($_SESSION['connection_id']);
@@ -98,12 +109,20 @@ class detailController extends controller
         $review->set_data();
     }
 
+    /**
+     * @param String $str
+     * This removes special char from a string
+     * @return string
+     */
     public function RemoveSpecialChar($str)
     {
         $res = preg_replace('/[0-9\@\.\;\" "]+/', ' ', $str);
         return $res;
     }
 
+    /**
+     * if the user is connected, this allow him to send a review under a product thanks to the display of a form in the view, else it just ask the user to connect
+     */
     public function commentAllowed()
     {
         if (!empty($_SESSION['connection_id'])) {

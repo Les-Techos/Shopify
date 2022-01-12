@@ -2,6 +2,9 @@
 require_once "./models/Address.php";
 require_once('./assets/fpdf/fpdf.php');
 
+/**
+ * Controller for the validation page
+ */
 class renseignementController extends controller
 {
 
@@ -49,6 +52,9 @@ class renseignementController extends controller
         }
     }
 
+    /**
+     * if the user is connected, this method automatically fill the form
+     */
     public function getCustomerInfo()
     {
         if (!empty($_SESSION["connection_id"])) {
@@ -75,6 +81,9 @@ class renseignementController extends controller
         }
     }
 
+    /**
+     * Send to the view the cart infos which are the number if products and the quantity
+     */
     public function getCartInfos()
     {
         foreach ($_SESSION['PANIER'] as $ProductData) {
@@ -83,7 +92,9 @@ class renseignementController extends controller
             $this->controllerData["Total"] +=  $ProductData["quantity"] * $Product->datas->price;
         }
     }
-
+    /**
+     * Select the order in the database in which you will store the order
+     */
     public function selectOrder()
     {
         if (!empty($_SESSION["connection_id"]) && empty($_SESSION["OrderNumber"]) && ($_SESSION["status"] == "user")) {
@@ -110,6 +121,9 @@ class renseignementController extends controller
         }
     }
 
+    /**
+     * Creates a new order for the database
+     */
     public function getNeworder()
     {
         $this->objDatabase["order"] = Order::get_new_fresh_obj();
@@ -123,6 +137,9 @@ class renseignementController extends controller
         $this->objDatabase["order"]->datas->registered = 1;
     }
 
+    /**
+     * Create a new delivery address for every command
+     */
     public function getNewDeliveryAdd()
     {
         $this->objDatabase["Add"] = Address::get_new_fresh_obj();
@@ -136,6 +153,9 @@ class renseignementController extends controller
         $this->objDatabase["Add"]->datas->email = "NULL";
     }
 
+        /**
+     * Remove all the products items of the order in database to simplify the upload process
+     */
     public function cleanDatabase()
     {
         $orderitems = [];
@@ -147,6 +167,9 @@ class renseignementController extends controller
         }
     }
 
+    /**
+     * Set the delivery address with form datas
+     */
     public function setDeliveryAdd()
     {
         $this->objDatabase["Add"]->datas->firstname = "'" . $_POST["prenomL"] . "'";
@@ -159,6 +182,10 @@ class renseignementController extends controller
         $this->objDatabase["Add"]->datas->email = "'" . $_POST["mailL"] . "'";
         $this->objDatabase["Add"]->set_data();
     }
+
+    /**
+     * Set the customer infos with form datas
+     */
     public function setCustomer()
     {
         $this->objDatabase["customer"]->datas->forname = "'" . $_POST["prenom"] . "'";
@@ -173,6 +200,9 @@ class renseignementController extends controller
         $this->objDatabase["customer"]->set_data();
     }
 
+    /**
+     * Set the order infos with form datas
+     */
     public function setOrder()
     {
         $this->objDatabase["order"]->datas->delivery_add_id = $this->objDatabase["Add"]->datas->id;
@@ -181,7 +211,7 @@ class renseignementController extends controller
         if ($_POST["paymentMethod"] == "paypal") {
             $this->objDatabase["order"]->datas->status = 3;
         } else {
-            $this->objDatabase["order"]->datas->status = 2;
+            $this->objDatabase["order"]->datas->status = 1;
         }
         $this->objDatabase["order"]->datas->session = "'" . session_id() . "'";
         $this->objDatabase["order"]->datas->total = $this->controllerData["Total"];
@@ -190,6 +220,9 @@ class renseignementController extends controller
         $this->objDatabase["order"]->set_data();
     }
 
+    /**
+     * Store order in the database
+     */
     public function setOrderInCloud()
     {
         if (empty($_POST["mail"]))
@@ -222,6 +255,9 @@ class renseignementController extends controller
         unset($_SESSION["PANIER"]);
     }
     
+    /**
+     * generate a PDF bill with all the infos collected in the form
+     */
     public function generateBill()
     {
         $pdf = new FPDF('P', 'mm', 'A4');

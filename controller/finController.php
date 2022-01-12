@@ -2,6 +2,9 @@
 require_once "controller.php";
 
 
+/**
+ * Controller for the end of command view
+ */
 class finController extends controller
 {
 

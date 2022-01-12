@@ -4,6 +4,9 @@ require_once "./models/Order_item.php";
 require_once "./models/Product.php";
 require_once "./models/Address.php";
 
+/**
+ * Controller for the admin interface.
+ */
 class adminController extends controller
 {
     public function __construct()
@@ -32,6 +35,11 @@ class adminController extends controller
         }
     }
 
+    /**
+     * @param Order $Order
+     * Send to the view every infos the admin could need for the preparation of 1 command
+     * @return void
+     */
     public function displayOrder($Order)
     {
 
@@ -51,6 +59,10 @@ class adminController extends controller
         </li>';
     }
 
+    /**
+     * Send to the view every command that isn't sent yet
+     * @return void
+     */
     public function diplayAllOrders()
     {
         foreach ($this->objDatabase as $order) {
@@ -60,6 +72,11 @@ class adminController extends controller
         }
     }
 
+    /**
+     * @param int $idOrder
+     * Sent to the view all the item of one specific order (the one with the id in parameter)
+     * @return String that contains the html list
+     */
     public function displayOrderProducts($idOrder)
     {
         $itemArray = [];
@@ -77,6 +94,11 @@ class adminController extends controller
         return $result;
     }
 
+    /**
+     * @param int $state
+     * Display the right button for the admin
+     * @return String that contains the html button
+     */
     public function displayButton($state)
     {
         $result = "";
@@ -96,6 +118,11 @@ class adminController extends controller
         return $result;
     }
 
+    /**
+     * @param int $idAddress
+     * Display the delivery Address of the order set in parameters
+     * @return String that contains the html address
+     */
     public function displayAddress($idAddress)
     {
         $result = "";
@@ -107,6 +134,11 @@ class adminController extends controller
         return $result;
     }
 
+    /**
+     * @param int $Orderid
+     * Change the status of a command
+     * @return void
+     */
     public function increaseState($Orderid)
     {
         $Order = new Order($Orderid);
@@ -118,6 +150,11 @@ class adminController extends controller
         $Order->set_data();
     }
 
+    /**
+     * @param Admin& $l
+     * Allow to change Admin infos
+     * @return void
+     */
     public function updateInfos(&$l)
     {
         $username = $_POST["username"];

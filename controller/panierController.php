@@ -2,6 +2,9 @@
 require_once "./models/Order.php";
 require_once "./models/Order_item.php";
 
+/**
+ * This is a controller for the cart view
+ */
 class panierController extends controller
 {
 
@@ -35,6 +38,10 @@ class panierController extends controller
         return $this->displayAllCart();
     }
 
+    /**
+     * Use to show all the products in the cart.
+     * @return String the wiew content
+     */
     public function displayAllCart()
     {
         $this->getCartFromCloud();
@@ -51,6 +58,11 @@ class panierController extends controller
         return $this->controllerData;
     }
 
+    /**
+     * @param Product $Product
+     * @param int $quantity
+     * Send to the view the html code to display the product passed in parameters in the cart
+     */
     public function returnCards($Product, $quantity)
     {
         $this->controllerData["list"] .= '
@@ -76,6 +88,11 @@ class panierController extends controller
         $this->controllerData["Total"] += $quantity * $Product->datas->price;
     }
 
+    /**
+     * @param Product $Product
+     * @param int $quantity
+     * Add the quantity of the parameter product in the cart
+     */
     public function addToCart($Product, $quantity = 1)
     {
         $alreadyIn = array("bool" => false, "row" => 0);
@@ -102,6 +119,11 @@ class panierController extends controller
         }
     }
 
+    /**
+     * @param Product $Product
+     * @param int $quantity
+     * Remove the quantity of the parameter product in the cart and if the quantity asked is equal or higher than the one in the cart, it removes the product from the cart
+     */
     public function removeFromCart($product_id, $quantity = 1)
     {
         if (!empty($_SESSION['PANIER'])) {
@@ -121,6 +143,11 @@ class panierController extends controller
         $this->cloudSave();
     }
 
+    /**
+     * @param int $product_id
+     * @param int $newQuantity
+     * change the quantity of the specified product to the one passed in parameter
+     */
     public function changeValue($product_id, $newQuantity)
     {
         if (!empty($_SESSION['PANIER'])) {
@@ -137,6 +164,9 @@ class panierController extends controller
         }
     }
 
+    /**
+     * If the user is connected, select the order in the cloud in which you will store the cart and save it in objDatabase
+     */
     public function selectOrder()
     {
         if (!empty($_SESSION["connection_id"]) && empty($_SESSION["OrderNumber"]) && ($_SESSION["status"]=="user")) {
@@ -171,6 +201,9 @@ class panierController extends controller
         }
     }
 
+    /**
+     * Remove all the products items of the order in which you store the cart to simplify the upload process
+     */
     public function cleanDatabase()
     {
         $orderitems = [];
@@ -182,6 +215,9 @@ class panierController extends controller
         }
     }
 
+    /**
+     * Save the current cart in the database
+     */
     public function setCartInCloud()
     {
         $this->selectOrder();
@@ -202,6 +238,9 @@ class panierController extends controller
         
     }
 
+    /**
+     * if the user is connected, save the current cart in the database
+     */
     public function cloudSave()
     {
         if (!empty($_SESSION["connection_id"])) {
@@ -209,6 +248,10 @@ class panierController extends controller
         }
     }
 
+    /**
+     * if the user is connected
+     * Put in the sessions cookies the last cart saved in the database
+     */
     public function getCartFromCloud()
     {
         if (!empty($_SESSION["connection_id"])) {

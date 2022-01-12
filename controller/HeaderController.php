@@ -1,5 +1,8 @@
 <?php require_once "controller.php";
 
+/**
+ * Controller for the header display
+ */
 class HeaderController extends controller
 {
     public $ConnectionButton = "";
@@ -21,6 +24,9 @@ class HeaderController extends controller
     }
 
 
+    /**
+     * changes the buttons in the view. Depends on the user connection. 
+     */
     public function displayConnectionBtn()
     {
         if (!empty($_SESSION["connection_id"])) {
@@ -53,6 +59,9 @@ class HeaderController extends controller
         }
     }
 
+    /**
+     * Display a button to show the cart on every webpage except, the cart, the admin page, the command validation, and the  end of command
+     */
     public function displayCartButton()
     {
 
@@ -65,6 +74,9 @@ class HeaderController extends controller
         }
     }
 
+    /**
+     * Display the cart on every webpage except, the cart, the admin page, the command validation, and the  end of command
+     */
     public function displayCart()
     {
         if (empty($_SESSION["status"]) || ("admin" != $_SESSION["status"])) {
